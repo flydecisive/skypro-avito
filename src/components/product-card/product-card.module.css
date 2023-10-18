@@ -1,0 +1,54 @@
+.card_img {
+  width: 270px;
+  height: 270px;
+  background: #f0f0f0;
+}
+
+.card {
+  max-width: 270px;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 20px;
+  align-items: center;
+}
+
+.wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.header {
+  text-align: left;
+  color: #009ee4;
+  font-family: "RobotoMedium";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+}
+
+.data_items {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+}
+
+.data_item {
+  color: #5f5f5f;
+  font-family: "RobotoRegular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+}
+
+.price {
+  color: #000;
+  font-family: "RobotoMedium";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+}

@@ -7,3 +7,28 @@
   box-sizing: border-box;
   width: 100%;
 }
+
+.content {
+  margin-top: 45px;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.title {
+  color: #000;
+  font-family: "RobotoMedium";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 220%;
+}
+
+.cards {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: inherit;
+  row-gap: 40px;
+}
