@@ -1,8 +1,6 @@
 import styles from "./main.module.css";
 import Header from "../../components/header/header";
-import { ReactComponent as Logo } from "../../assets/img/Logo.svg";
-import Search from "../../components/search/search";
-import Button from "../../components/buttons/button/button";
+import PageNav from "../../components/page-nav/page-nav";
 
 function Main() {
   const buttonsNames = ["Вход в личный кабинет"];
@@ -11,11 +9,7 @@ function Main() {
     <div className={`${styles.main}`}>
       <Header names={buttonsNames} />
       <div className={`${styles.wrapper} center`}>
-        <div className={styles.top}>
-          <Logo />
-          <Search />
-          <Button name="Найти" />
-        </div>
+        <PageNav isSearch={true} />
       </div>
     </div>
   );

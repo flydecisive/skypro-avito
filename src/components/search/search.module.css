@@ -13,8 +13,6 @@
   font-weight: 400;
   line-height: 150%;
   flex-shrink: 1;
-  margin-right: 10px;
-  margin-left: 60px;
 }
 
 .search::placeholder {
