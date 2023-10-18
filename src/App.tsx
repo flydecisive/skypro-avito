@@ -1,13 +1,12 @@
-import React from 'react';
-import './App.css';
-import './globalStyles.module.css';
-// import Header from './components/header/header';
-import Main from './pages/main/main';
+import React from "react";
+import "./App.css";
+import "./globalStyles.module.css";
+import AppRoutes from "./routes/routes";
 
 function App() {
   return (
     <div className="App">
-      <Main />
+      <AppRoutes isAllowed={true} />
     </div>
   );
 }
