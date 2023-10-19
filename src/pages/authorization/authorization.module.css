@@ -1,0 +1,18 @@
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #009ee4;
+}
+
+.modal {
+  width: 366px;
+  border-radius: 12px;
+  background: #fff;
+  padding: 47px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
