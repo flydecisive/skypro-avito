@@ -6,9 +6,11 @@ import { cardData } from "../../data";
 import ProductCard from "../../components/product-card/product-card";
 import SettingInput from "../../components/inputs/setting-input/setting-input";
 import Button from "../../components/buttons/button/button";
+import { useNavigate } from "react-router-dom";
 
 function UserPage() {
   const buttonsNames = ["Разместить объявление", "Личный кабинет"];
+  const navigate = useNavigate();
   const cardsItems = cardData.map((el, index) => {
     return (
       <ProductCard
@@ -29,6 +31,9 @@ function UserPage() {
           isSearch={false}
           buttonName="Вернуться на главную"
           buttonWidth="241px"
+          onClick={() => {
+            navigate("/");
+          }}
         />
         <div className={styles.content}>
           <Title title="Здравствуйте, Антон!" />
@@ -48,7 +53,12 @@ function UserPage() {
                   <SettingInput width="300px" placeholder="Город" />
                   <SettingInput width="614px" placeholder="Телефон" />
                 </div>
-                <Button name="Сохранить" buttonColor="blue" width="154px" />
+                <Button
+                  name="Сохранить"
+                  buttonColor="blue"
+                  width="154px"
+                  onClick={() => {}}
+                />
               </div>
             </div>
           </div>

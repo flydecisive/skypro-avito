@@ -7,9 +7,10 @@ interface PageNavProps {
   isSearch: boolean;
   buttonName: string;
   buttonWidth: string;
+  onClick: () => void;
 }
 
-function PageNav({ isSearch, buttonName, buttonWidth }: PageNavProps) {
+function PageNav({ isSearch, buttonName, buttonWidth, onClick }: PageNavProps) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.left}>
@@ -17,7 +18,14 @@ function PageNav({ isSearch, buttonName, buttonWidth }: PageNavProps) {
       </div>
       <div className={styles.right}>
         {isSearch ? <Search /> : ""}
-        <Button name={buttonName} buttonColor="blue" width={buttonWidth} />
+        <Button
+          name={buttonName}
+          buttonColor="blue"
+          width={buttonWidth}
+          onClick={() => {
+            onClick();
+          }}
+        />
       </div>
     </div>
   );

@@ -23,7 +23,12 @@ function MainPage() {
     <div className={`${styles.main}`}>
       <Header names={buttonsNames} />
       <div className={`${styles.wrapper} center`}>
-        <PageNav isSearch={true} buttonName="Найти" buttonWidth="158px" />
+        <PageNav
+          isSearch={true}
+          buttonName="Найти"
+          buttonWidth="158px"
+          onClick={() => {}}
+        />
         <div className={styles.content}>
           <Title title={"Объявления"} />
           <div className={styles.cards}>{cardsItems}</div>
