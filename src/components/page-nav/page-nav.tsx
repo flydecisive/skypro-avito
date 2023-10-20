@@ -15,7 +15,7 @@ function PageNav({ isSearch }: PageNavProps) {
       </div>
       <div className={styles.right}>
         {isSearch ? <Search /> : ""}
-        <Button name="Найти" buttonColor="blue" />
+        <Button name="Найти" buttonColor="blue" width="158px" />
       </div>
     </div>
   );
