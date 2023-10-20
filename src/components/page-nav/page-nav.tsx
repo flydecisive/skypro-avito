@@ -5,9 +5,11 @@ import { ReactComponent as Logo } from "../../assets/img/Logo.svg";
 
 interface PageNavProps {
   isSearch: boolean;
+  buttonName: string;
+  buttonWidth: string;
 }
 
-function PageNav({ isSearch }: PageNavProps) {
+function PageNav({ isSearch, buttonName, buttonWidth }: PageNavProps) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.left}>
@@ -15,7 +17,7 @@ function PageNav({ isSearch }: PageNavProps) {
       </div>
       <div className={styles.right}>
         {isSearch ? <Search /> : ""}
-        <Button name="Найти" buttonColor="blue" width="158px" />
+        <Button name={buttonName} buttonColor="blue" width={buttonWidth} />
       </div>
     </div>
   );

@@ -3,8 +3,9 @@ import Header from "../../components/header/header";
 import PageNav from "../../components/page-nav/page-nav";
 import ProductCard from "../../components/product-card/product-card";
 import { cardData } from "../../data";
+import Title from "../../components/title/title";
 
-function Main() {
+function MainPage() {
   const buttonsNames = ["Вход в личный кабинет"];
   const cardsItems = cardData.map((el, index) => {
     return (
@@ -22,9 +23,9 @@ function Main() {
     <div className={`${styles.main}`}>
       <Header names={buttonsNames} />
       <div className={`${styles.wrapper} center`}>
-        <PageNav isSearch={true} />
+        <PageNav isSearch={true} buttonName="Найти" buttonWidth="158px" />
         <div className={styles.content}>
-          <h1 className={styles.title}>Объявления</h1>
+          <Title title={"Объявления"} />
           <div className={styles.cards}>{cardsItems}</div>
         </div>
       </div>
@@ -32,4 +33,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default MainPage;
