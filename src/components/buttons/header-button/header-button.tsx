@@ -13,6 +13,9 @@ function HeaderButton({ name }: ButtonProps) {
       case "Вход в личный кабинет": {
         return navigate("/login");
       }
+      case "Личный кабинет": {
+        return navigate("/user");
+      }
       default: {
         return () => {};
       }

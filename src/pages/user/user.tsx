@@ -7,6 +7,7 @@ import ProductCard from "../../components/product-card/product-card";
 import SettingInput from "../../components/inputs/setting-input/setting-input";
 import Button from "../../components/buttons/button/button";
 import { useNavigate } from "react-router-dom";
+import AdModal from "../../components/modals/ad-modal/ad-modal";
 
 function UserPage() {
   const buttonsNames = ["Разместить объявление", "Личный кабинет"];
@@ -25,6 +26,7 @@ function UserPage() {
 
   return (
     <div className={styles.user}>
+      <AdModal />
       <Header names={buttonsNames} />
       <div className={`${styles.wrapper} center`}>
         <PageNav
