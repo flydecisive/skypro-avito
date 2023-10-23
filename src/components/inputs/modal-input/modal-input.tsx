@@ -16,7 +16,7 @@ function ModalInput({ width, placeholder, type }: SettingInputProps) {
         style={{ width: width }}
         placeholder={placeholder}
         type={type}
-      />
+      ></input>
     </form>
   );
 }
