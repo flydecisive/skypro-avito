@@ -1,4 +1,5 @@
 import styles from "./product-card.module.css";
+import Metadata from "../metadata/metadata";
 
 interface ProductCardProps {
   header: string;
@@ -14,10 +15,11 @@ function ProductCard({ header, price, city, time }: ProductCardProps) {
       <div className={styles.wrapper}>
         <h2 className={styles.header}>{header}</h2>
         <p className={styles.price}>{price} ₽</p>
-        <div className={styles.data_items}>
+        <Metadata city={city} time={time} />
+        {/* <div className={styles.data_items}>
           <p className={styles.data_item}>{city}</p>
           <p className={styles.data_item}>{time}</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

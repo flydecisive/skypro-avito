@@ -1,4 +1,4 @@
-import styles from "./user.module.css";
+import styles from "./profile.module.css";
 import Header from "../../components/header/header";
 import PageNav from "../../components/page-nav/page-nav";
 import Title from "../../components/title/title";
@@ -8,7 +8,7 @@ import SettingInput from "../../components/inputs/setting-input/setting-input";
 import Button from "../../components/buttons/button/button";
 import { useNavigate } from "react-router-dom";
 
-function UserPage() {
+function ProfilePage() {
   const buttonsNames = ["Разместить объявление", "Личный кабинет"];
   const navigate = useNavigate();
   const cardsItems = cardData.map((el, index) => {
@@ -70,4 +70,4 @@ function UserPage() {
   );
 }
 
-export default UserPage;
+export default ProfilePage;
