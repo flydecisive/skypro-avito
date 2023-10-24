@@ -2,6 +2,11 @@
   width: 100%;
   height: 100%;
   padding-bottom: 40px;
+  position: relative;
+}
+
+.product_filter {
+  filter: blur(5px);
 }
 
 .wrapper {

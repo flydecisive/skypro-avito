@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import "./App.css";
 import "./globalStyles.module.css";
@@ -14,6 +15,7 @@ function App() {
       dispatch(setAllAds(allAds));
     }
   }, [allAds]);
+
   return (
     <div className="App">
       <AppRoutes isAllowed={true} />
