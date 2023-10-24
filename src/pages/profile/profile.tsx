@@ -24,8 +24,8 @@ function ProfilePage() {
   });
 
   return (
-    <div className={styles.user}>
-      \ <Header names={buttonsNames} />
+    <div className={styles.profile}>
+      <Header names={buttonsNames} />
       <div className={`${styles.wrapper} center`}>
         <PageNav
           isSearch={false}
