@@ -7,6 +7,8 @@ import "./fonts/Roboto-Bold.ttf";
 import "./fonts/Roboto-Regular.ttf";
 import "./fonts/Roboto-Medium.ttf";
 import "./fonts/Roboto-Light.ttf";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,7 +16,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <BrowserRouter basename="/">
     <React.StrictMode>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </React.StrictMode>
   </BrowserRouter>
 );

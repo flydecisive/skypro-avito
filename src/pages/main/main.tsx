@@ -4,6 +4,7 @@ import PageNav from "../../components/page-nav/page-nav";
 import ProductCard from "../../components/product-card/product-card";
 import { cardData } from "../../data";
 import Title from "../../components/title/title";
+import { getAllAds } from "../../api";
 
 function MainPage() {
   const buttonsNames = ["Вход в личный кабинет"];
