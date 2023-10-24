@@ -1,0 +1,119 @@
+.modal {
+  width: 600px;
+  padding: 20px 50px 42px 50px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: #fff;
+  border: 2px solid #009ee4;
+}
+
+.header {
+  color: #000;
+  font-family: "RobotoMedium";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 220%;
+}
+
+.button {
+  background: transparent;
+  border: none;
+  width: 30px;
+  height: 30px;
+}
+
+.top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.photos {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.photos_wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.photos_title,
+.text-grey {
+  font-family: "RobotoRegular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.photos_title {
+  color: #000;
+}
+
+.text-grey {
+  color: rgb(0 0 0 / 30%);
+}
+
+.label {
+  color: #000;
+  font-family: "RobotoRegular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  display: flex;
+  flex-flow: column wrap;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.price {
+  width: 200px;
+  height: 50px;
+  padding-left: 20px;
+  border-radius: 6px;
+  border: 1px solid rgb(0 0 0 / 20%);
+  position: relative;
+  font-size: 24px;
+  background: transparent url("../../../assets/img/rub.svg") no-repeat;
+  background-position: right 1vw center;
+  background-size: 15px;
+}
+
+.textarea {
+  width: 100%;
+  height: 200px;
+  color: #000;
+  font-family: "RobotoRegular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  padding: 10px 20px 10px 20px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid rgb(0 0 0 / 20%);
+  resize: none;
+}
+
+.price:focus,
+.textarea:focus {
+  outline: 0;
+  border: 1px solid #009ee4;
+}
+
+.price::-webkit-outer-spin-button,
+.price::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

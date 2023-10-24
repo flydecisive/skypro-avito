@@ -1,0 +1,13 @@
+:global(*) {
+  padding: 0;
+  margin: 0;
+}
+
+:global(.center) {
+  padding-left: calc(50% - 720px);
+  padding-right: calc(50% - 720px);
+}
+
+:global(button) {
+  cursor: pointer;
+}

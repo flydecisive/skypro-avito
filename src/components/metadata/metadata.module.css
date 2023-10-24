@@ -1,0 +1,14 @@
+.data_items {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+}
+
+.data_item {
+  color: #5f5f5f;
+  font-family: "RobotoRegular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+}
