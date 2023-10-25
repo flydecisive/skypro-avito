@@ -4,18 +4,25 @@ import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import { ReactComponent as AddPhoto } from "../../../assets/img/add-photo.svg";
 import Button from "../../buttons/button/button";
 
-function AdModal() {
+interface AdModalProps {
+  setShowModal: (params: boolean) => void;
+  targetButton: string;
+}
+
+function AdModal({ setShowModal, targetButton }: AdModalProps) {
   return (
     <div className={styles.modal}>
       <div className={styles.top}>
-        <h2 className={styles.header}>Новое объявление</h2>
-        <button className={styles.button}>
-          <Cross />
-        </button>
+        <h2 className={styles.header}>
+          {targetButton === "Редактировать"
+            ? "Редактировать объявление"
+            : "Новое объявление"}
+        </h2>
+        <Cross className={styles.cross} onClick={() => setShowModal(false)} />
       </div>
       <ModalInput width="500px" placeholder="Введите название" type="text" />
       <label className={styles.label}>
-        Описание{" "}
+        Описание
         <textarea
           className={styles.textarea}
           placeholder="Введите описание"

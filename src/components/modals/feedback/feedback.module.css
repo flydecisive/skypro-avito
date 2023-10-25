@@ -9,6 +9,14 @@
   position: relative;
   overflow-y: scroll;
   scroll-margin-right: 12px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 85px;
+  /* top: 0; */
+  /* bottom: 0; */
+  margin: auto;
+  z-index: 2;
 }
 
 .modal::-webkit-scrollbar {
@@ -169,4 +177,12 @@
 .feedback {
   display: flex;
   gap: 10px;
+}
+
+.cross {
+  stroke: #d9d9d9;
+}
+
+.cross:hover {
+  stroke: #009ee4;
 }

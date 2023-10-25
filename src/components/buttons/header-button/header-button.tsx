@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 interface ButtonProps {
   name: string;
+  onClick: (params: any) => void;
 }
 
-function HeaderButton({ name }: ButtonProps) {
+function HeaderButton({ name, onClick }: ButtonProps) {
   const navigate = useNavigate();
 
   const handleOnClick = (name: string) => {
@@ -14,7 +15,7 @@ function HeaderButton({ name }: ButtonProps) {
         return navigate("/login");
       }
       case "Личный кабинет": {
-        return navigate("/user");
+        return navigate("/profile");
       }
       default: {
         return () => {};
@@ -25,7 +26,8 @@ function HeaderButton({ name }: ButtonProps) {
   return (
     <button
       className={styles.button}
-      onClick={() => {
+      onClick={(e) => {
+        onClick(e);
         handleOnClick(name);
       }}
     >
