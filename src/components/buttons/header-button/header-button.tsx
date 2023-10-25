@@ -15,7 +15,7 @@ function HeaderButton({ name, onClick }: ButtonProps) {
         return navigate("/login");
       }
       case "Личный кабинет": {
-        return navigate("/user");
+        return navigate("/profile");
       }
       default: {
         return () => {};
