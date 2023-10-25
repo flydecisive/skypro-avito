@@ -2,13 +2,20 @@ import styles from "./feedback.module.css";
 import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import Button from "../../buttons/button/button";
 
-function Feedback() {
+interface FeedbackProps {
+  setShowFeedbackModal: (params: any) => void;
+}
+
+function Feedback({ setShowFeedbackModal }: FeedbackProps) {
   return (
     <div className={styles.modal}>
       <div className={styles.top}>
         <h2 className={styles.header}>Отзывы о товаре</h2>
         <button className={styles.button}>
-          <Cross className={styles.cross} />
+          <Cross
+            className={styles.cross}
+            onClick={() => setShowFeedbackModal(false)}
+          />
         </button>
       </div>
       <div className={styles.add_feedback}>

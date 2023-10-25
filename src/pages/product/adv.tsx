@@ -7,9 +7,11 @@ import Button from "../../components/buttons/button/button";
 import NumberButton from "../../components/buttons/number-button/number-button";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
 import { useState } from "react";
+import Feedback from "../../components/modals/feedback/feedback";
 
 function AdvPage() {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
   const navigate = useNavigate();
 
@@ -23,9 +25,18 @@ function AdvPage() {
       ) : (
         ""
       )}
+      {showFeedbackModal ? (
+        <Feedback
+          setShowFeedbackModal={() => {
+            setShowFeedbackModal(false);
+          }}
+        />
+      ) : (
+        ""
+      )}
       <div
         className={`${styles.product} ${
-          showModal ? styles.product_filter : ""
+          showModal || showFeedbackModal ? styles.product_filter : ""
         }`}
       >
         <Header
@@ -60,7 +71,14 @@ function AdvPage() {
                 Ракетка для большого тенниса Triumph Pro STС Б/У
               </h2>
               <Metadata city={"Санкт-Петербург"} time={"Сегодня в 10:45"} />
-              <p className={styles.feedback}>4 отзыва</p>
+              <p
+                className={styles.feedback}
+                onClick={() => {
+                  setShowFeedbackModal(true);
+                }}
+              >
+                4 отзыва
+              </p>
               <p className={styles.price}>2 200 ₽</p>
               <div className={styles.buttons}>
                 {true ? (
