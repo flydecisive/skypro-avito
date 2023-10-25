@@ -4,16 +4,19 @@ import PageNav from "../../components/page-nav/page-nav";
 import ProductCard from "../../components/product-card/product-card";
 import { cardData } from "../../data";
 import Title from "../../components/title/title";
+import { useSelector } from "react-redux";
 
 function MainPage() {
-  const cardsItems = cardData.map((el, index) => {
+  const allAds = useSelector((store: any) => store?.ads.allAds);
+  console.log(allAds);
+  const cardsItems = allAds?.map((el: any, index: number) => {
     return (
       <ProductCard
         key={index}
-        header={el.header}
+        header={el.title}
         price={el.price}
-        city={el.city}
-        time={el.time}
+        city={el.user.city}
+        time={el.created_on}
       />
     );
   });
