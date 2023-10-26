@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import { registerUser, loginUser } from "../../api";
 import { ChangeEvent, useState } from "react";
 import PushNotice from "../../components/push-notice/push-notice";
+import { validateEmail } from "../../helpers";
 
 function AuthorizationPage() {
   const location = useLocation();
@@ -62,26 +63,33 @@ function AuthorizationPage() {
       if (password === confirmPassword) {
         registerUser(email, password, firstname, surname, city);
       } else {
-        console.log("Введенные пароли не совпадают");
+        setNoticeText("Введенные пароли не совпадают");
+        setShowNotice(true);
       }
     } else {
-      console.log("Заполните обязательные поля");
+      setNoticeText("Введите email / пароль");
+      setShowNotice(true);
     }
   };
 
   const handleLoginUser = async (email: string, password: string) => {
     if (email.length !== 0 && password.length !== 0) {
-      try {
-        const responseData = await loginUser(email, password);
+      if (validateEmail(email)) {
+        try {
+          const responseData = await loginUser(email, password);
 
-        if (responseData.detail) {
-          console.log(responseData.detail);
+          if (responseData) {
+            navigate("/");
+          }
+        } catch (error: any) {
+          if ((error.message = "Ошибка авторизации")) {
+            setNoticeText("Не верный логин или пароль");
+            setShowNotice(true);
+          }
         }
-      } catch (error: any) {
-        if ((error.message = "Ошибка авторизации")) {
-          setNoticeText("Не верный логин или пароль");
-          setShowNotice(true);
-        }
+      } else {
+        setNoticeText("Введите валидный email");
+        setShowNotice(true);
       }
     } else {
       setNoticeText("Введите email / пароль");

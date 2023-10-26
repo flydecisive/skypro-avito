@@ -61,3 +61,10 @@ export const parseData = (value: number): string => {
 
   return result;
 };
+
+export const validateEmail = (email: string) => {
+  const emailRegex =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+
+  return emailRegex.test(email);
+};
