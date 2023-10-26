@@ -12,9 +12,7 @@ function Button({ name, buttonColor, width, onClick }: ButtonProps) {
     <button
       className={`${styles.button} ${styles[buttonColor]}`}
       style={{ width: width }}
-      onClick={(e) => {
-        onClick(e);
-      }}
+      onClick={onClick}
     >
       {name}
     </button>

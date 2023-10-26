@@ -6,12 +6,13 @@ interface ProductCardProps {
   price: string;
   city: string;
   time: string;
+  // img_src: string;
 }
 
 function ProductCard({ header, price, city, time }: ProductCardProps) {
   return (
     <div className={styles.card}>
-      <div className={styles.card_img}></div>
+      <img src={""} alt="" className={styles.card_img} />
       <div className={styles.wrapper}>
         <h2 className={styles.header}>{header}</h2>
         <p className={styles.price}>{price} ₽</p>

@@ -14,8 +14,7 @@ function Metadata({ city, time }: MetadataProps) {
     const hours = parseData(date.getHours());
     const minutes = parseData(date.getMinutes());
 
-    const result = `${day} ${month} в ${hours}:${minutes}`;
-    return result;
+    return `${day} ${month} в ${hours}:${minutes}`;
   };
 
   return (

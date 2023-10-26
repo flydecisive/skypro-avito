@@ -5,16 +5,25 @@ import "./globalStyles.module.css";
 import AppRoutes from "./routes/routes";
 import { useGetAllAdsQuery } from "./services/ads";
 import { useDispatch } from "react-redux";
-import { setAllAds } from "./store/actions/creators/ads";
+import { setAllAds, setAllImgs } from "./store/actions/creators/ads";
+import { useGetAllImgsQuery } from "./services/ads";
 
 function App() {
   const dispatch = useDispatch();
   const allAds = useGetAllAdsQuery("?sorting=new").data;
+  const allImgs = useGetAllImgsQuery().data;
+
   useEffect(() => {
     if (allAds) {
       dispatch(setAllAds(allAds));
     }
   }, [allAds]);
+
+  useEffect(() => {
+    if (allImgs) {
+      dispatch(setAllImgs(allImgs));
+    }
+  }, [allImgs]);
 
   return (
     <div className="App">

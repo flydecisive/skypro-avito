@@ -9,7 +9,10 @@ export const adsApi = createApi({
     getAllAds: builder.query({
       query: (sorting) => `/ads${sorting}`,
     }),
+    getAllImgs: builder.query<{}[], void>({
+      query: () => "/images",
+    }),
   }),
 });
 
-export const { useGetAllAdsQuery } = adsApi;
+export const { useGetAllAdsQuery, useGetAllImgsQuery } = adsApi;
