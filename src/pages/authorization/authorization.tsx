@@ -9,8 +9,10 @@ import { registerUser, loginUser } from "../../api";
 import { ChangeEvent, useState } from "react";
 import PushNotice from "../../components/push-notice/push-notice";
 import { validateEmail } from "../../helpers";
+import { useAllowedContext } from "../../components/contexts/allowed";
 
 function AuthorizationPage() {
+  const { isAllowed, setIsAllowed } = useAllowedContext();
   const location = useLocation();
   const path = location.pathname;
   const navigate = useNavigate();
@@ -74,6 +76,8 @@ function AuthorizationPage() {
             );
 
             if (!responseData.details) {
+              localStorage.setItem("refresh", responseData.refresh_token);
+              setIsAllowed?.(!isAllowed);
               navigate("/");
             } else {
               if (responseData.message === "Database Error") {
@@ -108,6 +112,8 @@ function AuthorizationPage() {
           const responseData = await loginUser(email, password);
 
           if (responseData) {
+            localStorage.setItem("refresh", responseData.refresh_token);
+            setIsAllowed?.(!isAllowed);
             navigate("/");
           }
         } else {
