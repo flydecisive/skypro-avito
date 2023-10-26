@@ -22,7 +22,6 @@ export async function registerUser(
   });
 
   const responseData = await response.json();
-  console.log(responseData);
   return responseData;
 }
 
@@ -38,7 +37,10 @@ export async function loginUser(email: string, password: string) {
     },
   });
 
+  if (!response.ok && response.status === 401) {
+    throw new Error("Ошибка авторизации");
+  }
+
   const responseData = await response.json();
-  console.log(responseData);
   return responseData;
 }

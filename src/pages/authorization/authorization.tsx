@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { registerUser, loginUser } from "../../api";
 import { ChangeEvent, useState } from "react";
+import PushNotice from "../../components/push-notice/push-notice";
 
 function AuthorizationPage() {
   const location = useLocation();
@@ -18,6 +19,8 @@ function AuthorizationPage() {
   const [firstname, setFirstname] = useState("");
   const [surname, setSurname] = useState("");
   const [city, setCity] = useState("");
+  const [noticeText, setNoticeText] = useState("");
+  const [showNotice, setShowNotice] = useState(false);
 
   const handleEmailInput = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -66,16 +69,38 @@ function AuthorizationPage() {
     }
   };
 
-  const handleLoginUser = (email: string, password: string) => {
+  const handleLoginUser = async (email: string, password: string) => {
     if (email.length !== 0 && password.length !== 0) {
-      loginUser(email, password);
+      try {
+        const responseData = await loginUser(email, password);
+
+        if (responseData.detail) {
+          console.log(responseData.detail);
+        }
+      } catch (error: any) {
+        if ((error.message = "Ошибка авторизации")) {
+          setNoticeText("Не верный логин или пароль");
+          setShowNotice(true);
+        }
+      }
     } else {
-      console.log("Заполните обязательные поля");
+      setNoticeText("Введите email / пароль");
+      setShowNotice(true);
     }
   };
 
   return path === "/login" ? (
     <div className={styles.wrapper}>
+      {showNotice ? (
+        <PushNotice
+          text={noticeText}
+          onClick={() => {
+            setShowNotice(false);
+          }}
+        />
+      ) : (
+        ""
+      )}
       <div className={styles.modal}>
         <NavLink to="/">
           <Logo />
