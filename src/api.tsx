@@ -21,12 +21,7 @@ export async function registerUser(
     },
   });
 
-  // if (!response.ok && response.status === 401) {
-  //   throw new Error("Ошибка авторизации");
-  // }
-
   const responseData = await response.json();
-  console.log(responseData);
   return responseData;
 }
 

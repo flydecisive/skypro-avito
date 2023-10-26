@@ -77,7 +77,6 @@ function AuthorizationPage() {
               navigate("/");
             } else {
               if (responseData.message === "Database Error") {
-                console.log(responseData.message);
                 setNoticeText("Такой пользователь уже существует");
                 setShowNotice(true);
               }
@@ -99,26 +98,6 @@ function AuthorizationPage() {
     } finally {
       setIsDisabledButton(false);
     }
-    // if (
-    //   email.length !== 0 &&
-    //   password.length !== 0 &&
-    //   confirmPassword.length !== 0
-    // ) {
-    //   if (validateEmail(email)) {
-    //     if (password === confirmPassword) {
-    //       t
-    //     } else {
-    //       setNoticeText("Введенные пароли не совпадают");
-    //       setShowNotice(true);
-    //     }
-    //   } else {
-    //     setNoticeText("Введите валидный email");
-    //     setShowNotice(true);
-    //   }
-    // } else {
-    //   setNoticeText("Введите email / пароль");
-    //   setShowNotice(true);
-    // }
   };
 
   const handleLoginButton = async (email: string, password: string) => {
