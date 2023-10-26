@@ -22,6 +22,7 @@ function AuthorizationPage() {
   const [city, setCity] = useState("");
   const [noticeText, setNoticeText] = useState("");
   const [showNotice, setShowNotice] = useState(false);
+  const [isDisabledButton, setIsDisabledButton] = useState(false);
 
   const handleEmailInput = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -47,7 +48,7 @@ function AuthorizationPage() {
     setCity(event.target.value);
   };
 
-  const handleRegisterButton = (
+  const handleRegisterButton = async (
     email: string,
     password: string,
     confirmPassword: string,
@@ -55,45 +56,96 @@ function AuthorizationPage() {
     surname: string,
     city: string
   ) => {
-    if (
-      email.length !== 0 &&
-      password.length !== 0 &&
-      confirmPassword.length !== 0
-    ) {
-      if (password === confirmPassword) {
-        registerUser(email, password, firstname, surname, city);
+    try {
+      setIsDisabledButton(true);
+      if (
+        email.length !== 0 &&
+        password.length !== 0 &&
+        confirmPassword.length !== 0
+      ) {
+        if (validateEmail(email)) {
+          if (password === confirmPassword) {
+            const responseData = await registerUser(
+              email,
+              password,
+              firstname,
+              surname,
+              city
+            );
+
+            if (!responseData.details) {
+              navigate("/");
+            } else {
+              if (responseData.message === "Database Error") {
+                console.log(responseData.message);
+                setNoticeText("Такой пользователь уже существует");
+                setShowNotice(true);
+              }
+            }
+          } else {
+            setNoticeText("Введенные пароли не совпадают");
+            setShowNotice(true);
+          }
+        } else {
+          setNoticeText("Введите валидный email");
+          setShowNotice(true);
+        }
       } else {
-        setNoticeText("Введенные пароли не совпадают");
+        setNoticeText("Введите email / пароль");
         setShowNotice(true);
       }
-    } else {
-      setNoticeText("Введите email / пароль");
-      setShowNotice(true);
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setIsDisabledButton(false);
     }
+    // if (
+    //   email.length !== 0 &&
+    //   password.length !== 0 &&
+    //   confirmPassword.length !== 0
+    // ) {
+    //   if (validateEmail(email)) {
+    //     if (password === confirmPassword) {
+    //       t
+    //     } else {
+    //       setNoticeText("Введенные пароли не совпадают");
+    //       setShowNotice(true);
+    //     }
+    //   } else {
+    //     setNoticeText("Введите валидный email");
+    //     setShowNotice(true);
+    //   }
+    // } else {
+    //   setNoticeText("Введите email / пароль");
+    //   setShowNotice(true);
+    // }
   };
 
-  const handleLoginUser = async (email: string, password: string) => {
-    if (email.length !== 0 && password.length !== 0) {
-      if (validateEmail(email)) {
-        try {
+  const handleLoginButton = async (email: string, password: string) => {
+    try {
+      setIsDisabledButton(true);
+      if (email.length !== 0 && password.length !== 0) {
+        if (validateEmail(email)) {
           const responseData = await loginUser(email, password);
 
           if (responseData) {
             navigate("/");
           }
-        } catch (error: any) {
-          if ((error.message = "Ошибка авторизации")) {
-            setNoticeText("Не верный логин или пароль");
-            setShowNotice(true);
-          }
+        } else {
+          setNoticeText("Введите валидный email");
+          setShowNotice(true);
         }
       } else {
-        setNoticeText("Введите валидный email");
+        setNoticeText("Введите email / пароль");
         setShowNotice(true);
       }
-    } else {
-      setNoticeText("Введите email / пароль");
-      setShowNotice(true);
+    } catch (error: any) {
+      if ((error.message = "Ошибка авторизации")) {
+        setNoticeText("Не верный логин или пароль");
+        setShowNotice(true);
+      }
+    } finally {
+      setIsDisabledButton(false);
     }
   };
 
@@ -127,8 +179,9 @@ function AuthorizationPage() {
             buttonColor="blue"
             width="278px"
             onClick={() => {
-              handleLoginUser(email, password);
+              handleLoginButton(email, password);
             }}
+            isDisabledButton={isDisabledButton}
           />
           <Button
             name="Зарегистрироваться"
@@ -137,62 +190,72 @@ function AuthorizationPage() {
             onClick={() => {
               navigate("/register");
             }}
+            isDisabledButton={isDisabledButton}
           />
         </div>
       </div>
     </div>
   ) : (
     <div className={styles.wrapper}>
-      <div className={styles.wrapper}>
-        <div className={styles.modal}>
-          <NavLink to="/">
-            <Logo />
-          </NavLink>
-          <div className={styles.inputs}>
-            <Input type="text" placeholder="email" onInput={handleEmailInput} />
-            <Input
-              type="password"
-              placeholder="Пароль"
-              onInput={handlePasswordInput}
-            />
-            <Input
-              type="password"
-              placeholder="Повторите пароль"
-              onInput={handleConfirmPasswordInput}
-            />
-            <Input
-              type="text"
-              placeholder="Имя (необязательно)"
-              onInput={handleFirstnameInput}
-            />
-            <Input
-              type="text"
-              placeholder="Фамилия (необязательно)"
-              onInput={handleSurnameInput}
-            />
-            <Input
-              type="text"
-              placeholder="Город (необязательно)"
-              onInput={handleCityInput}
-            />
-          </div>
-          <div className={styles.buttons}>
-            <Button
-              name="Зарегистрироваться"
-              buttonColor="blue"
-              width="278px"
-              onClick={() => {
-                handleRegisterButton(
-                  email,
-                  password,
-                  confirmPassword,
-                  firstname,
-                  surname,
-                  city
-                );
-              }}
-            />
-          </div>
+      {showNotice ? (
+        <PushNotice
+          text={noticeText}
+          onClick={() => {
+            setShowNotice(false);
+          }}
+        />
+      ) : (
+        ""
+      )}
+      <div className={styles.modal}>
+        <NavLink to="/">
+          <Logo />
+        </NavLink>
+        <div className={styles.inputs}>
+          <Input type="text" placeholder="email" onInput={handleEmailInput} />
+          <Input
+            type="password"
+            placeholder="Пароль"
+            onInput={handlePasswordInput}
+          />
+          <Input
+            type="password"
+            placeholder="Повторите пароль"
+            onInput={handleConfirmPasswordInput}
+          />
+          <Input
+            type="text"
+            placeholder="Имя (необязательно)"
+            onInput={handleFirstnameInput}
+          />
+          <Input
+            type="text"
+            placeholder="Фамилия (необязательно)"
+            onInput={handleSurnameInput}
+          />
+          <Input
+            type="text"
+            placeholder="Город (необязательно)"
+            onInput={handleCityInput}
+          />
+        </div>
+        <div className={styles.buttons}>
+          <Button
+            name="Зарегистрироваться"
+            buttonColor="blue"
+            width="278px"
+            onClick={() => {
+              handleRegisterButton(
+                email,
+                password,
+                confirmPassword,
+                firstname,
+                surname,
+                city
+              );
+            }}
+            isDisabledButton={isDisabledButton}
+          />
         </div>
       </div>
     </div>
