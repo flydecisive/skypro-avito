@@ -18,6 +18,7 @@ function MainPage() {
         price={allAds[i].price}
         city={allAds[i].user.city}
         time={allAds[i].created_on}
+        images={allAds[i].images}
       />
     );
   }
