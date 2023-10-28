@@ -7,7 +7,7 @@ import { useGetAllAdsQuery } from "./services/ads";
 import { useDispatch } from "react-redux";
 import { setAllAds, setAllImgs } from "./store/actions/creators/ads";
 import { useGetAllImgsQuery } from "./services/ads";
-import { AllowedContext } from "./components/contexts/allowed";
+import { AllowedContext } from "./contexts/allowed";
 
 function App() {
   const dispatch = useDispatch();

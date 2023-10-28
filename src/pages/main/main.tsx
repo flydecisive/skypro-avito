@@ -55,7 +55,7 @@ function MainPage() {
 
   return (
     <div className={`${styles.main}`}>
-      <Header buttonsCount={1} />
+      <Header />
       <div className={`${styles.wrapper} center`}>
         <PageNav
           isSearch={true}

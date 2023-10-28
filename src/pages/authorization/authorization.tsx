@@ -9,7 +9,7 @@ import { registerUser, loginUser } from "../../api";
 import { ChangeEvent, useState } from "react";
 import PushNotice from "../../components/push-notice/push-notice";
 import { validateEmail } from "../../helpers";
-import { useAllowedContext } from "../../components/contexts/allowed";
+import { useAllowedContext } from "../../contexts/allowed";
 
 function AuthorizationPage() {
   const { isAllowed, setIsAllowed } = useAllowedContext();

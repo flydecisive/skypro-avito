@@ -41,7 +41,6 @@ function ProfilePage() {
         }`}
       >
         <Header
-          buttonsCount={2}
           showAddAdv={(e) => {
             setTargetButton(e.target.textContent);
             setShowModal(true);

@@ -39,7 +39,6 @@ function SellerProfilePage() {
         className={`${styles.seller} ${showModal ? styles.seller_filter : ""}`}
       >
         <Header
-          buttonsCount={2}
           showAddAdv={(e) => {
             setTargetButton(e.target.textContent);
             setShowModal(true);

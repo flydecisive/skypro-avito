@@ -1,16 +1,17 @@
 import styles from "./header.module.css";
 import HeaderButton from "../buttons/header-button/header-button";
 import { ReactElement } from "react";
+import { useAllowedContext } from "../../contexts/allowed";
 
 interface HeaderProps {
-  buttonsCount: number;
   showAddAdv?: (params: any) => void;
 }
 
-function Header({ buttonsCount, showAddAdv }: HeaderProps) {
+function Header({ showAddAdv }: HeaderProps) {
+  const { isAllowed } = useAllowedContext();
   let buttons: ReactElement;
 
-  if (buttonsCount === 1) {
+  if (!isAllowed) {
     buttons = (
       <HeaderButton name={"Вход в личный кабинет"} onClick={() => {}} />
     );
