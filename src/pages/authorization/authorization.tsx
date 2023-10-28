@@ -76,9 +76,13 @@ function AuthorizationPage() {
             );
 
             if (!responseData.details) {
-              localStorage.setItem("refresh", responseData.refresh_token);
-              setIsAllowed?.(!isAllowed);
-              navigate("/");
+              const responseData = await loginUser(email, password);
+
+              if (responseData) {
+                localStorage.setItem("refresh", responseData.refresh_token);
+                setIsAllowed?.(!isAllowed);
+                navigate("/");
+              }
             } else {
               if (responseData.message === "Database Error") {
                 setNoticeText("Такой пользователь уже существует");
