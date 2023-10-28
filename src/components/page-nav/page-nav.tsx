@@ -8,16 +8,23 @@ interface PageNavProps {
   buttonName: string;
   buttonWidth: string;
   onClick: () => void;
+  toggleSearchValue?: (params: any) => void;
 }
 
-function PageNav({ isSearch, buttonName, buttonWidth, onClick }: PageNavProps) {
+function PageNav({
+  isSearch,
+  buttonName,
+  buttonWidth,
+  onClick,
+  toggleSearchValue,
+}: PageNavProps) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.left}>
         <Logo />
       </div>
       <div className={styles.right}>
-        {isSearch ? <Search /> : ""}
+        {isSearch ? <Search onInput={toggleSearchValue} /> : ""}
         <Button
           name={buttonName}
           buttonColor="blue"

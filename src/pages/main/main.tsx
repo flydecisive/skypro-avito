@@ -4,24 +4,54 @@ import PageNav from "../../components/page-nav/page-nav";
 import ProductCard from "../../components/product-card/product-card";
 import Title from "../../components/title/title";
 import { useSelector } from "react-redux";
+import { ChangeEvent, useEffect, useState } from "react";
 
 function MainPage() {
+  const [searchValue, setSearchValue] = useState<string>();
   const allAds = useSelector((store: any) => store?.ads.allAds);
   const allImgs = useSelector((store: any) => store?.ads.allImgs);
-  let cardsItems: any[] = [];
+  const [productCards, setProductCards] = useState<JSX.Element[]>();
 
-  for (let i = 0; i < Object.keys(allAds).length; i++) {
-    cardsItems.push(
-      <ProductCard
-        key={allAds[i].id}
-        header={allAds[i].title}
-        price={allAds[i].price}
-        city={allAds[i].user.city}
-        time={allAds[i].created_on}
-        images={allAds[i].images}
-      />
-    );
-  }
+  useEffect(() => {
+    if (!searchValue) {
+      const cardsItems = allAds.map((el: any) => {
+        return (
+          <ProductCard
+            key={el.id}
+            header={el.title}
+            price={el.price}
+            city={el.user.city}
+            time={el.created_on}
+            images={el.images}
+          />
+        );
+      });
+      setProductCards(cardsItems);
+    } else {
+      const cardsItems = allAds.map((el: any) => {
+        if (el.title.toLowerCase().includes(searchValue.toLowerCase())) {
+          return (
+            <ProductCard
+              key={el.id}
+              header={el.title}
+              price={el.price}
+              city={el.user.city}
+              time={el.created_on}
+              images={el.images}
+            />
+          );
+        }
+
+        return "";
+      });
+
+      setProductCards(cardsItems);
+    }
+  }, [allAds, searchValue]);
+
+  const toggleSearchValue = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
 
   return (
     <div className={`${styles.main}`}>
@@ -32,10 +62,11 @@ function MainPage() {
           buttonName="Найти"
           buttonWidth="158px"
           onClick={() => {}}
+          toggleSearchValue={toggleSearchValue}
         />
         <div className={styles.content}>
           <Title title={"Объявления"} />
-          <div className={styles.cards}>{cardsItems}</div>
+          <div className={styles.cards}>{productCards}</div>
         </div>
       </div>
     </div>
