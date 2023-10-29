@@ -2,7 +2,6 @@ import styles from "./profile.module.css";
 import Header from "../../components/header/header";
 import PageNav from "../../components/page-nav/page-nav";
 import Title from "../../components/title/title";
-import { cardData } from "../../data";
 import ProductCard from "../../components/product-card/product-card";
 import SettingInput from "../../components/inputs/setting-input/setting-input";
 import Button from "../../components/buttons/button/button";
@@ -14,17 +13,17 @@ function ProfilePage() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
   const navigate = useNavigate();
-  const cardsItems = cardData.map((el, index) => {
-    return (
-      <ProductCard
-        key={index}
-        header={el.header}
-        price={el.price}
-        city={el.city}
-        time={el.time}
-      />
-    );
-  });
+  // const cardsItems = cardData.map((el, index) => {
+  //   return (
+  //     <ProductCard
+  //       key={index}
+  //       header={el.header}
+  //       price={el.price}
+  //       city={el.city}
+  //       time={el.time}
+  //     />
+  //   );
+  // });
 
   return (
     <>
@@ -42,7 +41,6 @@ function ProfilePage() {
         }`}
       >
         <Header
-          buttonsCount={2}
           showAddAdv={(e) => {
             setTargetButton(e.target.textContent);
             setShowModal(true);
@@ -85,7 +83,7 @@ function ProfilePage() {
               </div>
             </div>
             <h2 className={styles.header}>Мои товары</h2>
-            <div className={styles.cards}>{cardsItems}</div>
+            <div className={styles.cards}>{[]}</div>
           </div>
         </div>
       </div>

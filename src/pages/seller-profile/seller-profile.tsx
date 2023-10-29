@@ -2,7 +2,6 @@ import styles from "./seller-profile.module.css";
 import Header from "../../components/header/header";
 import PageNav from "../../components/page-nav/page-nav";
 import Title from "../../components/title/title";
-import { cardData } from "../../data";
 import ProductCard from "../../components/product-card/product-card";
 import { useNavigate } from "react-router-dom";
 import NumberButton from "../../components/buttons/number-button/number-button";
@@ -14,17 +13,17 @@ function SellerProfilePage() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
   const navigate = useNavigate();
-  const cardsItems = cardData.map((el, index) => {
-    return (
-      <ProductCard
-        key={index}
-        header={el.header}
-        price={el.price}
-        city={el.city}
-        time={el.time}
-      />
-    );
-  });
+  // const cardsItems = cardData.map((el, index) => {
+  //   return (
+  //     <ProductCard
+  //       key={index}
+  //       header={el.header}
+  //       price={el.price}
+  //       city={el.city}
+  //       time={el.time}
+  //     />
+  //   );
+  // });
 
   return (
     <>
@@ -40,7 +39,6 @@ function SellerProfilePage() {
         className={`${styles.seller} ${showModal ? styles.seller_filter : ""}`}
       >
         <Header
-          buttonsCount={2}
           showAddAdv={(e) => {
             setTargetButton(e.target.textContent);
             setShowModal(true);
@@ -76,7 +74,7 @@ function SellerProfilePage() {
               </div>
             </div>
             <h2 className={styles.header}>Товары продавца</h2>
-            <div className={styles.cards}>{cardsItems}</div>
+            <div className={styles.cards}>{[]}</div>
           </div>
         </div>
       </div>

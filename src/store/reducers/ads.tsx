@@ -1,7 +1,8 @@
-import { SET_ALL_ADS } from "../actions/types/ads";
+import { SET_ALL_ADS, SET_ALL_IMGS } from "../actions/types/ads";
 
 const initialAds = {
   allAds: [],
+  allImgs: [],
 };
 
 function adsReducer(state = initialAds, action: any) {
@@ -11,7 +12,16 @@ function adsReducer(state = initialAds, action: any) {
 
       return {
         ...state,
-        allAds,
+        allAds: allAds,
+      };
+    }
+
+    case SET_ALL_IMGS: {
+      const { allImgs } = action.payload;
+
+      return {
+        ...state,
+        allImgs: allImgs,
       };
     }
 
