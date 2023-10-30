@@ -5,8 +5,10 @@ import ProductCard from "../../components/product-card/product-card";
 import Title from "../../components/title/title";
 import { useSelector } from "react-redux";
 import { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function MainPage() {
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>();
   const allAds = useSelector((store: any) => store?.ads.allAds);
   const allImgs = useSelector((store: any) => store?.ads.allImgs);
@@ -23,6 +25,7 @@ function MainPage() {
             city={el.user.city}
             time={el.created_on}
             images={el.images}
+            onClick={() => navigate(`/adv/${el.id}`)}
           />
         );
       });
@@ -38,6 +41,7 @@ function MainPage() {
               city={el.user.city}
               time={el.created_on}
               images={el.images}
+              onClick={() => navigate(`/adv/${el.id}`)}
             />
           );
         }

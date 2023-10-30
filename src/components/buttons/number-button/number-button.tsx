@@ -1,19 +1,36 @@
+import { useState } from "react";
 import styles from "./number-button.module.css";
 
 interface ButtonProps {
   onClick: () => void;
+  phone: string;
 }
 
-function NumberButton({ onClick }: ButtonProps) {
+function NumberButton({ onClick, phone }: ButtonProps) {
+  const [showPhone, seetShowPhone] = useState<boolean>(false);
+  const parsePhone = (phone: string): string => {
+    if (phone === null) {
+      return "Номер отсуствует";
+    } else {
+      return (
+        phone?.slice(0, phone.indexOf(" ")) +
+        phone?.slice(phone.indexOf(" "), 7) +
+        " XXX XX XX"
+      );
+    }
+  };
+
   return (
     <button
       className={styles.button}
       onClick={() => {
-        onClick();
+        seetShowPhone(!showPhone);
       }}
     >
       <p className={styles.button_name}>Показать номер</p>
-      <p className={styles.number_mask}>8 905 XXX XX XX</p>
+      <p className={styles.number_mask}>
+        {showPhone && phone !== null ? phone : parsePhone(phone)}
+      </p>
     </button>
   );
 }

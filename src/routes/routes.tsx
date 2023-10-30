@@ -16,9 +16,10 @@ function AppRoutes({ isAllowed }: AppRoutesProps) {
         element={<ProtectedRoute redirectPath="/" isAllowed={isAllowed} />}
       >
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/adv" element={<AdvPage />} />
+        {/* <Route path="/adv:id" element={<AdvPage />} /> */}
         <Route path="/seller" element={<SellerProfilePage />} />
       </Route>
+      <Route path="/adv/:id" element={<AdvPage />} />
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<AuthorizationPage />} />
       <Route path="/register" element={<AuthorizationPage />} />

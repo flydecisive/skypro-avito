@@ -69,7 +69,7 @@ function SellerProfilePage() {
                     />
                   </div>
 
-                  <NumberButton onClick={() => {}} />
+                  <NumberButton phone="" onClick={() => {}} />
                 </div>
               </div>
             </div>
