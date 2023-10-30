@@ -53,6 +53,11 @@
   width: 88px;
   height: 88px;
   background: #f0f0f0;
+  box-sizing: border-box;
+}
+
+.active_item {
+  border: 2px solid #009EE4;
 }
 
 .title {

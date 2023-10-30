@@ -6,11 +6,12 @@ import Metadata from "../../components/metadata/metadata";
 import Button from "../../components/buttons/button/button";
 import NumberButton from "../../components/buttons/number-button/number-button";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Feedback from "../../components/modals/feedback/feedback";
 import { useSelector } from "react-redux";
 import { useAllowedContext } from "../../contexts/allowed";
-import { parseMonth } from "../../helpers";
+import { getAdsFeedback } from "../../api";
+import { sellsFromData } from "../../helpers";
 
 function AdvPage() {
   const { isAllowed } = useAllowedContext();
@@ -21,6 +22,45 @@ function AdvPage() {
   const [targetButton, setTargetButton] = useState<string>("");
   const navigate = useNavigate();
   const [currentAds, setCurrentAds] = useState<any>();
+  const [adsImages, setAdsImages] = useState<any>();
+  const [mainImageSrc, setMainImageSrc] = useState<any>();
+
+  useEffect(() => {
+    const images = [];
+    for (let i = 0; i < 5; i++) {
+      if (
+        currentAds?.images[i] === null ||
+        currentAds?.images[i] === undefined
+      ) {
+        images.push(<div className={styles.switcher_item} key={i}></div>);
+      } else {
+        images.push(
+          <img
+            className={`${styles.switcher_item} ${
+              i === 0 ? styles.active_item : ""
+            }`}
+            src={`http://127.0.0.1:8090/${currentAds?.images[i].url}`}
+            alt=""
+            key={i}
+            onClick={(e: any) => {
+              console.log(e.target.src);
+            }}
+          ></img>
+        );
+      }
+    }
+
+    if (images[0].type === "img") {
+      setMainImageSrc(images[0].props.src);
+    }
+
+    setAdsImages(images);
+  }, [currentAds]);
+
+  // Доработать ф-цию
+  const toggleFeedback = () => {
+    setShowFeedbackModal(true);
+  };
 
   useEffect(() => {
     for (let i = 0; i < Object.keys(allAds).length; i++) {
@@ -30,18 +70,12 @@ function AdvPage() {
     }
   }, [allAds, id]);
 
-  const sellsFromData = (date: string): string => {
-    const month = date?.slice(date?.lastIndexOf("-") + 1);
-    const year = date?.slice(0, date?.indexOf("-"));
-
-    return `${parseMonth(Number(month) - 1)} ${year}`;
-  };
-
   // Добавить в API получение комментариев к объявлению
   // Незарегистрированный пользователь не может добавляеть объявление
   // Если это не объявление пользователя и он не зарегистрирован, то отображаются другие кнопки
   // Счетчик количества объявлений
-  console.log(currentAds?.images);
+
+  // console.log(currentAds?.images);
 
   return (
     <>
@@ -84,55 +118,13 @@ function AdvPage() {
           />
           <div className={styles.content}>
             <div className={styles.images}>
-              {currentAds?.images.length !== 0 ? (
-                <img
-                  className={styles.image}
-                  src={`http://127.0.0.1:8090/${currentAds?.images[0].url}`}
-                  alt=""
-                ></img>
+              {mainImageSrc ? (
+                <img className={styles.image} src={mainImageSrc} alt=""></img>
               ) : (
                 <div className={styles.image}>Изображение отсуствует</div>
               )}
 
-              <div className={styles.image_switcher}>
-                {currentAds?.images.length !== 0 ? (
-                  <>
-                    <img
-                      className={styles.switcher_item}
-                      src={`http://127.0.0.1:8090/${currentAds?.images[0].url}`}
-                      alt=""
-                    ></img>
-                    <img
-                      className={styles.switcher_item}
-                      src={`http://127.0.0.1:8090/${currentAds?.images[0].url}`}
-                      alt=""
-                    ></img>
-                    <img
-                      className={styles.switcher_item}
-                      src={`http://127.0.0.1:8090/${currentAds?.images[0].url}`}
-                      alt=""
-                    ></img>
-                    <img
-                      className={styles.switcher_item}
-                      src={`http://127.0.0.1:8090/${currentAds?.images[0].url}`}
-                      alt=""
-                    ></img>
-                    <img
-                      className={styles.switcher_item}
-                      src={`http://127.0.0.1:8090/${currentAds?.images[0].url}`}
-                      alt=""
-                    ></img>
-                  </>
-                ) : (
-                  <>
-                    <div className={styles.switcher_item}></div>
-                    <div className={styles.switcher_item}></div>
-                    <div className={styles.switcher_item}></div>
-                    <div className={styles.switcher_item}></div>
-                    <div className={styles.switcher_item}></div>
-                  </>
-                )}
-              </div>
+              <div className={styles.image_switcher}>{adsImages}</div>
             </div>
             <div className={styles.data}>
               <h2 className={styles.title}>{currentAds?.title}</h2>
@@ -143,7 +135,7 @@ function AdvPage() {
               <p
                 className={styles.feedback}
                 onClick={() => {
-                  setShowFeedbackModal(true);
+                  toggleFeedback();
                 }}
               >
                 4 отзыва

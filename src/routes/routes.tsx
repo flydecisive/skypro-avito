@@ -3,7 +3,7 @@ import ProtectedRoute from "./protected-route";
 import MainPage from "../pages/main/main";
 import AuthorizationPage from "../pages/authorization/authorization";
 import ProfilePage from "../pages/profile/profile";
-import AdvPage from "../pages/product/adv";
+import AdvPage from "../pages/adv/adv";
 import SellerProfilePage from "../pages/seller-profile/seller-profile";
 
 interface AppRoutesProps {
