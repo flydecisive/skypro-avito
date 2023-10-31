@@ -3,6 +3,7 @@ import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import Button from "../../buttons/button/button";
 import { useAllowedContext } from "../../../contexts/allowed";
 import { parseData, parseMonth } from "../../../helpers";
+import { useNavigate } from "react-router-dom";
 
 interface FeedbackProps {
   setShowFeedbackModal: (params: any) => void;
@@ -11,6 +12,7 @@ interface FeedbackProps {
 
 function Feedback({ setShowFeedbackModal, feedback }: FeedbackProps) {
   const { isAllowed } = useAllowedContext();
+  const navigate = useNavigate();
 
   const normalizeDate = (time: string) => {
     const date = new Date(time);
@@ -57,9 +59,17 @@ function Feedback({ setShowFeedbackModal, feedback }: FeedbackProps) {
                     className={styles.feedback_avatar}
                     src={`http://127.0.0.1:8090/${el.author.avatar}`}
                     alt=""
+                    onClick={() => {
+                      navigate(`/seller/${el.author.id}`);
+                    }}
                   />
                 ) : (
-                  <div className={styles.feedback_avatar}></div>
+                  <div
+                    className={styles.feedback_avatar}
+                    onClick={() => {
+                      navigate(`/seller/${el.author.id}`);
+                    }}
+                  ></div>
                 )}
 
                 <div className={styles.comment}>

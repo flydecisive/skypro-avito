@@ -17,7 +17,6 @@ function SellerProfilePage() {
   const { id } = useParams();
   const allAds = useSelector((store: any) => store?.ads.allAds);
   getAllUsers();
-  console.log(id);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
   const navigate = useNavigate();
@@ -109,9 +108,9 @@ function SellerProfilePage() {
                 </div>
                 <div className={styles.right}>
                   <div className={styles.right_container}>
-                    <p
-                      className={styles.person}
-                    >{`${currentUser?.name} ${currentUser?.surname}`}</p>
+                    <p className={styles.person}>{`${currentUser?.name} ${
+                      currentUser?.surname ? currentUser?.surname : ""
+                    }`}</p>
                     <Metadata
                       city={currentUser?.city}
                       time={currentUser?.sells_from}

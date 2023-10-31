@@ -12,11 +12,7 @@ function NumberButton({ onClick, phone }: ButtonProps) {
     if (phone === null) {
       return "Номер отсуствует";
     } else {
-      return (
-        phone?.slice(0, phone.indexOf(" ")) +
-        phone?.slice(phone.indexOf(" "), 7) +
-        " XXX XX XX"
-      );
+      return phone?.slice(0, 4) + " XXX XX XX";
     }
   };
 
