@@ -1,12 +1,15 @@
 import styles from "./feedback.module.css";
 import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import Button from "../../buttons/button/button";
+import { useAllowedContext } from "../../../contexts/allowed";
 
 interface FeedbackProps {
   setShowFeedbackModal: (params: any) => void;
 }
 
 function Feedback({ setShowFeedbackModal }: FeedbackProps) {
+  const { isAllowed } = useAllowedContext();
+
   return (
     <div className={styles.modal}>
       <div className={styles.top}>
@@ -31,6 +34,7 @@ function Feedback({ setShowFeedbackModal }: FeedbackProps) {
           buttonColor="blue"
           width="180px"
           onClick={() => {}}
+          isDisabledButton={!isAllowed}
         />
       </div>
       <div className={styles.feedbacks}>
