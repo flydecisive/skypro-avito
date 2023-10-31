@@ -107,6 +107,7 @@
   gap: 12px;
   align-items: flex-start;
   margin-top: 34px;
+  cursor: pointer;
 }
 
 .user_avatar {

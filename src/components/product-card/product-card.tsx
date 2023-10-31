@@ -41,7 +41,7 @@ function ProductCard({
           {header}
         </h2>
         <p className={styles.price}>{price} ₽</p>
-        <Metadata city={city} time={time} />
+        <Metadata city={city} time={time} type="card" />
       </div>
     </div>
   );

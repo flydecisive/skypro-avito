@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from "./adv.module.css";
 import Header from "../../components/header/header";
 import PageNav from "../../components/page-nav/page-nav";
@@ -131,6 +132,7 @@ function AdvPage() {
               <Metadata
                 city={currentAds?.user.city}
                 time={currentAds?.created_on}
+                type="user"
               />
               <p
                 className={styles.feedback}
@@ -167,7 +169,12 @@ function AdvPage() {
                   />
                 )}
               </div>
-              <div className={styles.user}>
+              <div
+                className={styles.user}
+                onClick={() => {
+                  navigate(`/seller/${currentAds?.user.id}`);
+                }}
+              >
                 {currentAds?.user.avatar === null ? (
                   <div className={styles.user_avatar}></div>
                 ) : (

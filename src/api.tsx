@@ -57,3 +57,16 @@ export async function getAdsFeedback(ads_id: string) {
   const responseData = await response.json();
   return responseData;
 }
+
+export async function getAllUsers() {
+  const response = await fetch(`${PATH}/user/all`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error("Ошибка");
+  }
+
+  const responseData = await response.json();
+  return responseData;
+}
