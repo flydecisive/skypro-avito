@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from "./main.module.css";
 import Header from "../../components/header/header";
 import PageNav from "../../components/page-nav/page-nav";
@@ -5,11 +6,12 @@ import ProductCard from "../../components/product-card/product-card";
 import Title from "../../components/title/title";
 import { useSelector } from "react-redux";
 import { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function MainPage() {
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>();
   const allAds = useSelector((store: any) => store?.ads.allAds);
-  const allImgs = useSelector((store: any) => store?.ads.allImgs);
   const [productCards, setProductCards] = useState<JSX.Element[]>();
 
   useEffect(() => {
@@ -23,6 +25,7 @@ function MainPage() {
             city={el.user.city}
             time={el.created_on}
             images={el.images}
+            onClick={() => navigate(`/adv/${el.id}`)}
           />
         );
       });
@@ -38,6 +41,7 @@ function MainPage() {
               city={el.user.city}
               time={el.created_on}
               images={el.images}
+              onClick={() => navigate(`/adv/${el.id}`)}
             />
           );
         }
@@ -66,7 +70,11 @@ function MainPage() {
         />
         <div className={styles.content}>
           <Title title={"Объявления"} />
-          <div className={styles.cards}>{productCards}</div>
+          {allAds.length === 0 ? (
+            <p>Ошибка загрузки объявлений. Попробуйте позже.</p>
+          ) : (
+            <div className={styles.cards}>{productCards}</div>
+          )}
         </div>
       </div>
     </div>

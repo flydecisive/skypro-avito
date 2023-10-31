@@ -68,3 +68,10 @@ export const validateEmail = (email: string) => {
 
   return emailRegex.test(email);
 };
+
+export const sellsFromData = (date: string): string => {
+  const month = date?.slice(date?.lastIndexOf("-") + 1);
+  const year = date?.slice(0, date?.indexOf("-"));
+
+  return `${parseMonth(Number(month) - 1)} ${year}`;
+};

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from "./seller-profile.module.css";
 import Header from "../../components/header/header";
 import PageNav from "../../components/page-nav/page-nav";
@@ -7,23 +8,60 @@ import { useNavigate } from "react-router-dom";
 import NumberButton from "../../components/buttons/number-button/number-button";
 import Metadata from "../../components/metadata/metadata";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getAllUsers } from "../../api";
+import { useSelector } from "react-redux";
 
 function SellerProfilePage() {
+  const { id } = useParams();
+  const allAds = useSelector((store: any) => store?.ads.allAds);
+  getAllUsers();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
   const navigate = useNavigate();
-  // const cardsItems = cardData.map((el, index) => {
-  //   return (
-  //     <ProductCard
-  //       key={index}
-  //       header={el.header}
-  //       price={el.price}
-  //       city={el.city}
-  //       time={el.time}
-  //     />
-  //   );
-  // });
+  const [currentUser, setCurrentUser] = useState<any>();
+  const [userAds, setUserAds] = useState<any>();
+
+  const getAndSetUsers = async (id: string) => {
+    const users = await getAllUsers();
+
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].id === Number(id)) {
+        setCurrentUser(users[i]);
+        break;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      getAndSetUsers(id);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (allAds) {
+      const ads = [];
+      for (let i = 0; i < allAds.length; i++) {
+        if (allAds[i].user_id === Number(id)) {
+          ads.push(
+            <ProductCard
+              key={allAds[i].id}
+              header={allAds[i].title}
+              price={allAds[i].price}
+              city={allAds[i].user.city}
+              time={allAds[i].created_on}
+              images={allAds[i].images}
+              onClick={() => navigate(`/adv/${allAds[i].id}`)}
+            />
+          );
+        }
+      }
+
+      setUserAds(ads);
+    }
+  }, [allAds]);
 
   return (
     <>
@@ -58,23 +96,36 @@ function SellerProfilePage() {
             <div className={styles.info}>
               <div className={styles.info_wrapper}>
                 <div className={styles.left}>
-                  <div className={styles.avatar}></div>
+                  {currentUser?.avatar ? (
+                    <img
+                      className={styles.avatar}
+                      src={`http://127.0.0.1:8090/${currentUser?.avatar}`}
+                      alt=""
+                    />
+                  ) : (
+                    <div className={styles.avatar}></div>
+                  )}
                 </div>
                 <div className={styles.right}>
                   <div className={styles.right_container}>
-                    <p className={styles.person}>Кирилл Матвеев</p>
+                    <p className={styles.person}>{`${currentUser?.name} ${
+                      currentUser?.surname ? currentUser?.surname : ""
+                    }`}</p>
                     <Metadata
-                      city="Санкт-Петербург"
-                      time="Продает товары с августа 2021"
+                      city={currentUser?.city}
+                      time={currentUser?.sells_from}
+                      type="user"
                     />
                   </div>
 
-                  <NumberButton onClick={() => {}} />
+                  <NumberButton phone={currentUser?.phone} onClick={() => {}} />
                 </div>
               </div>
             </div>
             <h2 className={styles.header}>Товары продавца</h2>
-            <div className={styles.cards}>{[]}</div>
+            <div className={styles.cards}>
+              {userAds ? userAds : "У продавца нет объявлений"}
+            </div>
           </div>
         </div>
       </div>

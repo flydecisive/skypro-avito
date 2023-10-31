@@ -17,7 +17,7 @@
 .content {
   margin-top: 77px;
   display: flex;
-  justify-content: space-between;
+  gap: 60px;
   align-items: flex-start;
 }
 
@@ -32,6 +32,15 @@
   width: 480px;
   height: 480px;
   background: #f0f0f0;
+  color: #5F5F5F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "RobotoRegular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
 }
 
 .image_switcher {
@@ -44,6 +53,15 @@
   width: 88px;
   height: 88px;
   background: #f0f0f0;
+  box-sizing: border-box;
+}
+
+.switcher_item {
+  cursor: pointer;
+}
+
+.active_item {
+  border: 2px solid #009EE4;
 }
 
 .title {
@@ -93,6 +111,7 @@
   gap: 12px;
   align-items: flex-start;
   margin-top: 34px;
+  cursor: pointer;
 }
 
 .user_avatar {

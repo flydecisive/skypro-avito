@@ -124,6 +124,7 @@
   height: 40px;
   border-radius: 50%;
   background: #f0f0f0;
+  cursor: pointer;
 }
 
 .comment_name,

@@ -7,9 +7,17 @@ interface ProductCardProps {
   city: string;
   time: string;
   images: any;
+  onClick: () => void;
 }
 
-function ProductCard({ header, price, city, time, images }: ProductCardProps) {
+function ProductCard({
+  header,
+  price,
+  city,
+  time,
+  images,
+  onClick,
+}: ProductCardProps) {
   return (
     <div className={styles.card}>
       {images[0]?.url ? (
@@ -17,15 +25,20 @@ function ProductCard({ header, price, city, time, images }: ProductCardProps) {
           src={`http://127.0.0.1:8090/${images[0]?.url}`}
           alt=""
           className={styles.card_img}
+          onClick={onClick}
         />
       ) : (
-        <div className={styles.card_img}>Изображение отсутствует</div>
+        <div className={styles.card_img} onClick={onClick}>
+          Изображение отсутствует
+        </div>
       )}
 
       <div className={styles.wrapper}>
-        <h2 className={styles.header}>{header}</h2>
+        <h2 className={styles.header} onClick={onClick}>
+          {header}
+        </h2>
         <p className={styles.price}>{price} ₽</p>
-        <Metadata city={city} time={time} />
+        <Metadata city={city} time={time} type="card" />
       </div>
     </div>
   );
