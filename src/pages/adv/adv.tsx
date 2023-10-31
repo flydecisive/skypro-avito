@@ -34,7 +34,6 @@ function AdvPage() {
   const [adsImages, setAdsImages] = useState<any>();
   const [mainImage, setMainImage] = useState<any>();
   const [feedback, setFeedback] = useState<any>();
-  const [activeImageId, setActiveImageId] = useState<any>("0");
 
   const adsFeedback = async () => {
     const feedback = await getAdsFeedback(String(id));
