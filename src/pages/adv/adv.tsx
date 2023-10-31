@@ -68,11 +68,6 @@ function AdvPage() {
     setAdsImages(images);
   }, [currentAds]);
 
-  // Доработать ф-цию
-  const toggleFeedback = () => {
-    setShowFeedbackModal(true);
-  };
-
   useEffect(() => {
     for (let i = 0; i < Object.keys(allAds).length; i++) {
       if (allAds[i].id === Number(id)) {
@@ -80,13 +75,6 @@ function AdvPage() {
       }
     }
   }, [allAds, id]);
-
-  // Добавить в API получение комментариев к объявлению
-  // Незарегистрированный пользователь не может добавляеть объявление
-  // Если это не объявление пользователя и он не зарегистрирован, то отображаются другие кнопки
-  // Счетчик количества объявлений
-
-  // console.log(currentAds?.images);
 
   return (
     <>
@@ -147,7 +135,7 @@ function AdvPage() {
               <p
                 className={styles.feedback}
                 onClick={() => {
-                  toggleFeedback();
+                  setShowFeedbackModal(true);
                 }}
               >
                 {feedback?.length} отзыва(ов)
@@ -185,7 +173,11 @@ function AdvPage() {
                 ) : (
                   <img
                     className={styles.user_avatar}
-                    src={`http://127.0.0.1:8090/${currentAds?.user.avatar}`}
+                    src={
+                      currentAds?.user.avatar
+                        ? `http://127.0.0.1:8090/${currentAds?.user.avatar}`
+                        : ""
+                    }
                     alt=""
                   ></img>
                 )}

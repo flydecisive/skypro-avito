@@ -48,34 +48,38 @@ function Feedback({ setShowFeedbackModal, feedback }: FeedbackProps) {
         />
       </div>
       <div className={styles.feedbacks}>
-        {feedback.toReversed().map((el: any, i: number) => {
-          return (
-            <div className={styles.feedback} key={i}>
-              {el.author.avatar ? (
-                <img
-                  className={styles.feedback_avatar}
-                  src={`http://127.0.0.1:8090/${el.author.avatar}`}
-                  alt=""
-                />
-              ) : (
-                <div className={styles.feedback_avatar}></div>
-              )}
+        {feedback.length !== 0 ? (
+          feedback.toReversed().map((el: any, i: number) => {
+            return (
+              <div className={styles.feedback} key={i}>
+                {el.author.avatar ? (
+                  <img
+                    className={styles.feedback_avatar}
+                    src={`http://127.0.0.1:8090/${el.author.avatar}`}
+                    alt=""
+                  />
+                ) : (
+                  <div className={styles.feedback_avatar}></div>
+                )}
 
-              <div className={styles.comment}>
-                <div className={styles.comment_info}>
-                  <p className={styles.comment_name}>{el.author.name}</p>
-                  <p className={styles.comment_date}>
-                    {normalizeDate(el.created_on)}
-                  </p>
-                </div>
-                <div className={styles.comment_wrapper}>
-                  <h4 className={styles.comment_title}>Комментарий</h4>
-                  <p className={styles.comment_text}>{el.text}</p>
+                <div className={styles.comment}>
+                  <div className={styles.comment_info}>
+                    <p className={styles.comment_name}>{el.author.name}</p>
+                    <p className={styles.comment_date}>
+                      {normalizeDate(el.created_on)}
+                    </p>
+                  </div>
+                  <div className={styles.comment_wrapper}>
+                    <h4 className={styles.comment_title}>Комментарий</h4>
+                    <p className={styles.comment_text}>{el.text}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <p>Отзывы отсутствуют</p>
+        )}
       </div>
     </div>
   );
