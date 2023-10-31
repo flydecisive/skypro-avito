@@ -2,13 +2,23 @@ import styles from "./feedback.module.css";
 import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import Button from "../../buttons/button/button";
 import { useAllowedContext } from "../../../contexts/allowed";
+import { parseData, parseMonth } from "../../../helpers";
 
 interface FeedbackProps {
   setShowFeedbackModal: (params: any) => void;
+  feedback: any;
 }
 
-function Feedback({ setShowFeedbackModal }: FeedbackProps) {
+function Feedback({ setShowFeedbackModal, feedback }: FeedbackProps) {
   const { isAllowed } = useAllowedContext();
+
+  const normalizeDate = (time: string) => {
+    const date = new Date(time);
+    const day = parseData(date.getDate());
+    const month = parseMonth(date.getMonth());
+
+    return `${day} ${month}`;
+  };
 
   return (
     <div className={styles.modal}>
@@ -38,134 +48,34 @@ function Feedback({ setShowFeedbackModal }: FeedbackProps) {
         />
       </div>
       <div className={styles.feedbacks}>
-        <div className={styles.feedback}>
-          <div className={styles.feedback_avatar}></div>
-          <div className={styles.comment}>
-            <div className={styles.comment_info}>
-              <p className={styles.comment_name}>Олег</p>
-              <p className={styles.comment_date}>14 августа</p>
+        {feedback.toReversed().map((el: any, i: number) => {
+          return (
+            <div className={styles.feedback} key={i}>
+              {el.author.avatar ? (
+                <img
+                  className={styles.feedback_avatar}
+                  src={`http://127.0.0.1:8090/${el.author.avatar}`}
+                  alt=""
+                />
+              ) : (
+                <div className={styles.feedback_avatar}></div>
+              )}
+
+              <div className={styles.comment}>
+                <div className={styles.comment_info}>
+                  <p className={styles.comment_name}>{el.author.name}</p>
+                  <p className={styles.comment_date}>
+                    {normalizeDate(el.created_on)}
+                  </p>
+                </div>
+                <div className={styles.comment_wrapper}>
+                  <h4 className={styles.comment_title}>Комментарий</h4>
+                  <p className={styles.comment_text}>{el.text}</p>
+                </div>
+              </div>
             </div>
-            <div className={styles.comment_wrapper}>
-              <h4 className={styles.comment_title}>Комментарий</h4>
-              <p className={styles.comment_text}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={styles.feedback}>
-          <div className={styles.feedback_avatar}></div>
-          <div className={styles.comment}>
-            <div className={styles.comment_info}>
-              <p className={styles.comment_name}>Олег</p>
-              <p className={styles.comment_date}>14 августа</p>
-            </div>
-            <div className={styles.comment_wrapper}>
-              <h4 className={styles.comment_title}>Комментарий</h4>
-              <p className={styles.comment_text}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={styles.feedback}>
-          <div className={styles.feedback_avatar}></div>
-          <div className={styles.comment}>
-            <div className={styles.comment_info}>
-              <p className={styles.comment_name}>Олег</p>
-              <p className={styles.comment_date}>14 августа</p>
-            </div>
-            <div className={styles.comment_wrapper}>
-              <h4 className={styles.comment_title}>Комментарий</h4>
-              <p className={styles.comment_text}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={styles.feedback}>
-          <div className={styles.feedback_avatar}></div>
-          <div className={styles.comment}>
-            <div className={styles.comment_info}>
-              <p className={styles.comment_name}>Олег</p>
-              <p className={styles.comment_date}>14 августа</p>
-            </div>
-            <div className={styles.comment_wrapper}>
-              <h4 className={styles.comment_title}>Комментарий</h4>
-              <p className={styles.comment_text}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={styles.feedback}>
-          <div className={styles.feedback_avatar}></div>
-          <div className={styles.comment}>
-            <div className={styles.comment_info}>
-              <p className={styles.comment_name}>Олег</p>
-              <p className={styles.comment_date}>14 августа</p>
-            </div>
-            <div className={styles.comment_wrapper}>
-              <h4 className={styles.comment_title}>Комментарий</h4>
-              <p className={styles.comment_text}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={styles.feedback}>
-          <div className={styles.feedback_avatar}></div>
-          <div className={styles.comment}>
-            <div className={styles.comment_info}>
-              <p className={styles.comment_name}>Олег</p>
-              <p className={styles.comment_date}>14 августа</p>
-            </div>
-            <div className={styles.comment_wrapper}>
-              <h4 className={styles.comment_title}>Комментарий</h4>
-              <p className={styles.comment_text}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={styles.feedback}>
-          <div className={styles.feedback_avatar}></div>
-          <div className={styles.comment}>
-            <div className={styles.comment_info}>
-              <p className={styles.comment_name}>Олег</p>
-              <p className={styles.comment_date}>14 августа</p>
-            </div>
-            <div className={styles.comment_wrapper}>
-              <h4 className={styles.comment_title}>Комментарий</h4>
-              <p className={styles.comment_text}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={styles.feedback}>
-          <div className={styles.feedback_avatar}></div>
-          <div className={styles.comment}>
-            <div className={styles.comment_info}>
-              <p className={styles.comment_name}>Олег</p>
-              <p className={styles.comment_date}>14 августа</p>
-            </div>
-            <div className={styles.comment_wrapper}>
-              <h4 className={styles.comment_title}>Комментарий</h4>
-              <p className={styles.comment_text}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

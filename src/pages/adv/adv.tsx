@@ -24,6 +24,17 @@ function AdvPage() {
   const [currentAds, setCurrentAds] = useState<any>();
   const [adsImages, setAdsImages] = useState<any>();
   const [mainImageSrc, setMainImageSrc] = useState<any>();
+  const [feedback, setFeedback] = useState<any>();
+
+  const adsFeedback = async () => {
+    const feedback = await getAdsFeedback(String(id));
+
+    setFeedback(feedback);
+  };
+
+  useEffect(() => {
+    adsFeedback();
+  }, [currentAds]);
 
   useEffect(() => {
     const images = [];
@@ -92,6 +103,7 @@ function AdvPage() {
           setShowFeedbackModal={() => {
             setShowFeedbackModal(false);
           }}
+          feedback={feedback}
         />
       ) : (
         ""
@@ -138,7 +150,7 @@ function AdvPage() {
                   toggleFeedback();
                 }}
               >
-                4 отзыва
+                {feedback?.length} отзыва(ов)
               </p>
               <p className={styles.price}>{currentAds?.price} ₽</p>
               <div className={styles.buttons}>
