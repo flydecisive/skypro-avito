@@ -14,6 +14,14 @@ import { useAllowedContext } from "../../contexts/allowed";
 import { getAdsFeedback } from "../../api";
 import { sellsFromData } from "../../helpers";
 
+const imagesState: any = {
+  0: true,
+  1: false,
+  2: false,
+  3: false,
+  4: false,
+};
+
 function AdvPage() {
   const { isAllowed } = useAllowedContext();
   const { id } = useParams();
@@ -24,8 +32,9 @@ function AdvPage() {
   const navigate = useNavigate();
   const [currentAds, setCurrentAds] = useState<any>();
   const [adsImages, setAdsImages] = useState<any>();
-  const [mainImageSrc, setMainImageSrc] = useState<any>();
+  const [mainImage, setMainImage] = useState<any>();
   const [feedback, setFeedback] = useState<any>();
+  const [activeImageId, setActiveImageId] = useState<any>("0");
 
   const adsFeedback = async () => {
     const feedback = await getAdsFeedback(String(id));
@@ -38,44 +47,50 @@ function AdvPage() {
   }, [currentAds]);
 
   useEffect(() => {
-    const images = [];
-    for (let i = 0; i < 5; i++) {
-      if (
-        currentAds?.images[i] === null ||
-        currentAds?.images[i] === undefined
-      ) {
-        images.push(<div className={styles.switcher_item} key={i}></div>);
-      } else {
-        images.push(
-          <img
-            className={`${styles.switcher_item} ${
-              i === 0 ? styles.active_item : ""
-            }`}
-            src={`http://127.0.0.1:8090/${currentAds?.images[i].url}`}
-            alt=""
-            key={i}
-            onClick={(e: any) => {
-              console.log(e.target.src);
-            }}
-          ></img>
-        );
-      }
-    }
-
-    if (images[0].type === "img") {
-      setMainImageSrc(images[0].props.src);
-    }
-
-    setAdsImages(images);
-  }, [currentAds]);
-
-  useEffect(() => {
     for (let i = 0; i < Object.keys(allAds).length; i++) {
       if (allAds[i].id === Number(id)) {
         setCurrentAds(allAds[i]);
       }
     }
   }, [allAds, id]);
+
+  useEffect(() => {
+    if (currentAds) {
+      const elemsData = [];
+      const images = currentAds.images;
+      for (let i = 0; i < 5; i++) {
+        if (images[i]) {
+          elemsData.push(
+            <img
+              key={i}
+              id={String(i)}
+              className={`${styles.switcher_item} ${
+                imagesState[i] ? styles.active_item : ""
+              }`}
+              alt=""
+              src={`http://127.0.0.1:8090/${images[i].url}`}
+              onClick={(e: any) => {
+                setMainImage(e.target.src);
+                for (let i = 0; i < Object.keys(imagesState).length; i++) {
+                  imagesState[i] = false;
+                }
+                const id = Number(e.target.id);
+                imagesState[id] = true;
+              }}
+            />
+          );
+        } else {
+          elemsData.push(<div className={styles.switcher_item} key={i}></div>);
+        }
+      }
+
+      if (!mainImage) {
+        setMainImage(elemsData[0].props.src);
+      }
+
+      setAdsImages(elemsData);
+    }
+  }, [currentAds, mainImage]);
 
   return (
     <>
@@ -119,13 +134,17 @@ function AdvPage() {
           />
           <div className={styles.content}>
             <div className={styles.images}>
-              {mainImageSrc ? (
-                <img className={styles.image} src={mainImageSrc} alt=""></img>
+              {mainImage ? (
+                <img className={styles.image} src={mainImage} alt="" />
               ) : (
                 <div className={styles.image}>Изображение отсуствует</div>
               )}
 
-              <div className={styles.image_switcher}>{adsImages}</div>
+              <div className={styles.image_switcher}>
+                {/* Картинки */}
+                {adsImages}
+              </div>
+              {/* <ImageSwitcher /> */}
             </div>
             <div className={styles.data}>
               <h2 className={styles.title}>{currentAds?.title}</h2>

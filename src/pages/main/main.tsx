@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from "./main.module.css";
 import Header from "../../components/header/header";
 import PageNav from "../../components/page-nav/page-nav";
@@ -11,7 +12,6 @@ function MainPage() {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>();
   const allAds = useSelector((store: any) => store?.ads.allAds);
-  const allImgs = useSelector((store: any) => store?.ads.allImgs);
   const [productCards, setProductCards] = useState<JSX.Element[]>();
 
   useEffect(() => {

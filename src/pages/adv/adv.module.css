@@ -56,6 +56,10 @@
   box-sizing: border-box;
 }
 
+.switcher_item {
+  cursor: pointer;
+}
+
 .active_item {
   border: 2px solid #009EE4;
 }

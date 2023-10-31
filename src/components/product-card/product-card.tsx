@@ -1,6 +1,5 @@
 import styles from "./product-card.module.css";
 import Metadata from "../metadata/metadata";
-import { useSelector } from "react-redux";
 
 interface ProductCardProps {
   header: string;
@@ -19,8 +18,6 @@ function ProductCard({
   images,
   onClick,
 }: ProductCardProps) {
-  const allAds = useSelector((store: any) => store?.ads.allAds);
-
   return (
     <div className={styles.card}>
       {images[0]?.url ? (
