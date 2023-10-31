@@ -70,7 +70,11 @@ function MainPage() {
         />
         <div className={styles.content}>
           <Title title={"Объявления"} />
-          <div className={styles.cards}>{productCards}</div>
+          {allAds.length === 0 ? (
+            <p>Ошибка загрузки объявлений. Попробуйте позже.</p>
+          ) : (
+            <div className={styles.cards}>{productCards}</div>
+          )}
         </div>
       </div>
     </div>

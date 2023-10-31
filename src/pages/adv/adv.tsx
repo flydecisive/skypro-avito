@@ -6,7 +6,7 @@ import Metadata from "../../components/metadata/metadata";
 import Button from "../../components/buttons/button/button";
 import NumberButton from "../../components/buttons/number-button/number-button";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Feedback from "../../components/modals/feedback/feedback";
 import { useSelector } from "react-redux";
 import { useAllowedContext } from "../../contexts/allowed";
