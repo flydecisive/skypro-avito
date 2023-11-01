@@ -139,11 +139,7 @@ function AdvPage() {
                 <div className={styles.image}>Изображение отсуствует</div>
               )}
 
-              <div className={styles.image_switcher}>
-                {/* Картинки */}
-                {adsImages}
-              </div>
-              {/* <ImageSwitcher /> */}
+              <div className={styles.image_switcher}>{adsImages}</div>
             </div>
             <div className={styles.data}>
               <h2 className={styles.title}>{currentAds?.title}</h2>
@@ -162,6 +158,8 @@ function AdvPage() {
               </p>
               <p className={styles.price}>{currentAds?.price} ₽</p>
               <div className={styles.buttons}>
+                {/* Тут добавить, что если это объявление пользователя, который авторизован */}
+                {/* currentAds?.user_id === userId */}
                 {isAllowed ? (
                   <>
                     <Button

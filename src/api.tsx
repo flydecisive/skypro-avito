@@ -12,7 +12,7 @@ export async function registerUser(
     body: JSON.stringify({
       email: email,
       password: password,
-      firstname: firstname,
+      name: firstname,
       surname: surname,
       city: city,
     }),
@@ -70,3 +70,17 @@ export async function getAllUsers() {
   const responseData = await response.json();
   return responseData;
 }
+
+// export async function getCurrentUser() {
+//   const response = await fetch(`${PATH}/user`, {
+//     method: "GET",
+//   });
+
+//   if (!response.ok) {
+//     throw new Error("Ошибка");
+//   }
+
+//   const responseData = await response.json();
+//   console.log(responseData);
+//   return responseData;
+// }

@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { setAllAds, setAllImgs } from "./store/actions/creators/ads";
 import { useGetAllImgsQuery } from "./services/ads";
 import { AllowedContext } from "./contexts/allowed";
+import { getAllUsers } from "./api";
+import { UserEmailContext } from "./contexts/userEmail";
+import { AuthUserContext } from "./contexts/authUser";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,6 +19,19 @@ function App() {
   const [isAllowed, setIsAllowed] = useState<boolean>(
     localStorage.getItem("refresh") ? true : false
   );
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [authUser, setAuthUser] = useState();
+
+  const getAndSetUser = async () => {
+    const users = await getAllUsers();
+
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].email === userEmail) {
+        setAuthUser(users[i]);
+        break;
+      }
+    }
+  };
 
   useEffect(() => {
     if (allAds) {
@@ -29,10 +45,20 @@ function App() {
     }
   }, [allImgs]);
 
+  useEffect(() => {
+    if (isAllowed) {
+      getAndSetUser();
+    }
+  }, [isAllowed]);
+
   return (
     <div className="App">
       <AllowedContext.Provider value={{ isAllowed, setIsAllowed }}>
-        <AppRoutes isAllowed={isAllowed} />
+        <UserEmailContext.Provider value={{ userEmail, setUserEmail }}>
+          <AuthUserContext.Provider value={{ authUser, setAuthUser }}>
+            <AppRoutes isAllowed={isAllowed} />
+          </AuthUserContext.Provider>
+        </UserEmailContext.Provider>
       </AllowedContext.Provider>
     </div>
   );
