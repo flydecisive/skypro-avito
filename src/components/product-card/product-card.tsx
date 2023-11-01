@@ -35,7 +35,7 @@ function ProductCard({
 
       <div className={styles.wrapper}>
         <h2 className={styles.header} onClick={onClick}>
-          {header}
+          {header.length > 50 ? `${header.slice(0, 40)}...` : header}
         </h2>
         <p className={styles.price}>{price} ₽</p>
         <Metadata city={city} time={time} type="card" />
