@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { useAllowedContext } from "../../contexts/allowed";
 import { getAdsFeedback } from "../../api";
 import { sellsFromData } from "../../helpers";
+import { UseAuthUserContext } from "../../contexts/authUser";
 
 const imagesState: any = {
   0: true,
@@ -34,6 +35,7 @@ function AdvPage() {
   const [adsImages, setAdsImages] = useState<any>();
   const [mainImage, setMainImage] = useState<any>();
   const [feedback, setFeedback] = useState<any>();
+  const { authUser } = UseAuthUserContext();
 
   const adsFeedback = async () => {
     const feedback = await getAdsFeedback(String(id));
@@ -160,7 +162,7 @@ function AdvPage() {
               <div className={styles.buttons}>
                 {/* Тут добавить, что если это объявление пользователя, который авторизован */}
                 {/* currentAds?.user_id === userId */}
-                {isAllowed ? (
+                {isAllowed && currentAds?.user_id === authUser?.id ? (
                   <>
                     <Button
                       name="Редактировать"
