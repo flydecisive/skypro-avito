@@ -4,12 +4,15 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./globalStyles.module.css";
 import AppRoutes from "./routes/routes";
-import { useGetAllAdsQuery } from "./services/ads";
+import {
+  useGetAllAdsQuery,
+  useLazyGetCurrentUserQuery,
+  useUpdateTokensMutation,
+} from "./services/ads";
 import { useDispatch } from "react-redux";
 import { setAllAds } from "./store/actions/creators/ads";
 import { AllowedContext } from "./contexts/allowed";
 import { AuthUserContext } from "./contexts/authUser";
-import { useLazyGetCurrentUserQuery } from "./services/ads";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +22,8 @@ function App() {
   );
   const [authUser, setAuthUser] = useState<{}>();
   const [fetchCurrentUser, { data }] = useLazyGetCurrentUserQuery();
+  const [updateTokensTrigger] = useUpdateTokensMutation();
+  const [intervalId, setIntervalId] = useState<any>();
 
   useEffect(() => {
     if (data) {
@@ -35,6 +40,11 @@ function App() {
   useEffect(() => {
     if (isAllowed) {
       fetchCurrentUser();
+      const intervalId = setInterval(updateTokensTrigger, 60000);
+      setIntervalId(intervalId);
+    }
+    if (!isAllowed && intervalId) {
+      clearInterval(intervalId);
     }
   }, [isAllowed]);
 

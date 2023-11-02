@@ -22,6 +22,7 @@ export const adsApi = createApi({
       query: (sorting) => `/ads${sorting}`,
       providesTags: [{ type: "ADS", id: "LIST" }],
     }),
+
     createComment: builder.mutation({
       query: (args) => {
         return {
@@ -38,6 +39,7 @@ export const adsApi = createApi({
             ]
           : [],
     }),
+
     getAdsFeedback: builder.query({
       query: (args) => {
         return {
@@ -47,12 +49,44 @@ export const adsApi = createApi({
       },
       providesTags: [{ type: "FEEDBACK", id: "LIST" }],
     }),
+
     getCurrentUser: builder.query<{}, void>({
       query: () => {
         return {
           url: `/user`,
           method: `GET`,
         };
+      },
+    }),
+
+    updateTokens: builder.mutation<{}, void>({
+      query: () => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+        const { refresh_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+
+        return {
+          url: "/auth/login",
+          method: "PUT",
+          body: {
+            access_token: access_token,
+            refresh_token: refresh_token,
+          },
+        };
+      },
+      transformResponse: (response: any) => {
+        localStorage.setItem(
+          "tokenData",
+          JSON.stringify({
+            access_token: response.access_token,
+            refresh_token: response.refresh_token,
+          })
+        );
+
+        return response;
       },
     }),
   }),
@@ -63,4 +97,5 @@ export const {
   useCreateCommentMutation,
   useLazyGetCurrentUserQuery,
   useLazyGetAdsFeedbackQuery,
+  useUpdateTokensMutation,
 } = adsApi;
