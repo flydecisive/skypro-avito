@@ -10,7 +10,6 @@ import { ChangeEvent, useState } from "react";
 import PushNotice from "../../components/push-notice/push-notice";
 import { validateEmail } from "../../helpers";
 import { useAllowedContext } from "../../contexts/allowed";
-import { UseUserEmailContext } from "../../contexts/userEmail";
 
 function AuthorizationPage() {
   const { isAllowed, setIsAllowed } = useAllowedContext();
@@ -26,7 +25,6 @@ function AuthorizationPage() {
   const [noticeText, setNoticeText] = useState("");
   const [showNotice, setShowNotice] = useState(false);
   const [isDisabledButton, setIsDisabledButton] = useState(false);
-  const { setUserEmail } = UseUserEmailContext();
 
   const handleEmailInput = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -81,7 +79,6 @@ function AuthorizationPage() {
               const responseData = await loginUser(email, password);
 
               if (responseData) {
-                // localStorage.setItem("refresh", responseData.refresh_token);
                 localStorage.setItem(
                   "tokenData",
                   JSON.stringify({
@@ -89,8 +86,6 @@ function AuthorizationPage() {
                     refresh_token: responseData.refresh_token,
                   })
                 );
-                localStorage.setItem("email", email);
-                setUserEmail?.(email);
                 setIsAllowed?.(!isAllowed);
                 navigate("/");
               }
@@ -134,8 +129,6 @@ function AuthorizationPage() {
                 refresh_token: responseData.refresh_token,
               })
             );
-            localStorage.setItem("email", email);
-            setUserEmail?.(email);
             setIsAllowed?.(!isAllowed);
             navigate("/");
           }

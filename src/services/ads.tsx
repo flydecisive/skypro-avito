@@ -52,5 +52,5 @@ export const adsApi = createApi({
 export const {
   useGetAllAdsQuery,
   useCreateCommentMutation,
-  useGetCurrentUserQuery,
+  useLazyGetCurrentUserQuery,
 } = adsApi;

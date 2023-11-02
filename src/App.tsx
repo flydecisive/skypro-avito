@@ -10,36 +10,24 @@ import { setAllAds, setAllImgs } from "./store/actions/creators/ads";
 // import { useGetAllImgsQuery } from "./services/ads";
 import { AllowedContext } from "./contexts/allowed";
 import { getAllUsers } from "./api";
-import { UserEmailContext } from "./contexts/userEmail";
 import { AuthUserContext } from "./contexts/authUser";
-import { useGetCurrentUserQuery } from "./services/ads";
+import { useLazyGetCurrentUserQuery } from "./services/ads";
 
 function App() {
   const dispatch = useDispatch();
   const allAds = useGetAllAdsQuery("?sorting=new").data;
   // const allImgs = useGetAllImgsQuery().data;
   const [isAllowed, setIsAllowed] = useState<boolean>(
-    localStorage.getItem("refresh") ? true : false
+    localStorage.getItem("tokenData") ? true : false
   );
-  const [userEmail, setUserEmail] = useState<string | null>(
-    localStorage.getItem("email")
-  );
-  const [authUser, setAuthUser] = useState();
-  const currentUser = useGetCurrentUserQuery().data;
-  console.log(currentUser);
+  const [authUser, setAuthUser] = useState<{}>();
+  const [fetchCurrentUser, { data }] = useLazyGetCurrentUserQuery();
 
-  const getAndSetUser = async () => {
-    const users = await getAllUsers();
-
-    // const currentUser = await getCurrentUser();
-
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].email === userEmail) {
-        setAuthUser(users[i]);
-        break;
-      }
+  useEffect(() => {
+    if (data) {
+      setAuthUser(data);
     }
-  };
+  }, [data]);
 
   useEffect(() => {
     if (allAds) {
@@ -47,26 +35,18 @@ function App() {
     }
   }, [allAds]);
 
-  // useEffect(() => {
-  //   if (allImgs) {
-  //     dispatch(setAllImgs(allImgs));
-  //   }
-  // }, [allImgs]);
-
   useEffect(() => {
     if (isAllowed) {
-      getAndSetUser();
+      fetchCurrentUser();
     }
   }, [isAllowed]);
 
   return (
     <div className="App">
       <AllowedContext.Provider value={{ isAllowed, setIsAllowed }}>
-        <UserEmailContext.Provider value={{ userEmail, setUserEmail }}>
-          <AuthUserContext.Provider value={{ authUser, setAuthUser }}>
-            <AppRoutes isAllowed={isAllowed} />
-          </AuthUserContext.Provider>
-        </UserEmailContext.Provider>
+        <AuthUserContext.Provider value={{ authUser, setAuthUser }}>
+          <AppRoutes isAllowed={isAllowed} />
+        </AuthUserContext.Provider>
       </AllowedContext.Provider>
     </div>
   );
