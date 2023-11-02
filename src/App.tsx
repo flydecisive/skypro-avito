@@ -6,8 +6,7 @@ import "./globalStyles.module.css";
 import AppRoutes from "./routes/routes";
 import { useGetAllAdsQuery } from "./services/ads";
 import { useDispatch } from "react-redux";
-import { setAllAds, setAllImgs } from "./store/actions/creators/ads";
-// import { useGetAllImgsQuery } from "./services/ads";
+import { setAllAds } from "./store/actions/creators/ads";
 import { AllowedContext } from "./contexts/allowed";
 import { AuthUserContext } from "./contexts/authUser";
 import { useLazyGetCurrentUserQuery } from "./services/ads";
@@ -15,7 +14,6 @@ import { useLazyGetCurrentUserQuery } from "./services/ads";
 function App() {
   const dispatch = useDispatch();
   const allAds = useGetAllAdsQuery("?sorting=new").data;
-  // const allImgs = useGetAllImgsQuery().data;
   const [isAllowed, setIsAllowed] = useState<boolean>(
     localStorage.getItem("tokenData") ? true : false
   );

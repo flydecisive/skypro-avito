@@ -10,35 +10,23 @@ import Metadata from "../../components/metadata/metadata";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getAllUsers } from "../../api";
+// import { getAllUsers } from "../../api";
 import { useSelector } from "react-redux";
+import { UseAuthUserContext } from "../../contexts/authUser";
 
 function SellerProfilePage() {
   const { id } = useParams();
   const allAds = useSelector((store: any) => store?.ads.allAds);
-  getAllUsers();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<any>();
   const [userAds, setUserAds] = useState<any>();
-
-  const getAndSetUsers = async (id: string) => {
-    const users = await getAllUsers();
-
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].id === Number(id)) {
-        setCurrentUser(users[i]);
-        break;
-      }
-    }
-  };
+  const { authUser } = UseAuthUserContext();
 
   useEffect(() => {
-    if (id) {
-      getAndSetUsers(id);
-    }
-  }, [id]);
+    setCurrentUser(authUser);
+  }, [authUser]);
 
   useEffect(() => {
     if (allAds) {
