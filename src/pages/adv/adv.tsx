@@ -11,12 +11,11 @@ import { useEffect, useState } from "react";
 import Feedback from "../../components/modals/feedback/feedback";
 import { useSelector } from "react-redux";
 import { useAllowedContext } from "../../contexts/allowed";
-// import { getAdsFeedback } from "../../api";
 import { sellsFromData } from "../../helpers";
 import { UseAuthUserContext } from "../../contexts/authUser";
 import { useLazyGetAdsFeedbackQuery } from "../../services/ads";
 
-const imagesState: any = {
+let imagesState: any = {
   0: true,
   1: false,
   2: false,
@@ -39,11 +38,15 @@ function AdvPage() {
   const { authUser } = UseAuthUserContext();
   const [fetchAdsFeedback, { data }] = useLazyGetAdsFeedbackQuery();
 
-  // const adsFeedback = async () => {
-  //   const feedback = await getAdsFeedback(String(id));
-
-  //   setFeedback(feedback);
-  // };
+  useEffect(() => {
+    imagesState = {
+      0: true,
+      1: false,
+      2: false,
+      3: false,
+      4: false,
+    };
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -65,33 +68,27 @@ function AdvPage() {
 
   useEffect(() => {
     if (currentAds) {
-      const elemsData = [];
-      const images = currentAds.images;
-      for (let i = 0; i < 5; i++) {
-        if (images[i]) {
-          elemsData.push(
-            <img
-              key={i}
-              id={String(i)}
-              className={`${styles.switcher_item} ${
-                imagesState[i] ? styles.active_item : ""
-              }`}
-              alt=""
-              src={`http://127.0.0.1:8090/${images[i].url}`}
-              onClick={(e: any) => {
-                setMainImage(e.target.src);
-                for (let i = 0; i < Object.keys(imagesState).length; i++) {
-                  imagesState[i] = false;
-                }
-                const id = Number(e.target.id);
-                imagesState[id] = true;
-              }}
-            />
-          );
-        } else {
-          elemsData.push(<div className={styles.switcher_item} key={i}></div>);
-        }
-      }
+      const elemsData = currentAds.images.map((el: any, index: number) => {
+        return (
+          <img
+            key={index}
+            id={String(index)}
+            className={`${styles.switcher_item} ${
+              imagesState[index] ? styles.active_item : ""
+            }`}
+            alt=""
+            src={`http://127.0.0.1:8090/${el.url}`}
+            onClick={(e: any) => {
+              setMainImage(e.target.src);
+              for (let i = 0; i < Object.keys(imagesState).length; i++) {
+                imagesState[i] = false;
+              }
+              const id = Number(e.target.id);
+              imagesState[id] = true;
+            }}
+          />
+        );
+      });
 
       if (!mainImage) {
         setMainImage(elemsData[0].props.src);
@@ -169,7 +166,6 @@ function AdvPage() {
               </p>
               <p className={styles.price}>{currentAds?.price} ₽</p>
               <div className={styles.buttons}>
-                {/* Тут добавить, что если это объявление пользователя, который авторизован */}
                 {isAllowed && currentAds?.user_id === authUser?.id ? (
                   <>
                     <Button
