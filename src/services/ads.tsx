@@ -89,6 +89,14 @@ export const adsApi = createApi({
         return response;
       },
     }),
+    getAuthUserAds: builder.query<{}, void>({
+      query: () => {
+        return {
+          url: "/ads/me",
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -98,4 +106,5 @@ export const {
   useLazyGetCurrentUserQuery,
   useLazyGetAdsFeedbackQuery,
   useUpdateTokensMutation,
+  useLazyGetAuthUserAdsQuery,
 } = adsApi;

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from "./profile.module.css";
 import Header from "../../components/header/header";
 import PageNav from "../../components/page-nav/page-nav";
@@ -9,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
 import { UseAuthUserContext } from "../../contexts/authUser";
+import { useLazyGetAuthUserAdsQuery } from "../../services/ads";
 
 function ProfilePage() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -20,6 +22,14 @@ function ProfilePage() {
   const [city, setCity] = useState<string>(authUser?.city);
   const [phone, setPhone] = useState<string>(authUser?.phone);
   const [isDisabledButton, setIsDisabledButton] = useState<boolean>(true);
+  const [fetchAuthUserAds, { data }] = useLazyGetAuthUserAdsQuery();
+  const [userAds, setUserAds] = useState<any>();
+
+  useEffect(() => {
+    if (data) {
+      setUserAds(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (authUser) {
@@ -27,6 +37,7 @@ function ProfilePage() {
       setSurname(authUser?.surname);
       setCity(authUser?.city);
       setPhone(authUser?.phone);
+      fetchAuthUserAds();
     }
   }, [authUser]);
 
@@ -56,18 +67,6 @@ function ProfilePage() {
       console.log("ad");
     }
   }, [isDisabledButton]);
-  // console.log(authUser);
-  // const cardsItems = cardData.map((el, index) => {
-  //   return (
-  //     <ProductCard
-  //       key={index}
-  //       header={el.header}
-  //       price={el.price}
-  //       city={el.city}
-  //       time={el.time}
-  //     />
-  //   );
-  // });
 
   return (
     <>
@@ -160,7 +159,23 @@ function ProfilePage() {
               </div>
             </div>
             <h2 className={styles.header}>Мои товары</h2>
-            <div className={styles.cards}>{[]}</div>
+            <div className={styles.cards}>
+              {userAds?.length !== 0
+                ? userAds?.map((el: any, index: number) => {
+                    return (
+                      <ProductCard
+                        key={index}
+                        header={el.header}
+                        price={el.price}
+                        city={el.city}
+                        time={el.time}
+                        images={el.images}
+                        onClick={() => navigate(`/adv/${el.id}`)}
+                      />
+                    );
+                  })
+                : "Объявления отсутствуют"}
+            </div>
           </div>
         </div>
       </div>

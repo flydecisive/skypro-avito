@@ -179,6 +179,8 @@
 .feedback {
   display: flex;
   gap: 10px;
+  position: relative;
+  width: 100%;
 }
 
 .cross {
@@ -187,4 +189,17 @@
 
 .cross:hover {
   stroke: #009ee4;
+}
+
+.delete_feedback {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 0;
+  stroke: #d9d9d9;
+}
+
+.delete_feedback:hover {
+  stroke: #009ee4;
+  cursor: pointer;
 }

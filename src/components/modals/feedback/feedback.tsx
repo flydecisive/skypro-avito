@@ -6,6 +6,8 @@ import { parseData, parseMonth } from "../../../helpers";
 import { useNavigate } from "react-router-dom";
 import { useCreateCommentMutation } from "../../../services/ads";
 import { useState, ChangeEvent } from "react";
+import { ReactComponent as DeleteIcon } from "../../../assets/img/delete.svg";
+import { UseAuthUserContext } from "../../../contexts/authUser";
 
 interface FeedbackProps {
   setShowFeedbackModal: (params: any) => void;
@@ -14,10 +16,13 @@ interface FeedbackProps {
 }
 
 function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
+  const { authUser } = UseAuthUserContext();
   const { isAllowed } = useAllowedContext();
   const [comment, setComment] = useState<string>();
   const navigate = useNavigate();
   const [createCommentTrigger] = useCreateCommentMutation();
+
+  console.log(feedback);
 
   const handleComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -110,6 +115,16 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
                     <p className={styles.comment_text}>{el.text}</p>
                   </div>
                 </div>
+                {el.author.id === authUser?.id ? (
+                  <DeleteIcon
+                    className={styles.delete_feedback}
+                    onClick={() => {
+                      console.log(el.id);
+                    }}
+                  />
+                ) : (
+                  ""
+                )}
               </div>
             );
           })
