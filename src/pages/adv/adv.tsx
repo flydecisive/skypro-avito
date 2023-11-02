@@ -91,7 +91,7 @@ function AdvPage() {
       });
 
       if (!mainImage) {
-        setMainImage(elemsData[0].props.src);
+        setMainImage(elemsData[0]?.props.src);
       }
 
       setAdsImages(elemsData);

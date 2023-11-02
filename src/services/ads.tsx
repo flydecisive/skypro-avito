@@ -4,17 +4,6 @@ export const adsApi = createApi({
   reducerPath: "adsApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8090",
-    prepareHeaders: (headers) => {
-      const { access_token } = JSON.parse(
-        localStorage.getItem("tokenData") || "{}"
-      );
-
-      if (access_token) {
-        headers.set("Authorization", `Bearer ${access_token}`);
-      }
-
-      return headers;
-    },
   }),
   tagTypes: ["ADS", "FEEDBACK"],
   endpoints: (builder) => ({
@@ -25,10 +14,16 @@ export const adsApi = createApi({
 
     createComment: builder.mutation({
       query: (args) => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
         return {
           url: `/ads/${args.id}/comments`,
           method: "POST",
           body: { text: args.text },
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
         };
       },
       invalidatesTags: (result) =>
@@ -52,9 +47,16 @@ export const adsApi = createApi({
 
     getCurrentUser: builder.query<{}, void>({
       query: () => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+
         return {
           url: `/user`,
           method: `GET`,
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
         };
       },
     }),
@@ -75,6 +77,9 @@ export const adsApi = createApi({
             access_token: access_token,
             refresh_token: refresh_token,
           },
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
         };
       },
       transformResponse: (response: any) => {
@@ -89,11 +94,39 @@ export const adsApi = createApi({
         return response;
       },
     }),
+
     getAuthUserAds: builder.query<{}, void>({
       query: () => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+
         return {
           url: "/ads/me",
           method: "GET",
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        };
+      },
+    }),
+
+    addUserAvatar: builder.mutation({
+      query: (args) => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+        const formData = new FormData();
+        formData.append("file", args.file);
+
+        return {
+          url: "/user/avatar",
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "multipart/form-data",
+          },
         };
       },
     }),
@@ -107,4 +140,5 @@ export const {
   useLazyGetAdsFeedbackQuery,
   useUpdateTokensMutation,
   useLazyGetAuthUserAdsQuery,
+  useAddUserAvatarMutation,
 } = adsApi;

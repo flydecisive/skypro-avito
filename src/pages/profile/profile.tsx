@@ -10,7 +10,10 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
 import { UseAuthUserContext } from "../../contexts/authUser";
-import { useLazyGetAuthUserAdsQuery } from "../../services/ads";
+import {
+  useLazyGetAuthUserAdsQuery,
+  useAddUserAvatarMutation,
+} from "../../services/ads";
 
 function ProfilePage() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -24,6 +27,13 @@ function ProfilePage() {
   const [isDisabledButton, setIsDisabledButton] = useState<boolean>(true);
   const [fetchAuthUserAds, { data }] = useLazyGetAuthUserAdsQuery();
   const [userAds, setUserAds] = useState<any>();
+  const [userAvatarTrigger] = useAddUserAvatarMutation();
+
+  const addUserAvatar = async (file: any) => {
+    const data = await userAvatarTrigger({ file: file });
+
+    console.log(data);
+  };
 
   useEffect(() => {
     if (data) {
@@ -40,6 +50,19 @@ function ProfilePage() {
       fetchAuthUserAds();
     }
   }, [authUser]);
+
+  const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
+    // const file = event.target.files;
+    // console.log(file);
+    // console.log(event.target.files?.[0]);
+    let file = event.target.files?.[0];
+    if (file) {
+      // console.log(URL.createObjectURL(event.target.files?.[0]));
+      // const fileUrl = URL.createObjectURL(event.target.files?.[0]);
+      // const file = fileUrl.slice(fileUrl.indexOf(":") + 1);
+      addUserAvatar({ file: file });
+    }
+  };
 
   const toggleName = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -109,7 +132,18 @@ function ProfilePage() {
               <div className={styles.settings_wrapper}>
                 <div className={styles.left}>
                   <div className={styles.avatar}></div>
-                  <p className={styles.left_text}>Заменить</p>
+                  <form>
+                    <label className={styles.upload_file}>
+                      Заменить
+                      <input
+                        type="file"
+                        hidden
+                        onChange={(e) => {
+                          handleUploadImage(e);
+                        }}
+                      />
+                    </label>
+                  </form>
                 </div>
                 <div className={styles.right}>
                   <div className={styles.inputs}>

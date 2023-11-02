@@ -40,7 +40,7 @@ function App() {
   useEffect(() => {
     if (isAllowed) {
       fetchCurrentUser();
-      const intervalId = setInterval(updateTokensTrigger, 30000);
+      const intervalId = setInterval(updateTokensTrigger, 10000);
       setIntervalId(intervalId);
     }
     if (!isAllowed && intervalId) {
