@@ -11,9 +11,10 @@ import { useEffect, useState } from "react";
 import Feedback from "../../components/modals/feedback/feedback";
 import { useSelector } from "react-redux";
 import { useAllowedContext } from "../../contexts/allowed";
-import { getAdsFeedback } from "../../api";
+// import { getAdsFeedback } from "../../api";
 import { sellsFromData } from "../../helpers";
 import { UseAuthUserContext } from "../../contexts/authUser";
+import { useLazyGetAdsFeedbackQuery } from "../../services/ads";
 
 const imagesState: any = {
   0: true,
@@ -36,15 +37,22 @@ function AdvPage() {
   const [mainImage, setMainImage] = useState<any>();
   const [feedback, setFeedback] = useState<any>();
   const { authUser } = UseAuthUserContext();
+  const [fetchAdsFeedback, { data }] = useLazyGetAdsFeedbackQuery();
 
-  const adsFeedback = async () => {
-    const feedback = await getAdsFeedback(String(id));
+  // const adsFeedback = async () => {
+  //   const feedback = await getAdsFeedback(String(id));
 
-    setFeedback(feedback);
-  };
+  //   setFeedback(feedback);
+  // };
 
   useEffect(() => {
-    adsFeedback();
+    if (data) {
+      setFeedback(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    fetchAdsFeedback({ ads_id: id });
   }, [currentAds]);
 
   useEffect(() => {

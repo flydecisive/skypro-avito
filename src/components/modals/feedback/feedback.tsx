@@ -20,7 +20,6 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
   const [createCommentTrigger] = useCreateCommentMutation();
 
   const handleComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(e.target.value);
     setComment(e.target.value);
   };
 
@@ -29,12 +28,10 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
     comment: string | undefined
   ) => {
     if (comment && adsId) {
-      console.log(
-        await createCommentTrigger({
-          id: adsId,
-          text: comment,
-        })
-      );
+      createCommentTrigger({
+        id: adsId,
+        text: comment,
+      });
     }
   };
 

@@ -16,7 +16,7 @@ export const adsApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["ADS"],
+  tagTypes: ["ADS", "FEEDBACK"],
   endpoints: (builder) => ({
     getAllAds: builder.query({
       query: (sorting) => `/ads${sorting}`,
@@ -33,10 +33,19 @@ export const adsApi = createApi({
       invalidatesTags: (result) =>
         result
           ? [
-              { type: "ADS", id: result.id },
-              { type: "ADS", id: "LIST" },
+              // { type: "FEEDBACK", id: result.id },
+              { type: "FEEDBACK", id: "LIST" },
             ]
           : [],
+    }),
+    getAdsFeedback: builder.query({
+      query: (args) => {
+        return {
+          url: `/ads/${args.ads_id}/comments`,
+          method: "GET",
+        };
+      },
+      providesTags: [{ type: "FEEDBACK", id: "LIST" }],
     }),
     getCurrentUser: builder.query<{}, void>({
       query: () => {
@@ -53,4 +62,5 @@ export const {
   useGetAllAdsQuery,
   useCreateCommentMutation,
   useLazyGetCurrentUserQuery,
+  useLazyGetAdsFeedbackQuery,
 } = adsApi;

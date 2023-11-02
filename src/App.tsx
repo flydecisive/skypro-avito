@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { setAllAds, setAllImgs } from "./store/actions/creators/ads";
 // import { useGetAllImgsQuery } from "./services/ads";
 import { AllowedContext } from "./contexts/allowed";
-import { getAllUsers } from "./api";
 import { AuthUserContext } from "./contexts/authUser";
 import { useLazyGetCurrentUserQuery } from "./services/ads";
 
