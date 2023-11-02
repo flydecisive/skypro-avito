@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import "./App.css";
@@ -11,6 +12,7 @@ import { AllowedContext } from "./contexts/allowed";
 import { getAllUsers } from "./api";
 import { UserEmailContext } from "./contexts/userEmail";
 import { AuthUserContext } from "./contexts/authUser";
+import { useGetCurrentUserQuery } from "./services/ads";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,6 +25,8 @@ function App() {
     localStorage.getItem("email")
   );
   const [authUser, setAuthUser] = useState();
+  const currentUser = useGetCurrentUserQuery().data;
+  console.log(currentUser);
 
   const getAndSetUser = async () => {
     const users = await getAllUsers();

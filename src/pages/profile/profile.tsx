@@ -52,7 +52,7 @@ function ProfilePage() {
 
   useEffect(() => {
     if (!isDisabledButton) {
-      // Дописать после сессии вопросов и ответов
+      // Парсить поля, написать запрос
       console.log("ad");
     }
   }, [isDisabledButton]);

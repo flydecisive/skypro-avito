@@ -2,12 +2,16 @@ import styles from "./header.module.css";
 import HeaderButton from "../buttons/header-button/header-button";
 import { ReactElement } from "react";
 import { useAllowedContext } from "../../contexts/allowed";
+import { useLocation } from "react-router-dom";
 
 interface HeaderProps {
   showAddAdv?: (params: any) => void;
 }
 
 function Header({ showAddAdv }: HeaderProps) {
+  const locationPath = useLocation().pathname;
+  const { setIsAllowed } = useAllowedContext();
+
   const { isAllowed } = useAllowedContext();
   let buttons: ReactElement;
 
@@ -24,7 +28,18 @@ function Header({ showAddAdv }: HeaderProps) {
             showAddAdv?.(e);
           }}
         />
-        <HeaderButton name={"Личный кабинет"} onClick={() => {}} />
+        {locationPath !== "/profile" ? (
+          <HeaderButton name={"Личный кабинет"} onClick={() => {}} />
+        ) : (
+          <HeaderButton
+            name={"Выйти"}
+            onClick={() => {
+              localStorage.clear();
+              // navigate("/");
+              setIsAllowed?.(false);
+            }}
+          />
+        )}
       </>
     );
   }

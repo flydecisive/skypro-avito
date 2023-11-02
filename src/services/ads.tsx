@@ -24,7 +24,6 @@ export const adsApi = createApi({
     }),
     createComment: builder.mutation({
       query: (args) => {
-        console.log(args.text);
         return {
           url: `/ads/${args.id}/comments`,
           method: "POST",
@@ -39,7 +38,19 @@ export const adsApi = createApi({
             ]
           : [],
     }),
+    getCurrentUser: builder.query<{}, void>({
+      query: () => {
+        return {
+          url: `/user`,
+          method: `GET`,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetAllAdsQuery, useCreateCommentMutation } = adsApi;
+export const {
+  useGetAllAdsQuery,
+  useCreateCommentMutation,
+  useGetCurrentUserQuery,
+} = adsApi;
