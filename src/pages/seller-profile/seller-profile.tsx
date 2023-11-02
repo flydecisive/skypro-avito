@@ -109,7 +109,7 @@ function SellerProfilePage() {
                 <div className={styles.right}>
                   <div className={styles.right_container}>
                     <p className={styles.person}>{`${
-                      currentUser?.name ? currentUser?.name : ""
+                      currentUser?.name ? currentUser?.name : "user"
                     } ${currentUser?.surname ? currentUser?.surname : ""}`}</p>
                     <Metadata
                       city={currentUser?.city}

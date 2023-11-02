@@ -109,6 +109,7 @@ function AdvPage() {
             setShowFeedbackModal(false);
           }}
           feedback={feedback}
+          adsId={id}
         />
       ) : (
         ""
@@ -161,7 +162,6 @@ function AdvPage() {
               <p className={styles.price}>{currentAds?.price} ₽</p>
               <div className={styles.buttons}>
                 {/* Тут добавить, что если это объявление пользователя, который авторизован */}
-                {/* currentAds?.user_id === userId */}
                 {isAllowed && currentAds?.user_id === authUser?.id ? (
                   <>
                     <Button
@@ -190,7 +190,11 @@ function AdvPage() {
               <div
                 className={styles.user}
                 onClick={() => {
-                  navigate(`/seller/${currentAds?.user.id}`);
+                  navigate(
+                    currentAds?.user.id === authUser?.id
+                      ? `/profile`
+                      : `/seller/${currentAds?.user.id}`
+                  );
                 }}
               >
                 {currentAds?.user.avatar === null ? (
@@ -209,7 +213,7 @@ function AdvPage() {
 
                 <div className={styles.user_info}>
                   <div className={styles.user_name}>
-                    {currentAds?.user.name}
+                    {currentAds?.user.name ? currentAds?.user.name : "user"}
                   </div>
                   <div className={styles.user_date}>
                     Продает товары с{" "}

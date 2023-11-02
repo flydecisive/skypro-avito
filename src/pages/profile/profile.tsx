@@ -6,13 +6,57 @@ import ProductCard from "../../components/product-card/product-card";
 import SettingInput from "../../components/inputs/setting-input/setting-input";
 import Button from "../../components/buttons/button/button";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
+import { UseAuthUserContext } from "../../contexts/authUser";
 
 function ProfilePage() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
   const navigate = useNavigate();
+  const { authUser } = UseAuthUserContext();
+  const [name, setName] = useState<string>(authUser?.name);
+  const [surname, setSurname] = useState<string>(authUser?.surname);
+  const [city, setCity] = useState<string>(authUser?.city);
+  const [phone, setPhone] = useState<string>(authUser?.phone);
+  const [isDisabledButton, setIsDisabledButton] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (authUser) {
+      setName(authUser?.name);
+      setSurname(authUser?.surname);
+      setCity(authUser?.city);
+      setPhone(authUser?.phone);
+    }
+  }, [authUser]);
+
+  const toggleName = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+    setIsDisabledButton(false);
+  };
+
+  const toggleSurname = (event: ChangeEvent<HTMLInputElement>) => {
+    setSurname(event.target.value);
+    setIsDisabledButton(false);
+  };
+
+  const toggleCity = (event: ChangeEvent<HTMLInputElement>) => {
+    setCity(event.target.value);
+    setIsDisabledButton(false);
+  };
+
+  const togglePhone = (event: ChangeEvent<HTMLInputElement>) => {
+    setPhone(event.target.value);
+    setIsDisabledButton(false);
+  };
+
+  useEffect(() => {
+    if (!isDisabledButton) {
+      // Дописать после сессии вопросов и ответов
+      console.log("ad");
+    }
+  }, [isDisabledButton]);
+  // console.log(authUser);
   // const cardsItems = cardData.map((el, index) => {
   //   return (
   //     <ProductCard
@@ -56,7 +100,11 @@ function ProfilePage() {
             }}
           />
           <div className={styles.content}>
-            <Title title="Здравствуйте, Антон!" />
+            <Title
+              title={`Здравствуйте, ${
+                authUser?.name ? authUser?.name : "user"
+              }!`}
+            />
             <div className={styles.settings}>
               <h2 className={styles.header}>Настройки профиля</h2>
               <div className={styles.settings_wrapper}>
@@ -67,16 +115,45 @@ function ProfilePage() {
                 <div className={styles.right}>
                   <div className={styles.inputs}>
                     <div className={styles.right_container}>
-                      <SettingInput width="300px" placeholder="Имя" />
-                      <SettingInput width="300px" placeholder="Фамилия" />
+                      <SettingInput
+                        width="300px"
+                        placeholder="Имя"
+                        value={name}
+                        onChange={(e) => {
+                          toggleName(e);
+                        }}
+                      />
+                      <SettingInput
+                        width="300px"
+                        placeholder="Фамилия"
+                        value={surname}
+                        onChange={(e) => {
+                          toggleSurname(e);
+                        }}
+                      />
                     </div>
-                    <SettingInput width="300px" placeholder="Город" />
-                    <SettingInput width="614px" placeholder="Телефон" />
+                    <SettingInput
+                      width="300px"
+                      placeholder="Город"
+                      value={city}
+                      onChange={(e) => {
+                        toggleCity(e);
+                      }}
+                    />
+                    <SettingInput
+                      width="614px"
+                      placeholder="Телефон"
+                      value={phone}
+                      onChange={(e) => {
+                        togglePhone(e);
+                      }}
+                    />
                   </div>
                   <Button
                     name="Сохранить"
                     buttonColor="blue"
                     width="154px"
+                    isDisabledButton={isDisabledButton}
                     onClick={() => {}}
                   />
                 </div>

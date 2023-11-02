@@ -42,6 +42,7 @@ export async function loginUser(email: string, password: string) {
   }
 
   const responseData = await response.json();
+  console.log(responseData);
   return responseData;
 }
 
@@ -72,7 +73,7 @@ export async function getAllUsers() {
 }
 
 // export async function getCurrentUser() {
-//   const response = await fetch(`${PATH}/user`, {
+//   const response = await fetch(`${PATH}/users/me`, {
 //     method: "GET",
 //   });
 

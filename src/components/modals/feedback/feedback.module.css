@@ -125,6 +125,7 @@
   border-radius: 50%;
   background: #f0f0f0;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .comment_name,

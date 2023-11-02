@@ -4,15 +4,39 @@ import Button from "../../buttons/button/button";
 import { useAllowedContext } from "../../../contexts/allowed";
 import { parseData, parseMonth } from "../../../helpers";
 import { useNavigate } from "react-router-dom";
+import { useCreateCommentMutation } from "../../../services/ads";
+import { useState, ChangeEvent } from "react";
 
 interface FeedbackProps {
   setShowFeedbackModal: (params: any) => void;
   feedback: any;
+  adsId: string | undefined;
 }
 
-function Feedback({ setShowFeedbackModal, feedback }: FeedbackProps) {
+function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
   const { isAllowed } = useAllowedContext();
+  const [comment, setComment] = useState<string>();
   const navigate = useNavigate();
+  const [createCommentTrigger] = useCreateCommentMutation();
+
+  const handleComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    console.log(e.target.value);
+    setComment(e.target.value);
+  };
+
+  const handleCommentSubmit = async (
+    adsId: string | undefined,
+    comment: string | undefined
+  ) => {
+    if (comment && adsId) {
+      console.log(
+        await createCommentTrigger({
+          id: adsId,
+          text: comment,
+        })
+      );
+    }
+  };
 
   const normalizeDate = (time: string) => {
     const date = new Date(time);
@@ -39,13 +63,16 @@ function Feedback({ setShowFeedbackModal, feedback }: FeedbackProps) {
           <textarea
             className={styles.textarea}
             placeholder="Введите отзыв"
+            onInput={handleComment}
           ></textarea>
         </label>
         <Button
           name="Опубликовать"
           buttonColor="blue"
           width="180px"
-          onClick={() => {}}
+          onClick={() => {
+            handleCommentSubmit(adsId, comment);
+          }}
           isDisabledButton={!isAllowed}
         />
       </div>
@@ -74,7 +101,9 @@ function Feedback({ setShowFeedbackModal, feedback }: FeedbackProps) {
 
                 <div className={styles.comment}>
                   <div className={styles.comment_info}>
-                    <p className={styles.comment_name}>{el.author.name}</p>
+                    <p className={styles.comment_name}>
+                      {el.author.name ? el.author.name : "User"}
+                    </p>
                     <p className={styles.comment_date}>
                       {normalizeDate(el.created_on)}
                     </p>

@@ -6,7 +6,7 @@ import AppRoutes from "./routes/routes";
 import { useGetAllAdsQuery } from "./services/ads";
 import { useDispatch } from "react-redux";
 import { setAllAds, setAllImgs } from "./store/actions/creators/ads";
-import { useGetAllImgsQuery } from "./services/ads";
+// import { useGetAllImgsQuery } from "./services/ads";
 import { AllowedContext } from "./contexts/allowed";
 import { getAllUsers } from "./api";
 import { UserEmailContext } from "./contexts/userEmail";
@@ -15,15 +15,19 @@ import { AuthUserContext } from "./contexts/authUser";
 function App() {
   const dispatch = useDispatch();
   const allAds = useGetAllAdsQuery("?sorting=new").data;
-  const allImgs = useGetAllImgsQuery().data;
+  // const allImgs = useGetAllImgsQuery().data;
   const [isAllowed, setIsAllowed] = useState<boolean>(
     localStorage.getItem("refresh") ? true : false
   );
-  const [userEmail, setUserEmail] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string | null>(
+    localStorage.getItem("email")
+  );
   const [authUser, setAuthUser] = useState();
 
   const getAndSetUser = async () => {
     const users = await getAllUsers();
+
+    // const currentUser = await getCurrentUser();
 
     for (let i = 0; i < users.length; i++) {
       if (users[i].email === userEmail) {
@@ -39,11 +43,11 @@ function App() {
     }
   }, [allAds]);
 
-  useEffect(() => {
-    if (allImgs) {
-      dispatch(setAllImgs(allImgs));
-    }
-  }, [allImgs]);
+  // useEffect(() => {
+  //   if (allImgs) {
+  //     dispatch(setAllImgs(allImgs));
+  //   }
+  // }, [allImgs]);
 
   useEffect(() => {
     if (isAllowed) {

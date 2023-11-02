@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 interface IUserEmailInterface {
-  userEmail: string;
+  userEmail: string | null;
   setUserEmail?: (params: string) => void;
 }
 
