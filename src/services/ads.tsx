@@ -130,6 +130,15 @@ export const adsApi = createApi({
         };
       },
     }),
+
+    getAllUsers: builder.query<[], void>({
+      query: () => {
+        return {
+          url: "/user/all",
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -141,4 +150,5 @@ export const {
   useUpdateTokensMutation,
   useLazyGetAuthUserAdsQuery,
   useAddUserAvatarMutation,
+  useLazyGetAllUsersQuery,
 } = adsApi;

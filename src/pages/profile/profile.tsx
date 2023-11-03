@@ -60,7 +60,7 @@ function ProfilePage() {
       // console.log(URL.createObjectURL(event.target.files?.[0]));
       // const fileUrl = URL.createObjectURL(event.target.files?.[0]);
       // const file = fileUrl.slice(fileUrl.indexOf(":") + 1);
-      addUserAvatar({ file: file });
+      addUserAvatar(file);
     }
   };
 

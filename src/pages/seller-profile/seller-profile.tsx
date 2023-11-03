@@ -10,9 +10,8 @@ import Metadata from "../../components/metadata/metadata";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import { getAllUsers } from "../../api";
 import { useSelector } from "react-redux";
-import { UseAuthUserContext } from "../../contexts/authUser";
+import { useLazyGetAllUsersQuery } from "../../services/ads";
 
 function SellerProfilePage() {
   const { id } = useParams();
@@ -22,11 +21,19 @@ function SellerProfilePage() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<any>();
   const [userAds, setUserAds] = useState<any>();
-  const { authUser } = UseAuthUserContext();
+  const [fetchAllUsers, { data }] = useLazyGetAllUsersQuery();
 
   useEffect(() => {
-    setCurrentUser(authUser);
-  }, [authUser]);
+    data?.forEach((el: any) => {
+      if (el.id === Number(id)) {
+        setCurrentUser(el);
+      }
+    });
+  }, [data]);
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, [id]);
 
   useEffect(() => {
     if (allAds) {
