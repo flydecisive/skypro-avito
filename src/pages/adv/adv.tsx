@@ -13,7 +13,10 @@ import { useSelector } from "react-redux";
 import { useAllowedContext } from "../../contexts/allowed";
 import { sellsFromData } from "../../helpers";
 import { UseAuthUserContext } from "../../contexts/authUser";
-import { useLazyGetAdsFeedbackQuery } from "../../services/ads";
+import {
+  useLazyGetAdsFeedbackQuery,
+  useDeleteAdsMutation,
+} from "../../services/ads";
 
 let imagesState: any = {
   0: true,
@@ -37,6 +40,7 @@ function AdvPage() {
   const [feedback, setFeedback] = useState<any>();
   const { authUser } = UseAuthUserContext();
   const [fetchAdsFeedback, { data }] = useLazyGetAdsFeedbackQuery();
+  const [triggerDeleteAds] = useDeleteAdsMutation();
 
   useEffect(() => {
     imagesState = {
@@ -179,11 +183,15 @@ function AdvPage() {
                         setShowModal(true);
                       }}
                     />
+                    {/* Снять */}
                     <Button
                       name="Снять с публикации"
                       buttonColor="blue"
                       width="225px"
-                      onClick={() => {}}
+                      onClick={() => {
+                        triggerDeleteAds({ id: id });
+                        navigate("/");
+                      }}
                     />
                   </>
                 ) : (

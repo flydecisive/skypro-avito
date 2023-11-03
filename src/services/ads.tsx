@@ -147,7 +147,7 @@ export const adsApi = createApi({
         );
 
         return {
-          url: "user",
+          url: "/user",
           method: "PATCH",
           body: JSON.stringify({
             name: args.name,
@@ -164,6 +164,24 @@ export const adsApi = createApi({
       invalidatesTags: (result) =>
         result ? [{ type: "USER", id: "LIST" }] : [],
     }),
+
+    deleteAds: builder.mutation({
+      query: (args) => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+
+        return {
+          url: `/ads/${args.id}`,
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        };
+      },
+      invalidatesTags: (result) =>
+        result ? [{ type: "ADS", id: "LIST" }] : [],
+    }),
   }),
 });
 
@@ -177,4 +195,5 @@ export const {
   useAddUserAvatarMutation,
   useLazyGetAllUsersQuery,
   useUpdateUserMutation,
+  useDeleteAdsMutation,
 } = adsApi;
