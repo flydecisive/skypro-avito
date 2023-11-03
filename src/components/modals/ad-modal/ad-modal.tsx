@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from "./ad-modal.module.css";
 import ModalInput from "../../inputs/modal-input/modal-input";
 import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import { ReactComponent as AddPhoto } from "../../../assets/img/add-photo.svg";
 import Button from "../../buttons/button/button";
 import { useAddAdsMutation } from "../../../services/ads";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 
 interface AdModalProps {
   setShowModal: (params: boolean) => void;
@@ -12,10 +13,16 @@ interface AdModalProps {
 }
 
 function AdModal({ setShowModal, targetButton }: AdModalProps) {
-  const [triggerAddAds, { data }] = useAddAdsMutation();
+  const [triggerAddAds, { data, isLoading }] = useAddAdsMutation();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<string>("");
+
+  useEffect(() => {
+    if (data) {
+      setShowModal(false);
+    }
+  }, [data]);
 
   const handleTitle = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -37,7 +44,6 @@ function AdModal({ setShowModal, targetButton }: AdModalProps) {
   ) => {
     if (targetButton !== "Редактировать") {
       triggerAddAds({ title, description, price: Number(price) });
-      setShowModal(false);
     }
   };
 
@@ -90,12 +96,13 @@ function AdModal({ setShowModal, targetButton }: AdModalProps) {
           />
         </label>
         <Button
-          name="Опубликовать"
+          name={isLoading ? "Загрузка" : "Опубликовать"}
           buttonColor="blue"
           width="180px"
           onClick={() => {
             handleSubmitButton(targetButton, title, description, price);
           }}
+          isDisabledButton={isLoading}
         />
       </div>
     </div>
