@@ -17,6 +17,7 @@ import {
   useLazyGetAdsFeedbackQuery,
   useDeleteAdsMutation,
 } from "../../services/ads";
+import { ReactComponent as NoImage } from "../../assets/img/image_no_icon_216618.svg";
 
 let imagesState: any = {
   0: true,
@@ -149,7 +150,7 @@ function AdvPage() {
               {mainImage ? (
                 <img className={styles.image} src={mainImage} alt="" />
               ) : (
-                <div className={styles.image}>Изображение отсуствует</div>
+                <NoImage className={styles.image} />
               )}
 
               <div className={styles.image_switcher}>{adsImages}</div>

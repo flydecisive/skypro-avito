@@ -1,5 +1,6 @@
 import styles from "./product-card.module.css";
 import Metadata from "../metadata/metadata";
+import { ReactComponent as NoImage } from "../../assets/img/image_no_icon_216618.svg";
 
 interface ProductCardProps {
   header: string;
@@ -28,9 +29,7 @@ function ProductCard({
           onClick={onClick}
         />
       ) : (
-        <div className={styles.card_img} onClick={onClick}>
-          Изображение отсутствует
-        </div>
+        <NoImage className={styles.card_img} onClick={onClick} />
       )}
 
       <div className={styles.wrapper}>
