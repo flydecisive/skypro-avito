@@ -140,7 +140,16 @@ function ProfilePage() {
               <h2 className={styles.header}>Настройки профиля</h2>
               <div className={styles.settings_wrapper}>
                 <div className={styles.left}>
-                  <div className={styles.avatar}></div>
+                  {authUser?.avatar ? (
+                    <img
+                      className={styles.avatar}
+                      alt=""
+                      src={`http://127.0.0.1:8090/${authUser.avatar}`}
+                    ></img>
+                  ) : (
+                    <div className={styles.avatar}></div>
+                  )}
+
                   <form>
                     <label className={styles.upload_file}>
                       Заменить

@@ -108,6 +108,7 @@ export const adsApi = createApi({
           },
         };
       },
+      providesTags: [{ type: "ADS", id: "LIST" }],
     }),
 
     addUserAvatar: builder.mutation({
@@ -128,6 +129,8 @@ export const adsApi = createApi({
           },
         };
       },
+      invalidatesTags: (result) =>
+        result ? [{ type: "USER", id: "LIST" }] : [],
     }),
 
     getAllUsers: builder.query<[], void>({
@@ -182,6 +185,30 @@ export const adsApi = createApi({
       invalidatesTags: (result) =>
         result ? [{ type: "ADS", id: "LIST" }] : [],
     }),
+
+    addAds: builder.mutation({
+      query: (args) => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+
+        return {
+          url: "/adstext",
+          method: "POST",
+          body: JSON.stringify({
+            title: args.title,
+            description: args.description,
+            price: args.price,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+        };
+      },
+      invalidatesTags: (result) =>
+        result ? [{ type: "ADS", id: "LIST" }] : [],
+    }),
   }),
 });
 
@@ -196,4 +223,5 @@ export const {
   useLazyGetAllUsersQuery,
   useUpdateUserMutation,
   useDeleteAdsMutation,
+  useAddAdsMutation,
 } = adsApi;
