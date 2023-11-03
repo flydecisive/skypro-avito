@@ -7,12 +7,15 @@ import Title from "../../components/title/title";
 import { useSelector } from "react-redux";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AdModal from "../../components/modals/ad-modal/ad-modal";
 
 function MainPage() {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>();
   const allAds = useSelector((store: any) => store?.ads.allAds);
   const [productCards, setProductCards] = useState<JSX.Element[]>();
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [targetButton, setTargetButton] = useState<string>("");
 
   useEffect(() => {
     if (!searchValue) {
@@ -58,26 +61,41 @@ function MainPage() {
   };
 
   return (
-    <div className={`${styles.main}`}>
-      <Header />
-      <div className={`${styles.wrapper} center`}>
-        <PageNav
-          isSearch={true}
-          buttonName="Найти"
-          buttonWidth="158px"
-          onClick={() => {}}
-          toggleSearchValue={toggleSearchValue}
+    <>
+      {showModal ? (
+        <AdModal
+          setShowModal={() => setShowModal(false)}
+          targetButton={targetButton}
         />
-        <div className={styles.content}>
-          <Title title={"Объявления"} />
-          {allAds.length === 0 ? (
-            <p>Ошибка загрузки объявлений. Попробуйте позже.</p>
-          ) : (
-            <div className={styles.cards}>{productCards}</div>
-          )}
+      ) : (
+        ""
+      )}
+      <div className={`${styles.main} ${showModal ? styles.main_filter : ""}`}>
+        <Header
+          showAddAdv={(e) => {
+            setTargetButton(e.target.textContent);
+            setShowModal(true);
+          }}
+        />
+        <div className={`${styles.wrapper} center`}>
+          <PageNav
+            isSearch={true}
+            buttonName="Найти"
+            buttonWidth="158px"
+            onClick={() => {}}
+            toggleSearchValue={toggleSearchValue}
+          />
+          <div className={styles.content}>
+            <Title title={"Объявления"} />
+            {allAds.length === 0 ? (
+              <p>Ошибка загрузки объявлений. Попробуйте позже.</p>
+            ) : (
+              <div className={styles.cards}>{productCards}</div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

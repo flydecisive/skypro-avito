@@ -38,10 +38,6 @@ function ProfilePage() {
   };
 
   useEffect(() => {
-    console.log(userAds);
-  }, [userAds]);
-
-  useEffect(() => {
     if (data) {
       setUserAds(data);
     }

@@ -117,7 +117,7 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
                   <DeleteIcon
                     className={styles.delete_feedback}
                     onClick={() => {
-                      console.log(el.id);
+                      alert("Функционал еще не реализован");
                     }}
                   />
                 ) : (
