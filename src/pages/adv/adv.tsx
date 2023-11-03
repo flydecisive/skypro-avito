@@ -39,7 +39,8 @@ function AdvPage() {
   const [mainImage, setMainImage] = useState<any>();
   const [feedback, setFeedback] = useState<any>();
   const { authUser } = UseAuthUserContext();
-  const [fetchAdsFeedback, { data }] = useLazyGetAdsFeedbackQuery();
+  const [fetchAdsFeedback, { data: getAdsFeedbackData }] =
+    useLazyGetAdsFeedbackQuery();
   const [triggerDeleteAds] = useDeleteAdsMutation();
 
   useEffect(() => {
@@ -53,10 +54,10 @@ function AdvPage() {
   }, []);
 
   useEffect(() => {
-    if (data) {
-      setFeedback(data);
+    if (getAdsFeedbackData) {
+      setFeedback(getAdsFeedbackData);
     }
-  }, [data]);
+  }, [getAdsFeedbackData]);
 
   useEffect(() => {
     fetchAdsFeedback({ ads_id: id });
@@ -97,8 +98,6 @@ function AdvPage() {
       if (!mainImage) {
         setMainImage(elemsData[0]?.props.src);
       }
-
-      console.log(currentAds);
 
       setAdsImages(elemsData);
     }

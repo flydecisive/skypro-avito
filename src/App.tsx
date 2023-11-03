@@ -33,7 +33,6 @@ function App() {
 
   useEffect(() => {
     if (allAds) {
-      console.log(allAds);
       dispatch(setAllAds(allAds));
     }
   }, [allAds]);

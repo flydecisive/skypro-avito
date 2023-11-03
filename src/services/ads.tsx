@@ -183,7 +183,7 @@ export const adsApi = createApi({
         };
       },
       invalidatesTags: (result) =>
-        result ? [{ type: "ADS", id: "LIST" }] : [],
+        result ? [{ type: "ADS", id: "LIST" }] : [{ type: "ADS", id: "LIST" }],
     }),
 
     addAds: builder.mutation({
