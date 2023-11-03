@@ -39,15 +39,41 @@ function App() {
   }, [allAds]);
 
   useEffect(() => {
-    if (isAllowed) {
+    const storageIntervalId = parseInt(
+      localStorage.getItem("intervalId") || ""
+    );
+
+    if (isAllowed && !storageIntervalId) {
       fetchCurrentUser();
-      const intervalId = setInterval(updateTokensTrigger, 10000);
+      let intervalId = setInterval(updateTokensTrigger, 30000);
+      localStorage.setItem("intervalId", JSON.stringify(intervalId));
       setIntervalId(intervalId);
     }
     if (!isAllowed && intervalId) {
       clearInterval(intervalId);
+      setIntervalId(undefined);
     }
   }, [isAllowed]);
+
+  const toggleBeforeunload = () => {
+    const storageIntervalId = parseInt(
+      localStorage.getItem("intervalId") || ""
+    );
+
+    if (storageIntervalId) {
+      clearInterval(storageIntervalId);
+      localStorage.removeItem("intervalId");
+    }
+  };
+
+  useEffect(() => {
+    if (intervalId) {
+      window.addEventListener("beforeunload", toggleBeforeunload);
+      return () => {
+        window.removeEventListener("beforeunload", toggleBeforeunload);
+      };
+    }
+  }, [intervalId]);
 
   return (
     <div className="App">

@@ -67,6 +67,7 @@ export const adsApi = createApi({
         const { refresh_token } = JSON.parse(
           localStorage.getItem("tokenData") || "{}"
         );
+        console.log(access_token);
 
         return {
           url: "/auth/login",
