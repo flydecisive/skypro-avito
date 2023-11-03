@@ -22,8 +22,6 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
   const navigate = useNavigate();
   const [createCommentTrigger] = useCreateCommentMutation();
 
-  console.log(feedback);
-
   const handleComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
   };

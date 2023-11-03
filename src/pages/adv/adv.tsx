@@ -94,6 +94,8 @@ function AdvPage() {
         setMainImage(elemsData[0]?.props.src);
       }
 
+      console.log(currentAds);
+
       setAdsImages(elemsData);
     }
   }, [currentAds, mainImage]);
@@ -154,7 +156,7 @@ function AdvPage() {
               <Metadata
                 city={currentAds?.user.city}
                 time={currentAds?.created_on}
-                type="user"
+                type="card"
               />
               <p
                 className={styles.feedback}

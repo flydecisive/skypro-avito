@@ -5,7 +5,7 @@ export const adsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8090",
   }),
-  tagTypes: ["ADS", "FEEDBACK"],
+  tagTypes: ["ADS", "FEEDBACK", "USER"],
   endpoints: (builder) => ({
     getAllAds: builder.query({
       query: (sorting) => `/ads${sorting}`,
@@ -17,22 +17,19 @@ export const adsApi = createApi({
         const { access_token } = JSON.parse(
           localStorage.getItem("tokenData") || "{}"
         );
+
         return {
           url: `/ads/${args.id}/comments`,
           method: "POST",
-          body: { text: args.text },
+          body: JSON.stringify({ text: args.text }),
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${access_token}`,
           },
         };
       },
       invalidatesTags: (result) =>
-        result
-          ? [
-              // { type: "FEEDBACK", id: result.id },
-              { type: "FEEDBACK", id: "LIST" },
-            ]
-          : [],
+        result ? [{ type: "FEEDBACK", id: "LIST" }] : [],
     }),
 
     getAdsFeedback: builder.query({
@@ -59,6 +56,7 @@ export const adsApi = createApi({
           },
         };
       },
+      providesTags: [{ type: "USER", id: "LIST" }],
     }),
 
     updateTokens: builder.mutation<{}, void>({
@@ -73,11 +71,12 @@ export const adsApi = createApi({
         return {
           url: "/auth/login",
           method: "PUT",
-          body: {
+          body: JSON.stringify({
             access_token: access_token,
             refresh_token: refresh_token,
-          },
+          }),
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${access_token}`,
           },
         };
@@ -138,6 +137,32 @@ export const adsApi = createApi({
           method: "GET",
         };
       },
+      providesTags: [{ type: "USER", id: "LIST" }],
+    }),
+
+    updateUser: builder.mutation({
+      query: (args) => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+
+        return {
+          url: "user",
+          method: "PATCH",
+          body: JSON.stringify({
+            name: args.name,
+            surname: args.surname,
+            city: args.city,
+            phone: args.phone,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+        };
+      },
+      invalidatesTags: (result) =>
+        result ? [{ type: "USER", id: "LIST" }] : [],
     }),
   }),
 });
@@ -151,4 +176,5 @@ export const {
   useLazyGetAuthUserAdsQuery,
   useAddUserAvatarMutation,
   useLazyGetAllUsersQuery,
+  useUpdateUserMutation,
 } = adsApi;

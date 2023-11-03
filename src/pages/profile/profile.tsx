@@ -13,6 +13,7 @@ import { UseAuthUserContext } from "../../contexts/authUser";
 import {
   useLazyGetAuthUserAdsQuery,
   useAddUserAvatarMutation,
+  useUpdateUserMutation,
 } from "../../services/ads";
 
 function ProfilePage() {
@@ -28,12 +29,17 @@ function ProfilePage() {
   const [fetchAuthUserAds, { data }] = useLazyGetAuthUserAdsQuery();
   const [userAds, setUserAds] = useState<any>();
   const [userAvatarTrigger] = useAddUserAvatarMutation();
+  const [triggerUpdateUser] = useUpdateUserMutation();
 
   const addUserAvatar = async (file: any) => {
     const data = await userAvatarTrigger({ file: file });
 
     console.log(data);
   };
+
+  useEffect(() => {
+    console.log(userAds);
+  }, [userAds]);
 
   useEffect(() => {
     if (data) {
@@ -84,12 +90,19 @@ function ProfilePage() {
     setIsDisabledButton(false);
   };
 
-  useEffect(() => {
-    if (!isDisabledButton) {
-      // Парсить поля, написать запрос
-      console.log("ad");
-    }
-  }, [isDisabledButton]);
+  const handleUpdateUser = (
+    name: string,
+    surname: string,
+    city: string,
+    phone: string
+  ) => {
+    triggerUpdateUser({
+      name: name,
+      surname: surname,
+      city: city,
+      phone: phone,
+    });
+  };
 
   return (
     <>
@@ -187,7 +200,9 @@ function ProfilePage() {
                     buttonColor="blue"
                     width="154px"
                     isDisabledButton={isDisabledButton}
-                    onClick={() => {}}
+                    onClick={() => {
+                      handleUpdateUser(name, surname, city, phone);
+                    }}
                   />
                 </div>
               </div>
@@ -199,10 +214,10 @@ function ProfilePage() {
                     return (
                       <ProductCard
                         key={index}
-                        header={el.header}
+                        header={el.title}
                         price={el.price}
-                        city={el.city}
-                        time={el.time}
+                        city={el.user.city}
+                        time={el.created_on}
                         images={el.images}
                         onClick={() => navigate(`/adv/${el.id}`)}
                       />
