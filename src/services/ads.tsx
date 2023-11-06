@@ -209,6 +209,30 @@ export const adsApi = createApi({
       invalidatesTags: (result) =>
         result ? [{ type: "ADS", id: "LIST" }] : [],
     }),
+
+    updateUserAds: builder.mutation({
+      query: (args) => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+
+        return {
+          url: `/ads/${args.id}`,
+          method: "PATCH",
+          body: JSON.stringify({
+            title: args.title,
+            description: args.description,
+            price: args.price,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+        };
+      },
+      invalidatesTags: (result) =>
+        result ? [{ type: "ADS", id: "LIST" }] : [],
+    }),
   }),
 });
 
@@ -224,4 +248,5 @@ export const {
   useUpdateUserMutation,
   useDeleteAdsMutation,
   useAddAdsMutation,
+  useUpdateUserAdsMutation,
 } = adsApi;

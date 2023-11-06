@@ -110,6 +110,7 @@ function AdvPage() {
         <AdModal
           setShowModal={() => setShowModal(false)}
           targetButton={targetButton}
+          currentAds={currentAds}
         />
       ) : (
         ""

@@ -4,25 +4,37 @@ import ModalInput from "../../inputs/modal-input/modal-input";
 import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import { ReactComponent as AddPhoto } from "../../../assets/img/add-photo.svg";
 import Button from "../../buttons/button/button";
-import { useAddAdsMutation } from "../../../services/ads";
+import {
+  useAddAdsMutation,
+  useUpdateUserAdsMutation,
+} from "../../../services/ads";
 import { useState, ChangeEvent, useEffect } from "react";
 
 interface AdModalProps {
   setShowModal: (params: boolean) => void;
   targetButton: string;
+  currentAds?: any;
 }
 
-function AdModal({ setShowModal, targetButton }: AdModalProps) {
+function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   const [triggerAddAds, { data, isLoading }] = useAddAdsMutation();
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
+  const [triggerUpdateAds, { data: updateAdsData }] =
+    useUpdateUserAdsMutation();
+  const [title, setTitle] = useState<string>(
+    targetButton === "Редактировать" ? currentAds?.title : ""
+  );
+  const [description, setDescription] = useState<string>(
+    targetButton === "Редактировать" ? currentAds?.description : ""
+  );
+  const [price, setPrice] = useState<string>(
+    targetButton === "Редактировать" ? currentAds?.price : ""
+  );
 
   useEffect(() => {
-    if (data) {
+    if (data || updateAdsData) {
       setShowModal(false);
     }
-  }, [data]);
+  }, [data, updateAdsData]);
 
   const handleTitle = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -40,10 +52,18 @@ function AdModal({ setShowModal, targetButton }: AdModalProps) {
     targetButton: string,
     title: string,
     description: string,
-    price: string
+    price: string,
+    id: string
   ) => {
     if (targetButton !== "Редактировать") {
       triggerAddAds({ title, description, price: Number(price) });
+    } else {
+      triggerUpdateAds({
+        title,
+        description,
+        price: Number(price),
+        id,
+      });
     }
   };
 
@@ -60,6 +80,7 @@ function AdModal({ setShowModal, targetButton }: AdModalProps) {
       <ModalInput
         width="500px"
         placeholder="Введите название"
+        defaultValue={title}
         type="text"
         onInput={handleTitle}
       />
@@ -67,6 +88,7 @@ function AdModal({ setShowModal, targetButton }: AdModalProps) {
         Описание
         <textarea
           className={styles.textarea}
+          defaultValue={description}
           placeholder="Введите описание"
           onInput={(e: any) => {
             handleDescription(e);
@@ -90,6 +112,7 @@ function AdModal({ setShowModal, targetButton }: AdModalProps) {
           <input
             type="number"
             className={styles.price}
+            defaultValue={price}
             onInput={(e: any) => {
               handlePrice(e);
             }}
@@ -100,7 +123,13 @@ function AdModal({ setShowModal, targetButton }: AdModalProps) {
           buttonColor="blue"
           width="180px"
           onClick={() => {
-            handleSubmitButton(targetButton, title, description, price);
+            handleSubmitButton(
+              targetButton,
+              title,
+              description,
+              price,
+              currentAds?.id
+            );
           }}
           isDisabledButton={isLoading}
         />
