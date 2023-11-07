@@ -256,21 +256,23 @@ function ProfilePage() {
             </div>
             <h2 className={styles.header}>Мои товары</h2>
             <div className={styles.cards}>
-              {userAds?.length !== 0
-                ? userAds?.map((el: any, index: number) => {
-                    return (
-                      <ProductCard
-                        key={index}
-                        header={el.title}
-                        price={el.price}
-                        city={el.user.city}
-                        time={el.created_on}
-                        images={el.images}
-                        onClick={() => navigate(`/adv/${el.id}`)}
-                      />
-                    );
-                  })
-                : "Объявления отсутствуют"}
+              {userAds?.length !== 0 ? (
+                userAds?.map((el: any, index: number) => {
+                  return (
+                    <ProductCard
+                      key={index}
+                      header={el.title}
+                      price={el.price}
+                      city={el.user.city}
+                      time={el.created_on}
+                      images={el.images}
+                      onClick={() => navigate(`/adv/${el.id}`)}
+                    />
+                  );
+                })
+              ) : (
+                <p className={styles.no_ads}>У вас пока нет обявлений</p>
+              )}
             </div>
           </div>
         </div>

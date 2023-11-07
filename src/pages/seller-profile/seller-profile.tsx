@@ -119,7 +119,11 @@ function SellerProfilePage() {
             </div>
             <h2 className={styles.header}>Товары продавца</h2>
             <div className={styles.cards}>
-              {userAds ? userAds : "У продавца нет объявлений"}
+              {userAds && userAds.length !== 0 ? (
+                userAds
+              ) : (
+                <p className={styles.no_ads}>У продавца нет объявлений</p>
+              )}
             </div>
           </div>
         </div>

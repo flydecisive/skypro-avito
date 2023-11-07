@@ -57,25 +57,29 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
           />
         </button>
       </div>
-      <div className={styles.add_feedback}>
-        <label className={styles.label}>
-          Добавить отзыв
-          <textarea
-            className={styles.textarea}
-            placeholder="Введите отзыв"
-            onInput={handleComment}
-          ></textarea>
-        </label>
-        <Button
-          name="Опубликовать"
-          buttonColor="blue"
-          width="180px"
-          onClick={() => {
-            handleCommentSubmit(adsId, comment);
-          }}
-          isDisabledButton={!isAllowed}
-        />
-      </div>
+      {isAllowed ? (
+        <div className={styles.add_feedback}>
+          <label className={styles.label}>
+            Добавить отзыв
+            <textarea
+              className={styles.textarea}
+              placeholder="Введите отзыв"
+              onInput={handleComment}
+            ></textarea>
+          </label>
+          <Button
+            name="Опубликовать"
+            buttonColor="blue"
+            width="180px"
+            onClick={() => {
+              handleCommentSubmit(adsId, comment);
+            }}
+            isDisabledButton={!isAllowed}
+          />
+        </div>
+      ) : (
+        ""
+      )}
       <div className={styles.feedbacks}>
         {feedback.length !== 0 ? (
           feedback.toReversed().map((el: any, i: number) => {
@@ -127,7 +131,7 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
             );
           })
         ) : (
-          <p>Отзывы отсутствуют</p>
+          <p className={styles.no_feedback}>Отзывы отсутствуют</p>
         )}
       </div>
     </div>

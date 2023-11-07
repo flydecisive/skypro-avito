@@ -147,7 +147,8 @@
   line-height: 200%;
 }
 
-.comment_text {
+.comment_text,
+.no_feedback {
   color: #000;
   font-family: "RobotoRegular";
   font-size: 16px;

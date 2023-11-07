@@ -84,3 +84,13 @@
   column-gap: inherit;
   row-gap: 40px;
 }
+
+.no_ads {
+  color: #000;
+  font-family: "RobotoRegular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  text-align: left;
+}
