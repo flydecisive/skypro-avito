@@ -45,16 +45,30 @@ export async function loginUser(email: string, password: string) {
   return responseData;
 }
 
-// export async function getCurrentUser() {
-//   const response = await fetch(`${PATH}/users/me`, {
-//     method: "GET",
-//   });
+export const changePassword = async (
+  oldPassword: string,
+  newPassword: string
+) => {
+  const { access_token } = JSON.parse(
+    localStorage.getItem("tokenData") || "{}"
+  );
 
-//   if (!response.ok) {
-//     throw new Error("Ошибка");
-//   }
+  const response = await fetch(`${PATH}/user/password`, {
+    method: "PUT",
+    body: JSON.stringify({
+      password_1: oldPassword,
+      password_2: newPassword,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
 
-//   const responseData = await response.json();
-//   console.log(responseData);
-//   return responseData;
-// }
+  if (!response.ok && response.status === 400) {
+    throw new Error("Ошибка валидации");
+  }
+
+  const responseData = await response.json();
+  return responseData;
+};

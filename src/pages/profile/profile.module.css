@@ -90,3 +90,9 @@
   display: flex;
   gap: 14px;
 }
+
+.buttons_wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+}

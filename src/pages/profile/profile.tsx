@@ -15,6 +15,8 @@ import {
   useAddUserAvatarMutation,
   useUpdateUserMutation,
 } from "../../services/ads";
+import PasswordModal from "../../components/modals/password/password";
+import PushNotice from "../../components/push-notice/push-notice";
 
 function ProfilePage() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -30,6 +32,9 @@ function ProfilePage() {
   const [userAds, setUserAds] = useState<any>();
   const [userAvatarTrigger] = useAddUserAvatarMutation();
   const [triggerUpdateUser] = useUpdateUserMutation();
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showNotice, setShowNotice] = useState(false);
+  const [noticeText, setNoticeText] = useState("");
 
   const addUserAvatar = async (file: any) => {
     const data = await userAvatarTrigger({ file: file });
@@ -111,9 +116,28 @@ function ProfilePage() {
       ) : (
         ""
       )}
+      {showPasswordModal ? (
+        <PasswordModal
+          setShowPasswordModal={setShowPasswordModal}
+          setShowNotice={setShowNotice}
+          setNoticeText={setNoticeText}
+        />
+      ) : (
+        ""
+      )}
+      {showNotice ? (
+        <PushNotice
+          text={noticeText}
+          onClick={() => {
+            setShowNotice(false);
+          }}
+        />
+      ) : (
+        ""
+      )}
       <div
         className={`${styles.profile} ${
-          showModal ? styles.profile_filter : ""
+          showModal || showPasswordModal ? styles.profile_filter : ""
         }`}
       >
         <Header
@@ -193,7 +217,7 @@ function ProfilePage() {
                       }}
                     />
                     <SettingInput
-                      width="614px"
+                      width="100%"
                       placeholder="Телефон"
                       value={phone}
                       onChange={(e) => {
@@ -201,15 +225,32 @@ function ProfilePage() {
                       }}
                     />
                   </div>
-                  <Button
-                    name="Сохранить"
-                    buttonColor="blue"
-                    width="154px"
-                    isDisabledButton={isDisabledButton}
-                    onClick={() => {
-                      handleUpdateUser(name, surname, city, phone);
-                    }}
-                  />
+                  <div className={styles.buttons_wrapper}>
+                    <Button
+                      name="Сохранить"
+                      buttonColor="blue"
+                      width="154px"
+                      isDisabledButton={isDisabledButton}
+                      onClick={() => {
+                        handleUpdateUser(name, surname, city, phone);
+                        setIsDisabledButton(true);
+                      }}
+                    />
+                    <Button
+                      name="Изменить пароль"
+                      buttonColor="blue"
+                      width="200px"
+                      isDisabledButton={false}
+                      onClick={() => {
+                        setShowPasswordModal(!showPasswordModal);
+                        window.scrollTo({
+                          top: 0,
+                          left: 0,
+                          behavior: "smooth",
+                        });
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

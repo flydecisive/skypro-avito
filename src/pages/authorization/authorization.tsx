@@ -86,6 +86,7 @@ function AuthorizationPage() {
                     refresh_token: responseData.refresh_token,
                   })
                 );
+                localStorage.setItem("email", email);
                 setIsAllowed?.(!isAllowed);
                 navigate("/");
               }
@@ -129,6 +130,7 @@ function AuthorizationPage() {
                 refresh_token: responseData.refresh_token,
               })
             );
+            localStorage.setItem("email", email);
             setIsAllowed?.(!isAllowed);
             navigate("/");
           }

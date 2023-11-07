@@ -126,4 +126,5 @@
 
 .cross:hover {
   stroke: #009ee4;
+  cursor: pointer;
 }

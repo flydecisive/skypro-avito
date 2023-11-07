@@ -44,7 +44,7 @@ function App() {
 
     if (isAllowed && !storageIntervalId) {
       fetchCurrentUser();
-      let intervalId = setInterval(updateTokensTrigger, 30000);
+      let intervalId = setInterval(updateTokensTrigger, 240000);
       localStorage.setItem("intervalId", JSON.stringify(intervalId));
       setIntervalId(intervalId);
     }
