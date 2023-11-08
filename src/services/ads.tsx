@@ -117,7 +117,7 @@ export const adsApi = createApi({
           localStorage.getItem("tokenData") || "{}"
         );
         const formData = new FormData();
-        formData.append("file", args.file.file);
+        formData.append("file", args.file);
 
         return {
           url: "/user/avatar",

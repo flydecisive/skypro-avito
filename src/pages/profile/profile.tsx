@@ -36,12 +36,6 @@ function ProfilePage() {
   const [showNotice, setShowNotice] = useState(false);
   const [noticeText, setNoticeText] = useState("");
 
-  const addUserAvatar = async (file: any) => {
-    const data = await userAvatarTrigger({ file: file });
-
-    console.log(data);
-  };
-
   useEffect(() => {
     if (data) {
       setUserAds(data);
@@ -64,7 +58,7 @@ function ProfilePage() {
       // console.log(URL.createObjectURL(event.target.files?.[0]));
       // const fileUrl = URL.createObjectURL(event.target.files?.[0]);
       // const file = fileUrl.slice(fileUrl.indexOf(":") + 1);
-      addUserAvatar({ file });
+      userAvatarTrigger({ file });
     }
   };
 
