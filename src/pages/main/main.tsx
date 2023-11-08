@@ -32,8 +32,17 @@ function MainPage() {
           />
         );
       });
+
       setProductCards(cardsItems);
-    } else {
+    }
+  }, [allAds, searchValue]);
+
+  const toggleSearchValue = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearchButton = () => {
+    if (searchValue) {
       const cardsItems = allAds.map((el: any) => {
         if (el.title.toLowerCase().includes(searchValue.toLowerCase())) {
           return (
@@ -54,10 +63,6 @@ function MainPage() {
 
       setProductCards(cardsItems);
     }
-  }, [allAds, searchValue]);
-
-  const toggleSearchValue = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
   };
 
   return (
@@ -82,7 +87,9 @@ function MainPage() {
             isSearch={true}
             buttonName="Найти"
             buttonWidth="158px"
-            onClick={() => {}}
+            onClick={() => {
+              handleSearchButton();
+            }}
             toggleSearchValue={toggleSearchValue}
           />
           <div className={styles.content}>
