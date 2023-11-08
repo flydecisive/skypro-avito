@@ -117,7 +117,7 @@ export const adsApi = createApi({
           localStorage.getItem("tokenData") || "{}"
         );
         const formData = new FormData();
-        formData.append("file", args.file);
+        formData.append("file", args.file.file);
 
         return {
           url: "/user/avatar",
@@ -125,7 +125,7 @@ export const adsApi = createApi({
           body: formData,
           headers: {
             Authorization: `Bearer ${access_token}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": undefined,
           },
         };
       },

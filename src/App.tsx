@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setAllAds } from "./store/actions/creators/ads";
 import { AllowedContext } from "./contexts/allowed";
 import { AuthUserContext } from "./contexts/authUser";
+import { WindowSizeContext } from "./contexts/window-size";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +25,24 @@ function App() {
   const [fetchCurrentUser, { data }] = useLazyGetCurrentUserQuery();
   const [updateTokensTrigger] = useUpdateTokensMutation();
   const [intervalId, setIntervalId] = useState<any>();
+  const [windowSize, setWindowSize] = useState(getWindowSize());
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  function getWindowSize() {
+    const { innerWidth, innerHeight } = window;
+    return { innerWidth, innerHeight };
+  }
 
   useEffect(() => {
     if (data) {
@@ -78,7 +97,9 @@ function App() {
     <div className="App">
       <AllowedContext.Provider value={{ isAllowed, setIsAllowed }}>
         <AuthUserContext.Provider value={{ authUser, setAuthUser }}>
-          <AppRoutes isAllowed={isAllowed} />
+          <WindowSizeContext.Provider value={{ windowSize }}>
+            <AppRoutes isAllowed={isAllowed} />
+          </WindowSizeContext.Provider>
         </AuthUserContext.Provider>
       </AllowedContext.Provider>
     </div>

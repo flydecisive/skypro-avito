@@ -59,15 +59,12 @@ function ProfilePage() {
   }, [authUser]);
 
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
-    // const file = event.target.files;
-    // console.log(file);
-    // console.log(event.target.files?.[0]);
     let file = event.target.files?.[0];
     if (file) {
       // console.log(URL.createObjectURL(event.target.files?.[0]));
       // const fileUrl = URL.createObjectURL(event.target.files?.[0]);
       // const file = fileUrl.slice(fileUrl.indexOf(":") + 1);
-      addUserAvatar(file);
+      addUserAvatar({ file });
     }
   };
 
@@ -175,18 +172,16 @@ function ProfilePage() {
                     <div className={styles.avatar}></div>
                   )}
 
-                  <form>
-                    <label className={styles.upload_file}>
-                      Заменить
-                      <input
-                        type="file"
-                        hidden
-                        onChange={(e) => {
-                          handleUploadImage(e);
-                        }}
-                      />
-                    </label>
-                  </form>
+                  <label className={styles.upload_file}>
+                    Заменить
+                    <input
+                      type="file"
+                      hidden
+                      onChange={(e) => {
+                        handleUploadImage(e);
+                      }}
+                    />
+                  </label>
                 </div>
                 <div className={styles.right}>
                   <div className={styles.inputs}>
