@@ -11,6 +11,7 @@ import {
   useAddAdsImageMutation,
 } from "../../../services/ads";
 import { useState, ChangeEvent, useEffect } from "react";
+import { ReactComponent as Delete } from "../../../assets/img/delete.svg";
 
 interface AdModalProps {
   setShowModal: (params: boolean) => void;
@@ -35,18 +36,24 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   const [showPushNotice, setShowPushNotice] = useState<boolean>(false);
   const [noticeText, setNoticeText] = useState<string>("");
   const [images, setImages] = useState<any>(Array(5).fill({}));
-  const [imageSrc, setImageSrc] = useState<any>([]);
+  const [imageSrc, setImageSrc] = useState<any>(
+    currentAds?.images.map((el: any) => {
+      return { src: `http://localhost:8090/${el.url}` };
+    })
+  );
   const id = currentAds?.id;
+  const [showDelete, setShowDelete] = useState<boolean>(false);
 
   useEffect(() => {
-    if (imageSrc.length !== 0) {
+    if (imageSrc?.length !== 0) {
       const newImages = [];
       for (let i = 0; i < 5; i++) {
-        if (imageSrc[i]) {
+        if (imageSrc?.[i]) {
           newImages.push(imageSrc[i]);
-        } else {
-          newImages.push({});
+          continue;
         }
+
+        newImages.push({});
       }
       setImages(newImages);
     }
@@ -112,7 +119,7 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
           newImageSrc.push({ src: reader.result });
-          setImageSrc([...newImageSrc, ...imageSrc]);
+          setImageSrc([...imageSrc, ...newImageSrc]);
         });
         reader.readAsDataURL(files[i]);
       }
@@ -166,12 +173,30 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
           {images.map((elem: any, index: number) => {
             if (elem.src) {
               return (
-                <img
-                  className={styles.photo}
-                  src={elem.src}
-                  alt=""
-                  key={index}
-                />
+                <div className={styles.photo} key={index}>
+                  {showDelete ? (
+                    <div
+                      onMouseEnter={() => {
+                        setShowDelete(true);
+                      }}
+                    >
+                      <Delete className={styles.delete} />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <img
+                    className={styles.photo}
+                    src={elem.src}
+                    alt=""
+                    onMouseEnter={() => {
+                      setShowDelete(true);
+                    }}
+                    onMouseLeave={() => {
+                      setShowDelete(false);
+                    }}
+                  />
+                </div>
               );
             }
 
