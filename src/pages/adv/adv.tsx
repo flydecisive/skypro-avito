@@ -111,6 +111,7 @@ function AdvPage() {
           setShowModal={() => setShowModal(false)}
           targetButton={targetButton}
           currentAds={currentAds}
+          setMainImage={setMainImage}
         />
       ) : (
         ""

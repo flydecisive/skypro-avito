@@ -19,22 +19,19 @@ interface AdModalProps {
   setShowModal: (params: boolean) => void;
   targetButton: string;
   currentAds?: any;
+  setMainImage?: any;
 }
 
-let showDeleteState = {
-  0: false,
-  1: false,
-  2: false,
-  3: false,
-  4: false,
-};
-
-function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
+function AdModal({
+  setShowModal,
+  targetButton,
+  currentAds,
+  setMainImage,
+}: AdModalProps) {
   const [triggerAddAds, { data, isLoading }] = useAddAdsMutation();
   const [triggerUpdateAds, { data: updateAdsData }] =
     useUpdateUserAdsMutation();
-  const [triggerAdsImage, { isLoading: addImageLoading }] =
-    useAddAdsImageMutation();
+  const [triggerAdsImage] = useAddAdsImageMutation();
   const [triggerDeleteAdsImage] = useDeleteAdsImageMutation();
   const [title, setTitle] = useState<string>(
     targetButton === "Редактировать" ? currentAds?.title : ""
@@ -62,6 +59,9 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   useEffect(() => {
     if (data || updateAdsData) {
       setShowModal(false);
+    }
+    if (updateAdsData) {
+      setMainImage(images[0]?.src);
     }
   }, [data, updateAdsData]);
 
