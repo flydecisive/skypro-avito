@@ -128,3 +128,13 @@
   stroke: #009ee4;
   cursor: pointer;
 }
+
+.add_photo:hover {
+  cursor: pointer;
+}
+
+.photo {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}

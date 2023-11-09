@@ -3,6 +3,7 @@ import styles from "./ad-modal.module.css";
 import ModalInput from "../../inputs/modal-input/modal-input";
 import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import { ReactComponent as AddPhoto } from "../../../assets/img/add-photo.svg";
+import PushNotice from "../../push-notice/push-notice";
 import Button from "../../buttons/button/button";
 import {
   useAddAdsMutation,
@@ -29,6 +30,25 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   const [price, setPrice] = useState<string>(
     targetButton === "Редактировать" ? currentAds?.price : ""
   );
+  const [showPushNotice, setShowPushNotice] = useState<boolean>(false);
+  const [noticeText, setNoticeText] = useState<string>("");
+  const [images, setImages] = useState<any>(Array(5).fill({}));
+  const [imageSrc, setImageSrc] = useState<any>([]);
+
+  useEffect(() => {
+    if (imageSrc.length !== 0) {
+      console.log(imageSrc);
+      const newImages = [];
+      for (let i = 0; i < 5; i++) {
+        if (imageSrc[i]) {
+          newImages.push(imageSrc[i]);
+        } else {
+          newImages.push({});
+        }
+      }
+      setImages(newImages);
+    }
+  }, [imageSrc]);
 
   useEffect(() => {
     if (data || updateAdsData) {
@@ -46,6 +66,13 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
 
   const handlePrice = (event: ChangeEvent<HTMLInputElement>) => {
     setPrice(event.target.value);
+  };
+
+  const handleAddImg = () => {
+    if (targetButton !== "Редактировать") {
+      setShowPushNotice(true);
+      setNoticeText("Изображение можно добавить на странице редактирования");
+    }
   };
 
   const handleSubmitButton = (
@@ -67,8 +94,40 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
     }
   };
 
+  const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
+    let file = event.target.files?.[0];
+    if (file) {
+      const files: any = event.target.files;
+
+      const newImageSrc: any = [];
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].type && !files[i].type.startsWith("image/")) {
+          console.log("File is not an image.", files[i].type, files[i]);
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          newImageSrc.push({ src: reader.result });
+          setImageSrc([...newImageSrc, ...imageSrc]);
+        });
+        reader.readAsDataURL(files[i]);
+      }
+    }
+  };
+
   return (
     <div className={styles.modal}>
+      {showPushNotice ? (
+        <PushNotice
+          text={noticeText}
+          onClick={() => {
+            setShowPushNotice(false);
+          }}
+        />
+      ) : (
+        ""
+      )}
       <div className={styles.top}>
         <h2 className={styles.header}>
           {targetButton === "Редактировать"
@@ -101,11 +160,87 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
           <span className={styles["text-grey"]}>не более 5 фотографий</span>
         </h3>
         <div className={styles.photos_wrapper}>
-          <AddPhoto />
-          <AddPhoto />
-          <AddPhoto />
-          <AddPhoto />
-          <AddPhoto />
+          {images.map((elem: any, index: number) => {
+            if (elem.src) {
+              return (
+                <img
+                  className={styles.photo}
+                  src={elem.src}
+                  alt=""
+                  key={index}
+                />
+              );
+            }
+
+            return (
+              <label className={styles.add_photo} key={index}>
+                {targetButton !== "Редактировать" ? (
+                  <AddPhoto onClick={handleAddImg} />
+                ) : (
+                  <>
+                    <AddPhoto />
+                    <input
+                      type="file"
+                      hidden
+                      onChange={(e) => {
+                        handleUploadImage(e);
+                      }}
+                    />
+                  </>
+                )}
+              </label>
+            );
+          })}
+          {/* <label className={styles.add_photo}>
+            <AddPhoto />
+            <input
+              type="file"
+              hidden
+              onChange={(e) => {
+                handleUploadImage(e);
+              }}
+            />
+          </label>
+          <label className={styles.add_photo}>
+            <AddPhoto />
+            <input
+              type="file"
+              hidden
+              onChange={(e) => {
+                handleUploadImage(e);
+              }}
+            />
+          </label>
+          <label className={styles.add_photo}>
+            <AddPhoto />
+            <input
+              type="file"
+              hidden
+              onChange={(e) => {
+                handleUploadImage(e);
+              }}
+            />
+          </label>
+          <label className={styles.add_photo}>
+            <AddPhoto />
+            <input
+              type="file"
+              hidden
+              onChange={(e) => {
+                handleUploadImage(e);
+              }}
+            />
+          </label>
+          <label className={styles.add_photo}>
+            <AddPhoto />
+            <input
+              type="file"
+              hidden
+              onChange={(e) => {
+                handleUploadImage(e);
+              }}
+            />
+          </label> */}
         </div>
         <label className={styles.label}>
           Цена{" "}
