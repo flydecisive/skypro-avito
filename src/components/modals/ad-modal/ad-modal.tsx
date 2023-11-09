@@ -9,9 +9,11 @@ import {
   useAddAdsMutation,
   useUpdateUserAdsMutation,
   useAddAdsImageMutation,
+  useDeleteAdsImageMutation,
 } from "../../../services/ads";
 import { useState, ChangeEvent, useEffect } from "react";
 import { ReactComponent as Delete } from "../../../assets/img/delete.svg";
+import { setNewImages } from "../../../helpers";
 
 interface AdModalProps {
   setShowModal: (params: boolean) => void;
@@ -19,11 +21,21 @@ interface AdModalProps {
   currentAds?: any;
 }
 
+let showDeleteState = {
+  0: false,
+  1: false,
+  2: false,
+  3: false,
+  4: false,
+};
+
 function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   const [triggerAddAds, { data, isLoading }] = useAddAdsMutation();
   const [triggerUpdateAds, { data: updateAdsData }] =
     useUpdateUserAdsMutation();
-  const [triggerAdsImage] = useAddAdsImageMutation();
+  const [triggerAdsImage, { isLoading: addImageLoading }] =
+    useAddAdsImageMutation();
+  const [triggerDeleteAdsImage] = useDeleteAdsImageMutation();
   const [title, setTitle] = useState<string>(
     targetButton === "Редактировать" ? currentAds?.title : ""
   );
@@ -35,29 +47,17 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   );
   const [showPushNotice, setShowPushNotice] = useState<boolean>(false);
   const [noticeText, setNoticeText] = useState<string>("");
-  const [images, setImages] = useState<any>(Array(5).fill({}));
-  const [imageSrc, setImageSrc] = useState<any>(
-    currentAds?.images.map((el: any) => {
-      return { src: `http://localhost:8090/${el.url}` };
-    })
-  );
+  const [images, setImages] = useState<any>();
   const id = currentAds?.id;
   const [showDelete, setShowDelete] = useState<boolean>(false);
 
   useEffect(() => {
-    if (imageSrc?.length !== 0) {
-      const newImages = [];
-      for (let i = 0; i < 5; i++) {
-        if (imageSrc?.[i]) {
-          newImages.push(imageSrc[i]);
-          continue;
-        }
-
-        newImages.push({});
-      }
-      setImages(newImages);
+    if (currentAds?.images) {
+      setImages(setNewImages(currentAds?.images));
+    } else {
+      setImages(Array(5).fill({}));
     }
-  }, [imageSrc]);
+  }, []);
 
   useEffect(() => {
     if (data || updateAdsData) {
@@ -103,26 +103,23 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
     }
   };
 
+  const handleDelete = (e: any) => {
+    const eventId = e.target.parentElement.id;
+    const imageUrl = images[eventId].src;
+    const shortUrl = imageUrl.slice(imageUrl.indexOf("/ad") + 1);
+    const currentImages = [...images];
+    currentImages[eventId] = {};
+    setImages(currentImages);
+    triggerDeleteAdsImage({ id, url: shortUrl });
+  };
+
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
     let file = event.target.files?.[0];
     if (file) {
-      const files: any = event.target.files;
-      triggerAdsImage({ file, id });
+      let imagesData: any = await triggerAdsImage({ file, id });
+      imagesData = imagesData.data.images;
 
-      const newImageSrc: any = [];
-      for (let i = 0; i < files.length; i++) {
-        if (files[i].type && !files[i].type.startsWith("image/")) {
-          console.log("File is not an image.", files[i].type, files[i]);
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.addEventListener("load", () => {
-          newImageSrc.push({ src: reader.result });
-          setImageSrc([...imageSrc, ...newImageSrc]);
-        });
-        reader.readAsDataURL(files[i]);
-      }
+      setImages(setNewImages(imagesData));
     }
   };
 
@@ -170,32 +167,33 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
           <span className={styles["text-grey"]}>не более 5 фотографий</span>
         </h3>
         <div className={styles.photos_wrapper}>
-          {images.map((elem: any, index: number) => {
+          {images?.map((elem: any, index: number) => {
             if (elem.src) {
               return (
-                <div className={styles.photo} key={index}>
+                <div
+                  className={styles.photo}
+                  key={index}
+                  onMouseEnter={() => {
+                    setShowDelete(true);
+                  }}
+                  onMouseLeave={() => {
+                    setShowDelete(false);
+                  }}
+                >
                   {showDelete ? (
                     <div
-                      onMouseEnter={() => {
-                        setShowDelete(true);
+                      className={styles.delete}
+                      id={String(index)}
+                      onClick={(e) => {
+                        handleDelete(e);
                       }}
                     >
-                      <Delete className={styles.delete} />
+                      <Delete className={styles.delete} id={String(index)} />
                     </div>
                   ) : (
                     ""
                   )}
-                  <img
-                    className={styles.photo}
-                    src={elem.src}
-                    alt=""
-                    onMouseEnter={() => {
-                      setShowDelete(true);
-                    }}
-                    onMouseLeave={() => {
-                      setShowDelete(false);
-                    }}
-                  />
+                  <img className={styles.photo} src={elem.src} alt="" />
                 </div>
               );
             }

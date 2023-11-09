@@ -255,6 +255,24 @@ export const adsApi = createApi({
       // invalidatesTags: (result) =>
       //   result ? [{ type: "ADS", id: "LIST" }] : [],
     }),
+
+    deleteAdsImage: builder.mutation({
+      query: (args) => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+
+        return {
+          url: `/ads/${args.id}/image/?${new URLSearchParams({
+            file_url: args.url,
+          })}`,
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -272,4 +290,5 @@ export const {
   useAddAdsMutation,
   useUpdateUserAdsMutation,
   useAddAdsImageMutation,
+  useDeleteAdsImageMutation,
 } = adsApi;

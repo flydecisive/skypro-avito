@@ -1,6 +1,6 @@
 .modal {
   width: 600px;
-  height: 800px;
+  /* height: 800px; */
   padding: 20px 50px 42px 50px;
   box-sizing: border-box;
   border-radius: 12px;
@@ -152,4 +152,5 @@
 
 .delete:hover {
   stroke: red;
+  cursor: pointer;
 }
