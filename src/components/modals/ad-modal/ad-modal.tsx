@@ -8,6 +8,7 @@ import Button from "../../buttons/button/button";
 import {
   useAddAdsMutation,
   useUpdateUserAdsMutation,
+  useAddAdsImageMutation,
 } from "../../../services/ads";
 import { useState, ChangeEvent, useEffect } from "react";
 
@@ -21,6 +22,7 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   const [triggerAddAds, { data, isLoading }] = useAddAdsMutation();
   const [triggerUpdateAds, { data: updateAdsData }] =
     useUpdateUserAdsMutation();
+  const [triggerAdsImage] = useAddAdsImageMutation();
   const [title, setTitle] = useState<string>(
     targetButton === "Редактировать" ? currentAds?.title : ""
   );
@@ -34,10 +36,10 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   const [noticeText, setNoticeText] = useState<string>("");
   const [images, setImages] = useState<any>(Array(5).fill({}));
   const [imageSrc, setImageSrc] = useState<any>([]);
+  const id = currentAds?.id;
 
   useEffect(() => {
     if (imageSrc.length !== 0) {
-      console.log(imageSrc);
       const newImages = [];
       for (let i = 0; i < 5; i++) {
         if (imageSrc[i]) {
@@ -98,6 +100,7 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
     let file = event.target.files?.[0];
     if (file) {
       const files: any = event.target.files;
+      triggerAdsImage({ file, id });
 
       const newImageSrc: any = [];
       for (let i = 0; i < files.length; i++) {
@@ -191,56 +194,6 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
               </label>
             );
           })}
-          {/* <label className={styles.add_photo}>
-            <AddPhoto />
-            <input
-              type="file"
-              hidden
-              onChange={(e) => {
-                handleUploadImage(e);
-              }}
-            />
-          </label>
-          <label className={styles.add_photo}>
-            <AddPhoto />
-            <input
-              type="file"
-              hidden
-              onChange={(e) => {
-                handleUploadImage(e);
-              }}
-            />
-          </label>
-          <label className={styles.add_photo}>
-            <AddPhoto />
-            <input
-              type="file"
-              hidden
-              onChange={(e) => {
-                handleUploadImage(e);
-              }}
-            />
-          </label>
-          <label className={styles.add_photo}>
-            <AddPhoto />
-            <input
-              type="file"
-              hidden
-              onChange={(e) => {
-                handleUploadImage(e);
-              }}
-            />
-          </label>
-          <label className={styles.add_photo}>
-            <AddPhoto />
-            <input
-              type="file"
-              hidden
-              onChange={(e) => {
-                handleUploadImage(e);
-              }}
-            />
-          </label> */}
         </div>
         <label className={styles.label}>
           Цена{" "}

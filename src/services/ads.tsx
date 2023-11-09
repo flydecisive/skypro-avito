@@ -233,6 +233,28 @@ export const adsApi = createApi({
       invalidatesTags: (result) =>
         result ? [{ type: "ADS", id: "LIST" }] : [],
     }),
+
+    addAdsImage: builder.mutation({
+      query: (args) => {
+        const { access_token } = JSON.parse(
+          localStorage.getItem("tokenData") || "{}"
+        );
+        const formData = new FormData();
+        formData.append("file", args.file);
+
+        return {
+          url: `/ads/${args.id}/image`,
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": undefined,
+          },
+        };
+      },
+      // invalidatesTags: (result) =>
+      //   result ? [{ type: "ADS", id: "LIST" }] : [],
+    }),
   }),
 });
 
@@ -249,4 +271,5 @@ export const {
   useDeleteAdsMutation,
   useAddAdsMutation,
   useUpdateUserAdsMutation,
+  useAddAdsImageMutation,
 } = adsApi;
