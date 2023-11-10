@@ -19,6 +19,12 @@ function MainPage() {
   const [targetButton, setTargetButton] = useState<string>("");
   const { isMobile } = useIsMobileContext();
 
+  if (isMobile) {
+    alert("Мобила");
+  } else {
+    alert("Не мобила");
+  }
+
   useEffect(() => {
     if (!searchValue) {
       const cardsItems = allAds.map((el: any) => {
@@ -78,7 +84,6 @@ function MainPage() {
         ""
       )}
       <div className={`${styles.main} ${showModal ? styles.main_filter : ""}`}>
-        {/* {windowSize.innerWidth <= 375 ('') : ('')} */}
         <Header
           showAddAdv={(e) => {
             setTargetButton(e.target.textContent);
