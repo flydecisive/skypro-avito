@@ -137,6 +137,7 @@ function AdvPage() {
             setTargetButton(e.target.textContent);
             setShowModal(true);
           }}
+          isSearch={false}
         />
         <div className={`${styles.wrapper} center`}>
           <PageNav

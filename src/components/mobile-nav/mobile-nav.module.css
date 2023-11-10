@@ -1,0 +1,13 @@
+.nav {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0px 4px 25px 0px rgb(0 0 0 / 10%);
+  height: 54px;
+  padding: 0px 55px 0px 55px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

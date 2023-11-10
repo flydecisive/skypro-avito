@@ -8,6 +8,13 @@
   padding-right: calc(50% - 720px);
 }
 
+@media (max-width: 376px) {
+  :global(.center) {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
 :global(button) {
   cursor: pointer;
 }
