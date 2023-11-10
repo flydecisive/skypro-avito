@@ -9,6 +9,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
 import { useIsMobileContext } from "../../contexts/isMobile";
+import MobileNav from "../../components/mobile-nav/mobile-nav";
 
 function MainPage() {
   const navigate = useNavigate();
@@ -18,12 +19,6 @@ function MainPage() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
   const { isMobile } = useIsMobileContext();
-
-  if (isMobile) {
-    alert("Мобила");
-  } else {
-    alert("Не мобила");
-  }
 
   useEffect(() => {
     if (!searchValue) {
@@ -49,27 +44,37 @@ function MainPage() {
     setSearchValue(event.target.value);
   };
 
+  function renderCardsItems() {
+    const cardsItems = allAds.map((el: any) => {
+      if (el.title.toLowerCase().includes(searchValue?.toLowerCase())) {
+        return (
+          <ProductCard
+            key={el.id}
+            header={el.title}
+            price={el.price}
+            city={el.user.city}
+            time={el.created_on}
+            images={el.images}
+            onClick={() => navigate(`/adv/${el.id}`)}
+          />
+        );
+      }
+
+      return "";
+    });
+
+    setProductCards(cardsItems);
+  }
+
+  useEffect(() => {
+    if (searchValue && isMobile) {
+      renderCardsItems();
+    }
+  }, [searchValue]);
+
   const handleSearchButton = () => {
-    if (searchValue) {
-      const cardsItems = allAds.map((el: any) => {
-        if (el.title.toLowerCase().includes(searchValue.toLowerCase())) {
-          return (
-            <ProductCard
-              key={el.id}
-              header={el.title}
-              price={el.price}
-              city={el.user.city}
-              time={el.created_on}
-              images={el.images}
-              onClick={() => navigate(`/adv/${el.id}`)}
-            />
-          );
-        }
-
-        return "";
-      });
-
-      setProductCards(cardsItems);
+    if (searchValue && !isMobile) {
+      renderCardsItems();
     }
   };
 
@@ -89,17 +94,23 @@ function MainPage() {
             setTargetButton(e.target.textContent);
             setShowModal(true);
           }}
+          isSearch={true}
+          toggleSearchValue={toggleSearchValue}
         />
         <div className={`${styles.wrapper} center`}>
-          <PageNav
-            isSearch={true}
-            buttonName="Найти"
-            buttonWidth="158px"
-            onClick={() => {
-              handleSearchButton();
-            }}
-            toggleSearchValue={toggleSearchValue}
-          />
+          {!isMobile ? (
+            <PageNav
+              isSearch={true}
+              buttonName="Найти"
+              buttonWidth="158px"
+              onClick={() => {
+                handleSearchButton();
+              }}
+              toggleSearchValue={toggleSearchValue}
+            />
+          ) : (
+            ""
+          )}
           <div className={styles.content}>
             <Title title={"Объявления"} />
             {allAds.length === 0 ? (

@@ -8,3 +8,9 @@
   gap: 10px;
   box-sizing: border-box;
 }
+
+@media (max-width: 376px) {
+  .header {
+    height: 55px;
+  }
+}

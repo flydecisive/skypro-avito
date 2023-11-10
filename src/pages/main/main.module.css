@@ -29,3 +29,16 @@
   column-gap: inherit;
   row-gap: 40px;
 }
+
+@media (max-width: 376px) {
+  .content {
+    margin-top: 30px;
+    gap: 20px;
+    min-height: 100dvh;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 10px;
+  }
+}

@@ -12,3 +12,10 @@
   font-weight: 400;
   line-height: 130%;
 }
+
+@media (max-width: 376px) {
+  .data_item {
+    font-size: 12px;
+    line-height: 130%;
+  }
+}
