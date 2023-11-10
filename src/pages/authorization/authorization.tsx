@@ -79,7 +79,14 @@ function AuthorizationPage() {
               const responseData = await loginUser(email, password);
 
               if (responseData) {
-                localStorage.setItem("refresh", responseData.refresh_token);
+                localStorage.setItem(
+                  "tokenData",
+                  JSON.stringify({
+                    access_token: responseData.access_token,
+                    refresh_token: responseData.refresh_token,
+                  })
+                );
+                localStorage.setItem("email", email);
                 setIsAllowed?.(!isAllowed);
                 navigate("/");
               }
@@ -116,7 +123,14 @@ function AuthorizationPage() {
           const responseData = await loginUser(email, password);
 
           if (responseData) {
-            localStorage.setItem("refresh", responseData.refresh_token);
+            localStorage.setItem(
+              "tokenData",
+              JSON.stringify({
+                access_token: responseData.access_token,
+                refresh_token: responseData.refresh_token,
+              })
+            );
+            localStorage.setItem("email", email);
             setIsAllowed?.(!isAllowed);
             navigate("/");
           }

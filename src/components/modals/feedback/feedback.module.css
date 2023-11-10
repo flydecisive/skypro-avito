@@ -125,6 +125,7 @@
   border-radius: 50%;
   background: #f0f0f0;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .comment_name,
@@ -146,7 +147,8 @@
   line-height: 200%;
 }
 
-.comment_text {
+.comment_text,
+.no_feedback {
   color: #000;
   font-family: "RobotoRegular";
   font-size: 16px;
@@ -178,6 +180,8 @@
 .feedback {
   display: flex;
   gap: 10px;
+  position: relative;
+  width: 100%;
 }
 
 .cross {
@@ -186,4 +190,17 @@
 
 .cross:hover {
   stroke: #009ee4;
+}
+
+.delete_feedback {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 0;
+  stroke: #d9d9d9;
+}
+
+.delete_feedback:hover {
+  stroke: #009ee4;
+  cursor: pointer;
 }

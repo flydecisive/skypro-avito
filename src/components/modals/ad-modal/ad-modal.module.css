@@ -1,6 +1,6 @@
 .modal {
   width: 600px;
-  height: 800px;
+  /* height: 800px; */
   padding: 20px 50px 42px 50px;
   box-sizing: border-box;
   border-radius: 12px;
@@ -126,4 +126,31 @@
 
 .cross:hover {
   stroke: #009ee4;
+  cursor: pointer;
+}
+
+.add_photo:hover {
+  cursor: pointer;
+}
+
+.photo {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.delete {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  z-index: 4;
+  stroke: #d9d9d9;
+  top: 0;
+  bottom: 0;
+}
+
+.delete:hover {
+  stroke: red;
+  cursor: pointer;
 }

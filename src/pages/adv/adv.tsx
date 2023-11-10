@@ -11,16 +11,13 @@ import { useEffect, useState } from "react";
 import Feedback from "../../components/modals/feedback/feedback";
 import { useSelector } from "react-redux";
 import { useAllowedContext } from "../../contexts/allowed";
-import { getAdsFeedback } from "../../api";
 import { sellsFromData } from "../../helpers";
-
-const imagesState: any = {
-  0: true,
-  1: false,
-  2: false,
-  3: false,
-  4: false,
-};
+import { UseAuthUserContext } from "../../contexts/authUser";
+import {
+  useLazyGetAdsFeedbackQuery,
+  useDeleteAdsMutation,
+} from "../../services/ads";
+import { ReactComponent as NoImage } from "../../assets/img/image_no_icon_216618.svg";
 
 function AdvPage() {
   const { isAllowed } = useAllowedContext();
@@ -34,15 +31,27 @@ function AdvPage() {
   const [adsImages, setAdsImages] = useState<any>();
   const [mainImage, setMainImage] = useState<any>();
   const [feedback, setFeedback] = useState<any>();
-
-  const adsFeedback = async () => {
-    const feedback = await getAdsFeedback(String(id));
-
-    setFeedback(feedback);
-  };
+  const { authUser } = UseAuthUserContext();
+  const [fetchAdsFeedback, { data: getAdsFeedbackData }] =
+    useLazyGetAdsFeedbackQuery();
+  const [triggerDeleteAds] = useDeleteAdsMutation();
+  const [imagesState, setImagesState] = useState<any>({
+    0: true,
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+  });
+  const [prevImageId, setPrevImageId] = useState<number>();
 
   useEffect(() => {
-    adsFeedback();
+    if (getAdsFeedbackData) {
+      setFeedback(getAdsFeedbackData);
+    }
+  }, [getAdsFeedbackData]);
+
+  useEffect(() => {
+    fetchAdsFeedback({ ads_id: id });
   }, [currentAds]);
 
   useEffect(() => {
@@ -53,43 +62,48 @@ function AdvPage() {
     }
   }, [allAds, id]);
 
-  useEffect(() => {
-    if (currentAds) {
-      const elemsData = [];
-      const images = currentAds.images;
-      for (let i = 0; i < 5; i++) {
-        if (images[i]) {
-          elemsData.push(
-            <img
-              key={i}
-              id={String(i)}
-              className={`${styles.switcher_item} ${
-                imagesState[i] ? styles.active_item : ""
-              }`}
-              alt=""
-              src={`http://127.0.0.1:8090/${images[i].url}`}
-              onClick={(e: any) => {
-                setMainImage(e.target.src);
-                for (let i = 0; i < Object.keys(imagesState).length; i++) {
-                  imagesState[i] = false;
-                }
-                const id = Number(e.target.id);
-                imagesState[id] = true;
-              }}
-            />
-          );
-        } else {
-          elemsData.push(<div className={styles.switcher_item} key={i}></div>);
-        }
-      }
+  function renderAdvImages(data: any) {
+    const elemsData = data?.images.map((el: any, index: number) => {
+      return (
+        <img
+          key={index}
+          id={String(index)}
+          className={`${styles.switcher_item} ${
+            imagesState[index] ? styles.active_item : ""
+          }`}
+          alt=""
+          src={`http://127.0.0.1:8090/${el.url}`}
+          onClick={(e: any) => {
+            setMainImage(e.target.src);
+            const id = Number(e.target.id);
+            if (id !== prevImageId) {
+              setImagesState({
+                ...imagesState,
+                [id]: true,
+                [Number(prevImageId)]: false,
+              });
+              setPrevImageId(id);
+            }
+          }}
+        />
+      );
+    });
 
-      if (!mainImage) {
-        setMainImage(elemsData[0].props.src);
-      }
-
-      setAdsImages(elemsData);
+    if (!mainImage && currentAds?.images.length !== 0) {
+      setMainImage(elemsData?.[0]?.props.src);
+      setPrevImageId(0);
     }
-  }, [currentAds, mainImage]);
+
+    if (mainImage && currentAds?.images.length === 0) {
+      setMainImage(undefined);
+    }
+
+    setAdsImages(elemsData);
+  }
+
+  useEffect(() => {
+    renderAdvImages(currentAds);
+  }, [imagesState, currentAds]);
 
   return (
     <>
@@ -97,6 +111,7 @@ function AdvPage() {
         <AdModal
           setShowModal={() => setShowModal(false)}
           targetButton={targetButton}
+          currentAds={currentAds}
         />
       ) : (
         ""
@@ -107,6 +122,7 @@ function AdvPage() {
             setShowFeedbackModal(false);
           }}
           feedback={feedback}
+          adsId={id}
         />
       ) : (
         ""
@@ -136,21 +152,17 @@ function AdvPage() {
               {mainImage ? (
                 <img className={styles.image} src={mainImage} alt="" />
               ) : (
-                <div className={styles.image}>Изображение отсуствует</div>
+                <NoImage className={styles.image} />
               )}
 
-              <div className={styles.image_switcher}>
-                {/* Картинки */}
-                {adsImages}
-              </div>
-              {/* <ImageSwitcher /> */}
+              <div className={styles.image_switcher}>{adsImages}</div>
             </div>
             <div className={styles.data}>
               <h2 className={styles.title}>{currentAds?.title}</h2>
               <Metadata
                 city={currentAds?.user.city}
                 time={currentAds?.created_on}
-                type="user"
+                type="card"
               />
               <p
                 className={styles.feedback}
@@ -162,7 +174,7 @@ function AdvPage() {
               </p>
               <p className={styles.price}>{currentAds?.price} ₽</p>
               <div className={styles.buttons}>
-                {isAllowed ? (
+                {isAllowed && currentAds?.user_id === authUser?.id ? (
                   <>
                     <Button
                       name="Редактировать"
@@ -177,7 +189,10 @@ function AdvPage() {
                       name="Снять с публикации"
                       buttonColor="blue"
                       width="225px"
-                      onClick={() => {}}
+                      onClick={() => {
+                        triggerDeleteAds({ id: id });
+                        navigate("/");
+                      }}
                     />
                   </>
                 ) : (
@@ -190,7 +205,11 @@ function AdvPage() {
               <div
                 className={styles.user}
                 onClick={() => {
-                  navigate(`/seller/${currentAds?.user.id}`);
+                  navigate(
+                    currentAds?.user.id === authUser?.id
+                      ? `/profile`
+                      : `/seller/${currentAds?.user.id}`
+                  );
                 }}
               >
                 {currentAds?.user.avatar === null ? (
@@ -209,7 +228,7 @@ function AdvPage() {
 
                 <div className={styles.user_info}>
                   <div className={styles.user_name}>
-                    {currentAds?.user.name}
+                    {currentAds?.user.name ? currentAds?.user.name : "user"}
                   </div>
                   <div className={styles.user_date}>
                     Продает товары с{" "}

@@ -63,7 +63,7 @@
   align-items: center;
 }
 
-.left_text {
+.upload_file {
   cursor: pointer;
   color: #009ee4;
   font-family: "RobotoRegular";
@@ -89,4 +89,20 @@
 .right_container {
   display: flex;
   gap: 14px;
+}
+
+.buttons_wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+}
+
+.no_ads {
+  color: #000;
+  font-family: "RobotoRegular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  text-align: left;
 }

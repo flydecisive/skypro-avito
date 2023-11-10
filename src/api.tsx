@@ -12,7 +12,7 @@ export async function registerUser(
     body: JSON.stringify({
       email: email,
       password: password,
-      firstname: firstname,
+      name: firstname,
       surname: surname,
       city: city,
     }),
@@ -45,28 +45,30 @@ export async function loginUser(email: string, password: string) {
   return responseData;
 }
 
-export async function getAdsFeedback(ads_id: string) {
-  const response = await fetch(`${PATH}/ads/${ads_id}/comments`, {
-    method: "GET",
+export const changePassword = async (
+  oldPassword: string,
+  newPassword: string
+) => {
+  const { access_token } = JSON.parse(
+    localStorage.getItem("tokenData") || "{}"
+  );
+
+  const response = await fetch(`${PATH}/user/password`, {
+    method: "PUT",
+    body: JSON.stringify({
+      password_1: oldPassword,
+      password_2: newPassword,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${access_token}`,
+    },
   });
 
-  if (!response.ok) {
-    throw new Error("Ошибка");
+  if (!response.ok && response.status === 400) {
+    throw new Error("Ошибка валидации");
   }
 
   const responseData = await response.json();
   return responseData;
-}
-
-export async function getAllUsers() {
-  const response = await fetch(`${PATH}/user/all`, {
-    method: "GET",
-  });
-
-  if (!response.ok) {
-    throw new Error("Ошибка");
-  }
-
-  const responseData = await response.json();
-  return responseData;
-}
+};

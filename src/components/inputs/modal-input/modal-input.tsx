@@ -5,9 +5,17 @@ interface SettingInputProps {
   width: string;
   placeholder: string;
   type: string;
+  onInput?: (e: any) => void;
+  defaultValue?: string;
 }
 
-function ModalInput({ width, placeholder, type }: SettingInputProps) {
+function ModalInput({
+  width,
+  placeholder,
+  type,
+  onInput,
+  defaultValue,
+}: SettingInputProps) {
   return (
     <form className={styles.form}>
       <label className={styles.label}>{createLabel(placeholder)}</label>
@@ -15,7 +23,9 @@ function ModalInput({ width, placeholder, type }: SettingInputProps) {
         className={styles.input}
         style={{ width: width }}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         type={type}
+        onInput={onInput}
       ></input>
     </form>
   );

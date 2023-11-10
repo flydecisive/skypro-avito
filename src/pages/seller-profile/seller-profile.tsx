@@ -10,34 +10,29 @@ import Metadata from "../../components/metadata/metadata";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getAllUsers } from "../../api";
 import { useSelector } from "react-redux";
+import { useLazyGetAllUsersQuery } from "../../services/ads";
 
 function SellerProfilePage() {
   const { id } = useParams();
   const allAds = useSelector((store: any) => store?.ads.allAds);
-  getAllUsers();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<any>();
   const [userAds, setUserAds] = useState<any>();
-
-  const getAndSetUsers = async (id: string) => {
-    const users = await getAllUsers();
-
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].id === Number(id)) {
-        setCurrentUser(users[i]);
-        break;
-      }
-    }
-  };
+  const [fetchAllUsers, { data }] = useLazyGetAllUsersQuery();
 
   useEffect(() => {
-    if (id) {
-      getAndSetUsers(id);
-    }
+    data?.forEach((el: any) => {
+      if (el.id === Number(id)) {
+        setCurrentUser(el);
+      }
+    });
+  }, [data]);
+
+  useEffect(() => {
+    fetchAllUsers();
   }, [id]);
 
   useEffect(() => {
@@ -108,9 +103,9 @@ function SellerProfilePage() {
                 </div>
                 <div className={styles.right}>
                   <div className={styles.right_container}>
-                    <p className={styles.person}>{`${currentUser?.name} ${
-                      currentUser?.surname ? currentUser?.surname : ""
-                    }`}</p>
+                    <p className={styles.person}>{`${
+                      currentUser?.name ? currentUser?.name : "user"
+                    } ${currentUser?.surname ? currentUser?.surname : ""}`}</p>
                     <Metadata
                       city={currentUser?.city}
                       time={currentUser?.sells_from}
@@ -124,7 +119,11 @@ function SellerProfilePage() {
             </div>
             <h2 className={styles.header}>Товары продавца</h2>
             <div className={styles.cards}>
-              {userAds ? userAds : "У продавца нет объявлений"}
+              {userAds && userAds.length !== 0 ? (
+                userAds
+              ) : (
+                <p className={styles.no_ads}>У продавца нет объявлений</p>
+              )}
             </div>
           </div>
         </div>
