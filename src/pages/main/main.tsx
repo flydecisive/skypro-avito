@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdModal from "../../components/modals/ad-modal/ad-modal";
-import { useWindowSizeContext } from "../../contexts/window-size";
+import { useIsMobileContext } from "../../contexts/isMobile";
 
 function MainPage() {
   const navigate = useNavigate();
@@ -17,11 +17,7 @@ function MainPage() {
   const [productCards, setProductCards] = useState<JSX.Element[]>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
-  const { windowSize } = useWindowSizeContext();
-
-  useEffect(() => {
-    console.log(windowSize);
-  }, [windowSize]);
+  const { isMobile } = useIsMobileContext();
 
   useEffect(() => {
     if (!searchValue) {
