@@ -19,15 +19,9 @@ interface AdModalProps {
   setShowModal: (params: boolean) => void;
   targetButton: string;
   currentAds?: any;
-  setMainImage?: any;
 }
 
-function AdModal({
-  setShowModal,
-  targetButton,
-  currentAds,
-  setMainImage,
-}: AdModalProps) {
+function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   const [triggerAddAds, { data, isLoading }] = useAddAdsMutation();
   const [triggerUpdateAds, { data: updateAdsData }] =
     useUpdateUserAdsMutation();
@@ -59,9 +53,6 @@ function AdModal({
   useEffect(() => {
     if (data || updateAdsData) {
       setShowModal(false);
-    }
-    if (updateAdsData) {
-      setMainImage(images[0]?.src);
     }
   }, [data, updateAdsData]);
 
@@ -117,7 +108,7 @@ function AdModal({
     let file = event.target.files?.[0];
     if (file) {
       let imagesData: any = await triggerAdsImage({ file, id });
-      imagesData = imagesData.data.images;
+      imagesData = imagesData?.data?.images;
 
       setImages(setNewImages(imagesData));
     }

@@ -19,14 +19,6 @@ import {
 } from "../../services/ads";
 import { ReactComponent as NoImage } from "../../assets/img/image_no_icon_216618.svg";
 
-let imagesState: any = {
-  0: true,
-  1: false,
-  2: false,
-  3: false,
-  4: false,
-};
-
 function AdvPage() {
   const { isAllowed } = useAllowedContext();
   const { id } = useParams();
@@ -43,16 +35,14 @@ function AdvPage() {
   const [fetchAdsFeedback, { data: getAdsFeedbackData }] =
     useLazyGetAdsFeedbackQuery();
   const [triggerDeleteAds] = useDeleteAdsMutation();
-
-  useEffect(() => {
-    imagesState = {
-      0: true,
-      1: false,
-      2: false,
-      3: false,
-      4: false,
-    };
-  }, []);
+  const [imagesState, setImagesState] = useState<any>({
+    0: true,
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+  });
+  const [prevImageId, setPrevImageId] = useState<number>();
 
   useEffect(() => {
     if (getAdsFeedbackData) {
@@ -72,37 +62,48 @@ function AdvPage() {
     }
   }, [allAds, id]);
 
-  useEffect(() => {
-    if (currentAds) {
-      const elemsData = currentAds.images.map((el: any, index: number) => {
-        return (
-          <img
-            key={index}
-            id={String(index)}
-            className={`${styles.switcher_item} ${
-              imagesState[index] ? styles.active_item : ""
-            }`}
-            alt=""
-            src={`http://127.0.0.1:8090/${el.url}`}
-            onClick={(e: any) => {
-              setMainImage(e.target.src);
-              for (let i = 0; i < Object.keys(imagesState).length; i++) {
-                imagesState[i] = false;
-              }
-              const id = Number(e.target.id);
-              imagesState[id] = true;
-            }}
-          />
-        );
-      });
+  function renderAdvImages(data: any) {
+    const elemsData = data?.images.map((el: any, index: number) => {
+      return (
+        <img
+          key={index}
+          id={String(index)}
+          className={`${styles.switcher_item} ${
+            imagesState[index] ? styles.active_item : ""
+          }`}
+          alt=""
+          src={`http://127.0.0.1:8090/${el.url}`}
+          onClick={(e: any) => {
+            setMainImage(e.target.src);
+            const id = Number(e.target.id);
+            if (id !== prevImageId) {
+              setImagesState({
+                ...imagesState,
+                [id]: true,
+                [Number(prevImageId)]: false,
+              });
+              setPrevImageId(id);
+            }
+          }}
+        />
+      );
+    });
 
-      if (!mainImage) {
-        setMainImage(elemsData[0]?.props.src);
-      }
-
-      setAdsImages(elemsData);
+    if (!mainImage && currentAds?.images.length !== 0) {
+      setMainImage(elemsData?.[0]?.props.src);
+      setPrevImageId(0);
     }
-  }, [currentAds, mainImage]);
+
+    if (mainImage && currentAds?.images.length === 0) {
+      setMainImage(undefined);
+    }
+
+    setAdsImages(elemsData);
+  }
+
+  useEffect(() => {
+    renderAdvImages(currentAds);
+  }, [imagesState, currentAds]);
 
   return (
     <>
@@ -111,7 +112,6 @@ function AdvPage() {
           setShowModal={() => setShowModal(false)}
           targetButton={targetButton}
           currentAds={currentAds}
-          setMainImage={setMainImage}
         />
       ) : (
         ""
@@ -185,7 +185,6 @@ function AdvPage() {
                         setShowModal(true);
                       }}
                     />
-                    {/* Снять */}
                     <Button
                       name="Снять с публикации"
                       buttonColor="blue"

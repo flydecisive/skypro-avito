@@ -79,7 +79,7 @@ export const sellsFromData = (date: string): string => {
 export const setNewImages = (data: any) => {
   const newImages: any = [];
   for (let i = 0; i < 5; i++) {
-    if (data[i]?.url) {
+    if (data?.[i]?.url) {
       newImages.push({ src: `http://localhost:8090/${data[i]?.url}` });
     } else {
       newImages.push({});
