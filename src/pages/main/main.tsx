@@ -14,7 +14,8 @@ import MobileNav from "../../components/mobile-nav/mobile-nav";
 function MainPage() {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>();
-  const allAds = useSelector((store: any) => store?.ads.allAds);
+  // const allAds = useSelector((store: any) => store?.ads.allAds);
+  const allAds: any = [];
   const [productCards, setProductCards] = useState<JSX.Element[]>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [targetButton, setTargetButton] = useState<string>("");
