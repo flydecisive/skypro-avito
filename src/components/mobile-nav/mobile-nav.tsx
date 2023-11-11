@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 import { useAllowedContext } from "../../contexts/allowed";
 
 interface MobileNavProps {
-  showAddAdv: (args: any) => void;
+  showAddAdv?: (args: any) => void;
 }
 
 function MobileNav({ showAddAdv }: MobileNavProps) {
@@ -23,7 +23,9 @@ function MobileNav({ showAddAdv }: MobileNavProps) {
       <AddAds
         onClick={(e) => {
           if (isAllowed) {
-            showAddAdv(e);
+            if (showAddAdv) {
+              showAddAdv(e);
+            }
           } else {
             navigate("/login");
           }
