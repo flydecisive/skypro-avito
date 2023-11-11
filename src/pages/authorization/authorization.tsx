@@ -10,6 +10,9 @@ import { ChangeEvent, useState } from "react";
 import PushNotice from "../../components/push-notice/push-notice";
 import { validateEmail } from "../../helpers";
 import { useAllowedContext } from "../../contexts/allowed";
+import { useIsMobileContext } from "../../contexts/isMobile";
+import Header from "../../components/header/header";
+import MobileNav from "../../components/mobile-nav/mobile-nav";
 
 function AuthorizationPage() {
   const { isAllowed, setIsAllowed } = useAllowedContext();
@@ -25,6 +28,7 @@ function AuthorizationPage() {
   const [noticeText, setNoticeText] = useState("");
   const [showNotice, setShowNotice] = useState(false);
   const [isDisabledButton, setIsDisabledButton] = useState(false);
+  const { isMobile } = useIsMobileContext();
 
   const handleEmailInput = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -152,7 +156,93 @@ function AuthorizationPage() {
     }
   };
 
-  return path === "/login" ? (
+  const loginInputs = (
+    <>
+      <Input type="text" placeholder="email" onInput={handleEmailInput} />
+      <Input
+        type="password"
+        placeholder="Пароль"
+        onInput={handlePasswordInput}
+      />
+    </>
+  );
+
+  const registerInputs = (
+    <>
+      <Input type="text" placeholder="email" onInput={handleEmailInput} />
+      <Input
+        type="password"
+        placeholder="Пароль"
+        onInput={handlePasswordInput}
+      />
+      <Input
+        type="password"
+        placeholder="Повторите пароль"
+        onInput={handleConfirmPasswordInput}
+      />
+      <Input
+        type="text"
+        placeholder="Имя (необязательно)"
+        onInput={handleFirstnameInput}
+      />
+      <Input
+        type="text"
+        placeholder="Фамилия (необязательно)"
+        onInput={handleSurnameInput}
+      />
+      <Input
+        type="text"
+        placeholder="Город (необязательно)"
+        onInput={handleCityInput}
+      />
+    </>
+  );
+
+  const loginButtons = (
+    <>
+      <Button
+        name="Войти"
+        buttonColor="blue"
+        width={isMobile ? "100%" : "278px"}
+        onClick={() => {
+          handleLoginButton(email, password);
+        }}
+        isDisabledButton={isDisabledButton}
+      />
+      <Button
+        name="Зарегистрироваться"
+        buttonColor="white"
+        width={isMobile ? "100%" : "278px"}
+        onClick={() => {
+          navigate("/register");
+        }}
+        isDisabledButton={isDisabledButton}
+      />
+    </>
+  );
+
+  const registerButtons = (
+    <>
+      <Button
+        name="Зарегистрироваться"
+        buttonColor="blue"
+        width={isMobile ? "100%" : "278px"}
+        onClick={() => {
+          handleRegisterButton(
+            email,
+            password,
+            confirmPassword,
+            firstname,
+            surname,
+            city
+          );
+        }}
+        isDisabledButton={isDisabledButton}
+      />
+    </>
+  );
+
+  return (
     <div className={styles.wrapper}>
       {showNotice ? (
         <PushNotice
@@ -164,103 +254,19 @@ function AuthorizationPage() {
       ) : (
         ""
       )}
-      <div className={styles.modal}>
+      {isMobile ? <Header /> : ""}
+      <div className={`${styles.modal} `}>
         <NavLink to="/">
           <Logo />
         </NavLink>
         <div className={styles.inputs}>
-          <Input type="text" placeholder="email" onInput={handleEmailInput} />
-          <Input
-            type="password"
-            placeholder="Пароль"
-            onInput={handlePasswordInput}
-          />
+          {path === "/login" ? loginInputs : registerInputs}
         </div>
         <div className={styles.buttons}>
-          <Button
-            name="Войти"
-            buttonColor="blue"
-            width="278px"
-            onClick={() => {
-              handleLoginButton(email, password);
-            }}
-            isDisabledButton={isDisabledButton}
-          />
-          <Button
-            name="Зарегистрироваться"
-            buttonColor="white"
-            width="278px"
-            onClick={() => {
-              navigate("/register");
-            }}
-            isDisabledButton={isDisabledButton}
-          />
+          {path === "/login" ? loginButtons : registerButtons}
         </div>
       </div>
-    </div>
-  ) : (
-    <div className={styles.wrapper}>
-      {showNotice ? (
-        <PushNotice
-          text={noticeText}
-          onClick={() => {
-            setShowNotice(false);
-          }}
-        />
-      ) : (
-        ""
-      )}
-      <div className={styles.modal}>
-        <NavLink to="/">
-          <Logo />
-        </NavLink>
-        <div className={styles.inputs}>
-          <Input type="text" placeholder="email" onInput={handleEmailInput} />
-          <Input
-            type="password"
-            placeholder="Пароль"
-            onInput={handlePasswordInput}
-          />
-          <Input
-            type="password"
-            placeholder="Повторите пароль"
-            onInput={handleConfirmPasswordInput}
-          />
-          <Input
-            type="text"
-            placeholder="Имя (необязательно)"
-            onInput={handleFirstnameInput}
-          />
-          <Input
-            type="text"
-            placeholder="Фамилия (необязательно)"
-            onInput={handleSurnameInput}
-          />
-          <Input
-            type="text"
-            placeholder="Город (необязательно)"
-            onInput={handleCityInput}
-          />
-        </div>
-        <div className={styles.buttons}>
-          <Button
-            name="Зарегистрироваться"
-            buttonColor="blue"
-            width="278px"
-            onClick={() => {
-              handleRegisterButton(
-                email,
-                password,
-                confirmPassword,
-                firstname,
-                surname,
-                city
-              );
-            }}
-            isDisabledButton={isDisabledButton}
-          />
-        </div>
-      </div>
+      {isMobile ? <MobileNav /> : ""}
     </div>
   );
 }

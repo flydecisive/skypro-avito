@@ -2,15 +2,44 @@ import styles from "./mobile-nav.module.css";
 import { ReactComponent as User } from "../../assets/img/mobile-user.svg";
 import { ReactComponent as Home } from "../../assets/img/mobile-home.svg";
 import { ReactComponent as AddAds } from "../../assets/img/add_ads.svg";
+import { useNavigate } from "react-router";
+import { useAllowedContext } from "../../contexts/allowed";
 
-interface MobileNavProps {}
+interface MobileNavProps {
+  showAddAdv?: (args: any) => void;
+}
 
-function MobileNav() {
+function MobileNav({ showAddAdv }: MobileNavProps) {
+  const navigate = useNavigate();
+  const { isAllowed } = useAllowedContext();
+
   return (
     <div className={styles.nav}>
-      <Home />
-      <AddAds />
-      <User />
+      <Home
+        onClick={() => {
+          navigate("/");
+        }}
+      />
+      <AddAds
+        onClick={(e) => {
+          if (isAllowed) {
+            if (showAddAdv) {
+              showAddAdv(e);
+            }
+          } else {
+            navigate("/login");
+          }
+        }}
+      />
+      <User
+        onClick={() => {
+          if (isAllowed) {
+            navigate("/profile");
+          } else {
+            navigate("/login");
+          }
+        }}
+      />
     </div>
   );
 }
