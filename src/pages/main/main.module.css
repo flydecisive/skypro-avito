@@ -34,7 +34,7 @@
   .main {
     display: flex;
     flex-flow: column nowrap;
-    height: 100dvh;
+    min-height: 100dvh;
   }
 
   .content {
