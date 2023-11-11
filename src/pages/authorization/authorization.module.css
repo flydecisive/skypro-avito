@@ -43,7 +43,7 @@
     background-color: #fff;
     flex-flow: column nowrap;
     justify-content: flex-start;
-    min-height: 100dvh;
+    height: 100dvh;
   }
 
   .modal {
