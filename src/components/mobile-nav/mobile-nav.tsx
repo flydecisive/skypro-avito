@@ -5,7 +5,7 @@ import { ReactComponent as AddAds } from "../../assets/img/add_ads.svg";
 
 interface MobileNavProps {}
 
-function MobileNav({}: MobileNavProps) {
+function MobileNav() {
   return (
     <div className={styles.nav}>
       <Home />

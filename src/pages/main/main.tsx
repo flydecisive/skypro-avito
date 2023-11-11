@@ -120,6 +120,7 @@ function MainPage() {
             )}
           </div>
         </div>
+        {isMobile ? <MobileNav /> : ""}
       </div>
     </>
   );

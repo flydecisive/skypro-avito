@@ -14,7 +14,6 @@ import { setAllAds } from "./store/actions/creators/ads";
 import { AllowedContext } from "./contexts/allowed";
 import { AuthUserContext } from "./contexts/authUser";
 import { IsMobileContext } from "./contexts/isMobile";
-import MobileNav from "./components/mobile-nav/mobile-nav";
 
 function App() {
   const dispatch = useDispatch();
@@ -99,7 +98,6 @@ function App() {
           </IsMobileContext.Provider>
         </AuthUserContext.Provider>
       </AllowedContext.Provider>
-      {isMobile ? <MobileNav /> : ""}
     </div>
   );
 }

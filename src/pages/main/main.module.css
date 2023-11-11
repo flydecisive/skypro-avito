@@ -31,14 +31,20 @@
 }
 
 @media (max-width: 376px) {
+  .main {
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100dvh;
+  }
+
   .content {
     margin-top: 30px;
     gap: 20px;
-    min-height: 100dvh;
   }
 
   .cards {
     grid-template-columns: repeat(2, 1fr);
     row-gap: 10px;
+    margin-bottom: 30px;
   }
 }
