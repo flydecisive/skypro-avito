@@ -88,7 +88,11 @@ function MainPage() {
       ) : (
         ""
       )}
-      <div className={`${styles.main} ${showModal ? styles.main_filter : ""}`}>
+      <div
+        className={`${styles.main} ${
+          showModal && !isMobile ? styles.main_filter : ""
+        }`}
+      >
         <Header
           showAddAdv={(e) => {
             setTargetButton(e.target.textContent);

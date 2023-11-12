@@ -14,6 +14,8 @@ import {
 import { useState, ChangeEvent, useEffect } from "react";
 import { ReactComponent as Delete } from "../../../assets/img/delete.svg";
 import { setNewImages } from "../../../helpers";
+import { useIsMobileContext } from "../../../contexts/isMobile";
+import { ReactComponent as Back } from "../../../assets/img/back.svg";
 
 interface AdModalProps {
   setShowModal: (params: boolean) => void;
@@ -41,6 +43,11 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   const [images, setImages] = useState<any>();
   const id = currentAds?.id;
   const [showDelete, setShowDelete] = useState<boolean>(false);
+  const { isMobile } = useIsMobileContext();
+  const [active, setActive] = useState({
+    textarea: false,
+    price: false,
+  });
 
   useEffect(() => {
     if (currentAds?.images) {
@@ -132,16 +139,24 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
             ? "Редактировать объявление"
             : "Новое объявление"}
         </h2>
-        <Cross className={styles.cross} onClick={() => setShowModal(false)} />
+        {isMobile ? (
+          <Back className={styles.back} onClick={() => setShowModal(false)} />
+        ) : (
+          <Cross className={styles.cross} onClick={() => setShowModal(false)} />
+        )}
       </div>
       <ModalInput
-        width="500px"
+        width={isMobile ? "100%" : "500px"}
         placeholder="Введите название"
         defaultValue={title}
         type="text"
         onInput={handleTitle}
       />
-      <label className={styles.label}>
+      <label
+        className={`${styles.label} ${
+          active.textarea ? styles.label_active : ""
+        }`}
+      >
         Описание
         <textarea
           className={styles.textarea}
@@ -150,11 +165,17 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
           onInput={(e: any) => {
             handleDescription(e);
           }}
+          onFocus={() => {
+            setActive({ ...active, textarea: true });
+          }}
+          onBlur={() => {
+            setActive({ ...active, textarea: false });
+          }}
         ></textarea>
       </label>
       <div className={styles.photos}>
         <h3 className={styles.photos_title}>
-          Фотографии товара{" "}
+          Фотографии товара {isMobile ? <br /> : ""}
           <span className={styles["text-grey"]}>не более 5 фотографий</span>
         </h3>
         <div className={styles.photos_wrapper}>
@@ -209,7 +230,11 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
             );
           })}
         </div>
-        <label className={styles.label}>
+        <label
+          className={`${styles.label} ${
+            active.price ? styles.label_active : ""
+          }`}
+        >
           Цена{" "}
           <input
             type="number"
@@ -218,12 +243,18 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
             onInput={(e: any) => {
               handlePrice(e);
             }}
+            onFocus={() => {
+              setActive({ ...active, price: true });
+            }}
+            onBlur={() => {
+              setActive({ ...active, price: false });
+            }}
           />
         </label>
         <Button
           name={isLoading ? "Загрузка" : "Опубликовать"}
           buttonColor="blue"
-          width="180px"
+          width={isMobile ? "100%" : "180px"}
           onClick={() => {
             handleSubmitButton(
               targetButton,

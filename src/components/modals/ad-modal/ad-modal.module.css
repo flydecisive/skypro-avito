@@ -154,3 +154,77 @@
   stroke: red;
   cursor: pointer;
 }
+
+.back {
+  stroke: #000;
+  position: absolute;
+  left: 20px;
+}
+
+.label_active {
+  color: #009ee4;
+}
+
+@media (max-width: 376px) {
+  .modal {
+    top: 55px;
+    min-height: calc(100dvh - 109px);
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    padding: 30px 20px 30px 20px;
+  }
+
+  .header {
+    font-size: 24px;
+    line-height: 120%;
+  }
+
+  .top {
+    justify-content: center;
+  }
+
+  .label,
+  .textarea,
+  .photos_title,
+  .text-grey {
+    font-size: 14px;
+    line-height: 150%;
+  }
+
+  .textarea {
+    border-radius: 20px;
+    height: 107px;
+    padding: 10px 17px 10px 17px;
+    /* margin-top: 18px; */
+    /* margin-bottom: 30px; */
+  }
+
+  .label {
+    gap: 6px;
+    margin-bottom: 30px;
+  }
+
+  .photos_wrapper {
+    overflow-x: scroll;
+    gap: 10px;
+  }
+
+  .photos {
+    margin-bottom: 0;
+  }
+
+  .price {
+    height: 40px;
+    border-radius: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 18px;
+    background-position: right 5vw center;
+    padding-left: 18px;
+  }
+
+  .top {
+    margin-bottom: 30px;
+  }
+}
