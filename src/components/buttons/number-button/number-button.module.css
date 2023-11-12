@@ -29,3 +29,16 @@
   border-color: #d9d9d9;
   background: #d9d9d9;
 }
+
+@media (max-width: 376px) {
+  .button {
+    width: 100%;
+    height: 57px;
+    font-size: 14px;
+    line-height: 140%;
+  }
+
+  .number_mask {
+    font-size: 12px;
+  }
+}

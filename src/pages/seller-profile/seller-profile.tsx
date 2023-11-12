@@ -12,6 +12,9 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useLazyGetAllUsersQuery } from "../../services/ads";
+import MobileNav from "../../components/mobile-nav/mobile-nav";
+import { useIsMobileContext } from "../../contexts/isMobile";
+import { ReactComponent as Back } from "../../assets/img/back.svg";
 
 function SellerProfilePage() {
   const { id } = useParams();
@@ -22,6 +25,7 @@ function SellerProfilePage() {
   const [currentUser, setCurrentUser] = useState<any>();
   const [userAds, setUserAds] = useState<any>();
   const [fetchAllUsers, { data }] = useLazyGetAllUsersQuery();
+  const { isMobile } = useIsMobileContext();
 
   useEffect(() => {
     data?.forEach((el: any) => {
@@ -79,43 +83,94 @@ function SellerProfilePage() {
           isSearch={false}
         />
         <div className={`${styles.wrapper} center`}>
-          <PageNav
-            isSearch={false}
-            buttonName="Вернуться на главную"
-            buttonWidth="241px"
-            onClick={() => {
-              navigate("/");
-            }}
-          />
+          {!isMobile ? (
+            <PageNav
+              isSearch={false}
+              buttonName="Вернуться на главную"
+              buttonWidth="241px"
+              onClick={() => {
+                navigate("/");
+              }}
+            />
+          ) : (
+            ""
+          )}
           <div className={styles.content}>
-            <Title title="Профиль продавца" />
+            <div className={styles.content_top}>
+              <Title title="Профиль продавца" />
+              <Back
+                className={styles.back}
+                onClick={() => {
+                  navigate(-1);
+                }}
+              />
+            </div>
             <div className={styles.info}>
               <div className={styles.info_wrapper}>
-                <div className={styles.left}>
-                  {currentUser?.avatar ? (
-                    <img
-                      className={styles.avatar}
-                      src={`http://127.0.0.1:8090/${currentUser?.avatar}`}
-                      alt=""
-                    />
-                  ) : (
-                    <div className={styles.avatar}></div>
-                  )}
-                </div>
-                <div className={styles.right}>
-                  <div className={styles.right_container}>
-                    <p className={styles.person}>{`${
-                      currentUser?.name ? currentUser?.name : "user"
-                    } ${currentUser?.surname ? currentUser?.surname : ""}`}</p>
-                    <Metadata
-                      city={currentUser?.city}
-                      time={currentUser?.sells_from}
-                      type="user"
-                    />
-                  </div>
+                {!isMobile ? (
+                  <>
+                    <div className={styles.left}>
+                      {currentUser?.avatar ? (
+                        <img
+                          className={styles.avatar}
+                          src={`http://127.0.0.1:8090/${currentUser?.avatar}`}
+                          alt=""
+                        />
+                      ) : (
+                        <div className={styles.avatar}></div>
+                      )}
+                    </div>
+                    <div className={styles.right}>
+                      <div className={styles.right_container}>
+                        <p className={styles.person}>{`${
+                          currentUser?.name ? currentUser?.name : "user"
+                        } ${
+                          currentUser?.surname ? currentUser?.surname : ""
+                        }`}</p>
+                        <Metadata
+                          city={currentUser?.city}
+                          time={currentUser?.sells_from}
+                          type="user"
+                        />
+                      </div>
 
-                  <NumberButton phone={currentUser?.phone} onClick={() => {}} />
-                </div>
+                      <NumberButton
+                        phone={currentUser?.phone}
+                        onClick={() => {}}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.right_container}>
+                      <p className={styles.person}>{`${
+                        currentUser?.name ? currentUser?.name : "user"
+                      } ${
+                        currentUser?.surname ? currentUser?.surname : ""
+                      }`}</p>
+                      <Metadata
+                        city={currentUser?.city}
+                        time={currentUser?.sells_from}
+                        type="user"
+                      />
+                    </div>
+                    <div className={styles.left}>
+                      {currentUser?.avatar ? (
+                        <img
+                          className={styles.avatar}
+                          src={`http://127.0.0.1:8090/${currentUser?.avatar}`}
+                          alt=""
+                        />
+                      ) : (
+                        <div className={styles.avatar}></div>
+                      )}
+                    </div>
+                    <NumberButton
+                      phone={currentUser?.phone}
+                      onClick={() => {}}
+                    />
+                  </>
+                )}
               </div>
             </div>
             <h2 className={styles.header}>Товары продавца</h2>
@@ -128,6 +183,16 @@ function SellerProfilePage() {
             </div>
           </div>
         </div>
+        {isMobile ? (
+          <MobileNav
+            showAddAdv={(e) => {
+              setTargetButton(e.target.textContent);
+              setShowModal(true);
+            }}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </>
   );
