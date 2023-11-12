@@ -45,3 +45,29 @@
   outline: 0;
   border: 1px solid #009ee4;
 }
+
+@media (max-width: 376px) {
+  .form {
+    gap: 6px;
+  }
+
+  .input {
+    height: 40px;
+    border-radius: 30px;
+  }
+
+  .label,
+  .input,
+  .input::placeholder {
+    font-size: 14px;
+    line-height: 150%;
+  }
+
+  .label_active {
+    color: #009ee4;
+  }
+
+  .input {
+    padding-left: 17px;
+  }
+}

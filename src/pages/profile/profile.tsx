@@ -17,6 +17,8 @@ import {
 } from "../../services/ads";
 import PasswordModal from "../../components/modals/password/password";
 import PushNotice from "../../components/push-notice/push-notice";
+import MobileNav from "../../components/mobile-nav/mobile-nav";
+import { useIsMobileContext } from "../../contexts/isMobile";
 
 function ProfilePage() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -35,6 +37,7 @@ function ProfilePage() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showNotice, setShowNotice] = useState(false);
   const [noticeText, setNoticeText] = useState("");
+  const { isMobile } = useIsMobileContext();
 
   useEffect(() => {
     if (data) {
@@ -55,10 +58,6 @@ function ProfilePage() {
   const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
     let file = event.target.files?.[0];
     if (file) {
-      // console.log(URL.createObjectURL(event.target.files?.[0]));
-      // const fileUrl = URL.createObjectURL(event.target.files?.[0]);
-      // const file = fileUrl.slice(fileUrl.indexOf(":") + 1);
-      //
       userAvatarTrigger({ file });
     }
   };
@@ -82,20 +81,6 @@ function ProfilePage() {
     event.target.value = event.target.value.replace(/[^0-9+]/g, "");
     setPhone(event.target.value);
     setIsDisabledButton(false);
-  };
-
-  const handleUpdateUser = (
-    name: string,
-    surname: string,
-    city: string,
-    phone: string
-  ) => {
-    triggerUpdateUser({
-      name: name,
-      surname: surname,
-      city: city,
-      phone: phone,
-    });
   };
 
   return (
@@ -129,7 +114,9 @@ function ProfilePage() {
       )}
       <div
         className={`${styles.profile} ${
-          showModal || showPasswordModal ? styles.profile_filter : ""
+          (showModal || showPasswordModal) && !isMobile
+            ? styles.profile_filter
+            : ""
         }`}
       >
         <Header
@@ -139,15 +126,24 @@ function ProfilePage() {
           }}
           isSearch={false}
         />
-        <div className={`${styles.wrapper} center`}>
-          <PageNav
-            isSearch={false}
-            buttonName="Вернуться на главную"
-            buttonWidth="241px"
-            onClick={() => {
-              navigate("/");
-            }}
-          />
+        <div
+          className={`${styles.wrapper} center ${
+            (showModal || showPasswordModal) && isMobile ? "modal_open" : ""
+          }`}
+        >
+          {!isMobile ? (
+            <PageNav
+              isSearch={false}
+              buttonName="Вернуться на главную"
+              buttonWidth="241px"
+              onClick={() => {
+                navigate("/");
+              }}
+            />
+          ) : (
+            ""
+          )}
+
           <div className={styles.content}>
             <Title
               title={`Здравствуйте, ${
@@ -183,7 +179,7 @@ function ProfilePage() {
                   <div className={styles.inputs}>
                     <div className={styles.right_container}>
                       <SettingInput
-                        width="300px"
+                        width={isMobile ? "100%" : "300px"}
                         placeholder="Имя"
                         value={name}
                         onChange={(e) => {
@@ -191,7 +187,7 @@ function ProfilePage() {
                         }}
                       />
                       <SettingInput
-                        width="300px"
+                        width={isMobile ? "100%" : "300px"}
                         placeholder="Фамилия"
                         value={surname}
                         onChange={(e) => {
@@ -200,7 +196,7 @@ function ProfilePage() {
                       />
                     </div>
                     <SettingInput
-                      width="300px"
+                      width={isMobile ? "100%" : "300px"}
                       placeholder="Город"
                       value={city}
                       onChange={(e) => {
@@ -220,17 +216,22 @@ function ProfilePage() {
                     <Button
                       name="Сохранить"
                       buttonColor="blue"
-                      width="154px"
+                      width={isMobile ? "100%" : "154px"}
                       isDisabledButton={isDisabledButton}
                       onClick={() => {
-                        handleUpdateUser(name, surname, city, phone);
+                        triggerUpdateUser({
+                          name: name,
+                          surname: surname,
+                          city: city,
+                          phone: phone,
+                        });
                         setIsDisabledButton(true);
                       }}
                     />
                     <Button
                       name="Изменить пароль"
                       buttonColor="blue"
-                      width="200px"
+                      width={isMobile ? "100%" : "200px"}
                       isDisabledButton={false}
                       onClick={() => {
                         setShowPasswordModal(!showPasswordModal);
@@ -267,6 +268,16 @@ function ProfilePage() {
             </div>
           </div>
         </div>
+        {isMobile ? (
+          <MobileNav
+            showAddAdv={(e) => {
+              setTargetButton(e.target.textContent);
+              setShowModal(true);
+            }}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

@@ -101,7 +101,11 @@ function MainPage() {
           isSearch={true}
           toggleSearchValue={toggleSearchValue}
         />
-        <div className={`${styles.wrapper} center`}>
+        <div
+          className={`${styles.wrapper}  center ${
+            showModal && isMobile ? "modal_open" : ""
+          }`}
+        >
           {!isMobile ? (
             <PageNav
               isSearch={true}

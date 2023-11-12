@@ -18,3 +18,8 @@
 :global(button) {
   cursor: pointer;
 }
+
+:global(.modal_open) {
+  position: fixed;
+  top: 55px;
+}

@@ -5,6 +5,7 @@ import Button from "../../buttons/button/button";
 import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import { useState, ChangeEvent } from "react";
 import { changePassword, loginUser } from "../../../api";
+import { useIsMobileContext } from "../../../contexts/isMobile";
 
 interface PasswordModalProps {
   setShowPasswordModal: any;
@@ -21,6 +22,7 @@ function PasswordModal({
   const [newPassword, setNewPassword] = useState<string>();
   const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false);
   const email = localStorage.getItem("email");
+  const { isMobile } = useIsMobileContext();
 
   const changeUserPassword = async () => {
     if (oldPassword && newPassword) {
@@ -104,7 +106,7 @@ function PasswordModal({
       <Button
         name="Сохранить"
         buttonColor="blue"
-        width="154px"
+        width={isMobile ? "100%" : "154px"}
         isDisabledButton={isDisabledButton}
         onClick={() => {
           handleChangePasswordButton();
