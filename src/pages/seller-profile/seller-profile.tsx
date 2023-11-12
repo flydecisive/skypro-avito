@@ -73,7 +73,9 @@ function SellerProfilePage() {
         ""
       )}
       <div
-        className={`${styles.seller} ${showModal ? styles.seller_filter : ""}`}
+        className={`${styles.seller} ${
+          showModal && !isMobile ? styles.seller_filter : ""
+        }`}
       >
         <Header
           showAddAdv={(e) => {
@@ -82,7 +84,11 @@ function SellerProfilePage() {
           }}
           isSearch={false}
         />
-        <div className={`${styles.wrapper} center`}>
+        <div
+          className={`${styles.wrapper} center ${
+            isMobile && showModal ? "modal_open" : ""
+          }`}
+        >
           {!isMobile ? (
             <PageNav
               isSearch={false}

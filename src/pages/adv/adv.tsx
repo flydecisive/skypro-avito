@@ -18,6 +18,10 @@ import {
   useDeleteAdsMutation,
 } from "../../services/ads";
 import { ReactComponent as NoImage } from "../../assets/img/image_no_icon_216618.svg";
+import { useIsMobileContext } from "../../contexts/isMobile";
+import { ReactComponent as Back } from "../../assets/img/back.svg";
+import MobileNav from "../../components/mobile-nav/mobile-nav";
+import Slider from "../../components/slider/slider";
 
 function AdvPage() {
   const { isAllowed } = useAllowedContext();
@@ -43,6 +47,7 @@ function AdvPage() {
     4: false,
   });
   const [prevImageId, setPrevImageId] = useState<number>();
+  const { isMobile } = useIsMobileContext();
 
   useEffect(() => {
     if (getAdsFeedbackData) {
@@ -139,25 +144,34 @@ function AdvPage() {
           }}
           isSearch={false}
         />
+        {isMobile ? <Slider images={adsImages} /> : ""}
         <div className={`${styles.wrapper} center`}>
-          <PageNav
-            isSearch={false}
-            buttonName="Вернуться на главную"
-            buttonWidth="240px"
-            onClick={() => {
-              navigate("/");
-            }}
-          />
+          {!isMobile ? (
+            <PageNav
+              isSearch={false}
+              buttonName="Вернуться на главную"
+              buttonWidth="240px"
+              onClick={() => {
+                navigate("/");
+              }}
+            />
+          ) : (
+            ""
+          )}
           <div className={styles.content}>
-            <div className={styles.images}>
-              {mainImage ? (
-                <img className={styles.image} src={mainImage} alt="" />
-              ) : (
-                <NoImage className={styles.image} />
-              )}
+            {!isMobile ? (
+              <div className={styles.images}>
+                {mainImage ? (
+                  <img className={styles.image} src={mainImage} alt="" />
+                ) : (
+                  <NoImage className={styles.image} />
+                )}
 
-              <div className={styles.image_switcher}>{adsImages}</div>
-            </div>
+                <div className={styles.image_switcher}>{adsImages}</div>
+              </div>
+            ) : (
+              ""
+            )}
             <div className={styles.data}>
               <h2 className={styles.title}>{currentAds?.title}</h2>
               <Metadata
@@ -248,6 +262,16 @@ function AdvPage() {
             </p>
           </div>
         </div>
+        {isMobile ? (
+          <MobileNav
+            showAddAdv={(e) => {
+              setTargetButton(e.target.textContent);
+              setShowModal(true);
+            }}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </>
   );
