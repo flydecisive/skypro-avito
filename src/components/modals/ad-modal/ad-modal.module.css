@@ -168,11 +168,12 @@
 @media (max-width: 376px) {
   .modal {
     top: 55px;
-    min-height: calc(100dvh - 109px);
+    height: calc(100dvh - 109px);
     width: 100%;
     border: none;
     border-radius: 0;
     padding: 30px 20px 30px 20px;
+    overflow-y: scroll;
   }
 
   .header {
