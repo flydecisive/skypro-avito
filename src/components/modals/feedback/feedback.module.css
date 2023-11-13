@@ -1,6 +1,6 @@
 .modal {
   width: 800px;
-  height: 900px;
+  max-height: 80vh;
   padding: 20px 98px 57px 50px;
   box-sizing: border-box;
   border-radius: 12px;

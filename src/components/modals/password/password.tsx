@@ -6,6 +6,7 @@ import { ReactComponent as Cross } from "../../../assets/img/cross.svg";
 import { useState, ChangeEvent } from "react";
 import { changePassword, loginUser } from "../../../api";
 import { useIsMobileContext } from "../../../contexts/isMobile";
+import { ReactComponent as Back } from "../../../assets/img/back.svg";
 
 interface PasswordModalProps {
   setShowPasswordModal: any;
@@ -84,12 +85,21 @@ function PasswordModal({
     <div className={styles.modal}>
       <div className={styles.top}>
         <h2 className={styles.header}>Изменить пароль</h2>
-        <Cross
-          className={styles.cross}
-          onClick={() => {
-            setShowPasswordModal(false);
-          }}
-        />
+        {!isMobile ? (
+          <Cross
+            className={styles.cross}
+            onClick={() => {
+              setShowPasswordModal(false);
+            }}
+          />
+        ) : (
+          <Back
+            className={styles.back}
+            onClick={() => {
+              setShowPasswordModal(false);
+            }}
+          />
+        )}
       </div>
       <ModalInput
         width="100%"

@@ -102,15 +102,20 @@ function SellerProfilePage() {
             ""
           )}
           <div className={styles.content}>
-            <div className={styles.content_top}>
+            {isMobile ? (
+              <div className={styles.content_top}>
+                <Title title="Профиль продавца" />
+                <Back
+                  className={styles.back}
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                />
+              </div>
+            ) : (
               <Title title="Профиль продавца" />
-              <Back
-                className={styles.back}
-                onClick={() => {
-                  navigate(-1);
-                }}
-              />
-            </div>
+            )}
+
             <div className={styles.info}>
               <div className={styles.info_wrapper}>
                 {!isMobile ? (
