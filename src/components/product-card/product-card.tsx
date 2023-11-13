@@ -1,6 +1,7 @@
 import styles from "./product-card.module.css";
 import Metadata from "../metadata/metadata";
 import { ReactComponent as NoImage } from "../../assets/img/image_no_icon_216618.svg";
+import { useIsMobileContext } from "../../contexts/isMobile";
 
 interface ProductCardProps {
   header: string;
@@ -19,6 +20,22 @@ function ProductCard({
   images,
   onClick,
 }: ProductCardProps) {
+  const { isMobile } = useIsMobileContext();
+  let cardHeader: string;
+
+  if (isMobile) {
+    if (header?.length > 40) {
+      cardHeader = `${header.slice(0, 31)}...`;
+    } else {
+      cardHeader = header;
+    }
+  } else {
+    if (header?.length > 50) {
+      cardHeader = `${header.slice(0, 40)}...`;
+    } else {
+      cardHeader = header;
+    }
+  }
   return (
     <div className={styles.card}>
       {images[0]?.url ? (
@@ -34,7 +51,7 @@ function ProductCard({
 
       <div className={styles.wrapper}>
         <h2 className={styles.header} onClick={onClick}>
-          {header?.length > 50 ? `${header.slice(0, 40)}...` : header}
+          {cardHeader}
         </h2>
         <p className={styles.price}>{price} ₽</p>
         <Metadata city={city} time={time} type="card" />

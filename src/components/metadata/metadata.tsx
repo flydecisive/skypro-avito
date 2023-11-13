@@ -26,14 +26,14 @@ function Metadata({ city, time, type }: MetadataProps) {
       <p
         className={`${styles.data_item} ${
           type !== "card" && isMobile ? styles.mobile_item : ""
-        }`}
+        } ${type === "adv" && isMobile ? styles.adv_item : ""}`}
       >
         {city}
       </p>
       <p
         className={`${styles.data_item} ${
           type !== "card" && isMobile ? styles.mobile_item : ""
-        }`}
+        } ${type === "adv" && isMobile ? styles.adv_item : ""}`}
       >
         {type === "card"
           ? normalizeDate(time)

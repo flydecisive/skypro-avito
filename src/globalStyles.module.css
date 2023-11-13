@@ -20,6 +20,6 @@
 }
 
 :global(.modal_open) {
-  position: fixed;
+  position: fixed !important;
   top: 55px;
 }

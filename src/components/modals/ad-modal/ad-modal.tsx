@@ -42,7 +42,13 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   const [noticeText, setNoticeText] = useState<string>("");
   const [images, setImages] = useState<any>();
   const id = currentAds?.id;
-  const [showDelete, setShowDelete] = useState<boolean>(false);
+  const [showDelete, setShowDelete] = useState<any>({
+    0: false,
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+  });
   const { isMobile } = useIsMobileContext();
   const [active, setActive] = useState({
     textarea: false,
@@ -50,7 +56,7 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   });
 
   useEffect(() => {
-    if (currentAds?.images) {
+    if (currentAds?.images && targetButton === "Редактировать") {
       setImages(setNewImages(currentAds?.images));
     } else {
       setImages(Array(5).fill({}));
@@ -121,6 +127,13 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
     }
   };
 
+  let header: string;
+  if (targetButton === "Редактировать") {
+    header = isMobile ? "Редактировать" : "Редактировать объявление";
+  } else {
+    header = "Новое объявление";
+  }
+
   return (
     <div className={styles.modal}>
       {showPushNotice ? (
@@ -134,11 +147,7 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
         ""
       )}
       <div className={styles.top}>
-        <h2 className={styles.header}>
-          {targetButton === "Редактировать"
-            ? "Редактировать объявление"
-            : "Новое объявление"}
-        </h2>
+        <h2 className={styles.header}>{header}</h2>
         {isMobile ? (
           <Back className={styles.back} onClick={() => setShowModal(false)} />
         ) : (
@@ -186,13 +195,13 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
                   className={styles.photo}
                   key={index}
                   onMouseEnter={() => {
-                    setShowDelete(true);
+                    setShowDelete({ ...showDelete, [index]: true });
                   }}
                   onMouseLeave={() => {
-                    setShowDelete(false);
+                    setShowDelete({ ...showDelete, [index]: false });
                   }}
                 >
-                  {showDelete ? (
+                  {showDelete[index] ? (
                     <div
                       className={styles.delete}
                       id={String(index)}

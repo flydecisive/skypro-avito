@@ -59,14 +59,19 @@ function Slider({ images }: SliderProps) {
   };
 
   useEffect(() => {
-    if (!mainImage) {
+    if (!mainImage && images?.length !== 0) {
       setMainImage(images?.[0]?.props.src);
       setPrevImageId(0);
+    }
+
+    if (mainImage && images?.length === 0) {
+      setMainImage(undefined);
+      setSliderItems(undefined);
     }
   }, [images]);
 
   function renderSliderItems() {
-    if (images) {
+    if (images?.length !== 0) {
       const newSliderItems = [];
       for (let i = 0; i < Object.keys(images).length; i++) {
         newSliderItems.push(

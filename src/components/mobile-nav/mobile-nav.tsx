@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import styles from "./mobile-nav.module.css";
 import { ReactComponent as User } from "../../assets/img/mobile-user.svg";
 import { ReactComponent as Home } from "../../assets/img/mobile-home.svg";

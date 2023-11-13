@@ -8,6 +8,8 @@ import { useCreateCommentMutation } from "../../../services/ads";
 import { useState, ChangeEvent } from "react";
 import { ReactComponent as DeleteIcon } from "../../../assets/img/delete.svg";
 import { UseAuthUserContext } from "../../../contexts/authUser";
+import { ReactComponent as Back } from "../../../assets/img/back.svg";
+import { useIsMobileContext } from "../../../contexts/isMobile";
 
 interface FeedbackProps {
   setShowFeedbackModal: (params: any) => void;
@@ -21,6 +23,7 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
   const [comment, setComment] = useState<string>();
   const navigate = useNavigate();
   const [createCommentTrigger] = useCreateCommentMutation();
+  const { isMobile } = useIsMobileContext();
 
   const handleComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -51,16 +54,23 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
       <div className={styles.top}>
         <h2 className={styles.header}>Отзывы о товаре</h2>
         <button className={styles.button}>
-          <Cross
-            className={styles.cross}
-            onClick={() => setShowFeedbackModal(false)}
-          />
+          {isMobile ? (
+            <Back
+              className={styles.back}
+              onClick={() => setShowFeedbackModal(false)}
+            />
+          ) : (
+            <Cross
+              className={styles.cross}
+              onClick={() => setShowFeedbackModal(false)}
+            />
+          )}
         </button>
       </div>
       {isAllowed ? (
         <div className={styles.add_feedback}>
           <label className={styles.label}>
-            Добавить отзыв
+            {isMobile ? "" : "Добавить отзыв"}
             <textarea
               className={styles.textarea}
               placeholder="Введите отзыв"
@@ -70,7 +80,7 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
           <Button
             name="Опубликовать"
             buttonColor="blue"
-            width="180px"
+            width={isMobile ? "100%" : "180px"}
             onClick={() => {
               handleCommentSubmit(adsId, comment);
             }}

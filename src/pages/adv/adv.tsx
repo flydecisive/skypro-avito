@@ -134,7 +134,9 @@ function AdvPage() {
       )}
       <div
         className={`${styles.product} ${
-          showModal || showFeedbackModal ? styles.product_filter : ""
+          (showModal || showFeedbackModal) && !isMobile
+            ? styles.product_filter
+            : ""
         }`}
       >
         <Header
@@ -145,7 +147,21 @@ function AdvPage() {
           isSearch={false}
         />
         {isMobile ? <Slider images={adsImages} /> : ""}
-        <div className={`${styles.wrapper} center`}>
+        {isMobile ? (
+          <Back
+            className={styles.back}
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+        ) : (
+          ""
+        )}
+        <div
+          className={`${styles.wrapper} center ${
+            isMobile && (showFeedbackModal || showModal) ? "modal_open" : ""
+          }`}
+        >
           {!isMobile ? (
             <PageNav
               isSearch={false}
@@ -177,7 +193,7 @@ function AdvPage() {
               <Metadata
                 city={currentAds?.user.city}
                 time={currentAds?.created_on}
-                type="card"
+                type="adv"
               />
               <p
                 className={styles.feedback}
@@ -194,7 +210,7 @@ function AdvPage() {
                     <Button
                       name="Редактировать"
                       buttonColor="blue"
-                      width="190px"
+                      width={isMobile ? "100%" : "190px"}
                       onClick={(e) => {
                         setTargetButton(e.target.textContent);
                         setShowModal(true);
@@ -203,7 +219,7 @@ function AdvPage() {
                     <Button
                       name="Снять с публикации"
                       buttonColor="blue"
-                      width="225px"
+                      width={isMobile ? "100%" : "225px"}
                       onClick={() => {
                         triggerDeleteAds({ id: id });
                         navigate("/");
