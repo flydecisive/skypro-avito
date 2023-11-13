@@ -70,7 +70,7 @@ export const validateEmail = (email: string) => {
 };
 
 export const sellsFromData = (date: string): string => {
-  const month = date?.slice(date?.lastIndexOf("-") + 1);
+  const month = date?.slice(date?.indexOf("-") + 1, date?.lastIndexOf("-"));
   const year = date?.slice(0, date?.indexOf("-"));
 
   return `${parseMonth(Number(month) - 1)} ${year}`;

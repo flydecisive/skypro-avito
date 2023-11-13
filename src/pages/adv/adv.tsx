@@ -193,7 +193,7 @@ function AdvPage() {
               <Metadata
                 city={currentAds?.user.city}
                 time={currentAds?.created_on}
-                type="adv"
+                type="card"
               />
               <p
                 className={styles.feedback}
