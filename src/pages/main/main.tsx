@@ -84,6 +84,7 @@ function MainPage() {
         <AdModal
           setShowModal={() => setShowModal(false)}
           targetButton={targetButton}
+          showModal={showModal}
         />
       ) : (
         ""

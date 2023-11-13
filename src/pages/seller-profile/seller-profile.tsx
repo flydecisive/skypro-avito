@@ -68,6 +68,7 @@ function SellerProfilePage() {
         <AdModal
           setShowModal={() => setShowModal(false)}
           targetButton={targetButton}
+          showModal={showModal}
         />
       ) : (
         ""

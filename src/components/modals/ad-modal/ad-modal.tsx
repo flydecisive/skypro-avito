@@ -21,9 +21,15 @@ interface AdModalProps {
   setShowModal: (params: boolean) => void;
   targetButton: string;
   currentAds?: any;
+  showModal?: boolean;
 }
 
-function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
+function AdModal({
+  setShowModal,
+  targetButton,
+  currentAds,
+  showModal,
+}: AdModalProps) {
   const [triggerAddAds, { data, isLoading }] = useAddAdsMutation();
   const [triggerUpdateAds, { data: updateAdsData }] =
     useUpdateUserAdsMutation();
@@ -135,7 +141,11 @@ function AdModal({ setShowModal, targetButton, currentAds }: AdModalProps) {
   }
 
   return (
-    <div className={styles.modal}>
+    <div
+      className={
+        showModal ? `${styles.modal}` : `${styles.modal} ${styles.modal_out}`
+      }
+    >
       {showPushNotice ? (
         <PushNotice
           text={noticeText}

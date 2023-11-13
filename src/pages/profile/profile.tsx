@@ -89,6 +89,7 @@ function ProfilePage() {
         <AdModal
           setShowModal={() => setShowModal(false)}
           targetButton={targetButton}
+          showModal={showModal}
         />
       ) : (
         ""
@@ -98,6 +99,7 @@ function ProfilePage() {
           setShowPasswordModal={setShowPasswordModal}
           setShowNotice={setShowNotice}
           setNoticeText={setNoticeText}
+          showPasswordModal={showPasswordModal}
         />
       ) : (
         ""

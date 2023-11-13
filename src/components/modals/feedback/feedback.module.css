@@ -15,6 +15,13 @@
   top: 85px;
   margin: auto;
   z-index: 2;
+  animation: fadeIn 0.3s linear forwards;
+  opacity: 0;
+}
+
+.modal_out {
+  animation: fadeOut 0.3s linear forwards;
+  opacity: 1;
 }
 
 .modal::-webkit-scrollbar {
@@ -251,5 +258,23 @@
   .comment_date {
     font-size: 14px;
     line-height: 200%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }

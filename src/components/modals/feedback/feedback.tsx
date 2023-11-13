@@ -15,9 +15,15 @@ interface FeedbackProps {
   setShowFeedbackModal: (params: any) => void;
   feedback: any;
   adsId: string | undefined;
+  showFeedbackModal: boolean;
 }
 
-function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
+function Feedback({
+  setShowFeedbackModal,
+  feedback,
+  adsId,
+  showFeedbackModal,
+}: FeedbackProps) {
   const { authUser } = UseAuthUserContext();
   const { isAllowed } = useAllowedContext();
   const [comment, setComment] = useState<string>();
@@ -48,9 +54,14 @@ function Feedback({ setShowFeedbackModal, feedback, adsId }: FeedbackProps) {
 
     return `${day} ${month}`;
   };
-
   return (
-    <div className={styles.modal}>
+    <div
+      className={
+        showFeedbackModal
+          ? `${styles.modal}`
+          : `${styles.modal} ${styles.modal_out}`
+      }
+    >
       <div className={styles.top}>
         <h2 className={styles.header}>Отзывы о товаре</h2>
         <button className={styles.button}>

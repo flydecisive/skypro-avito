@@ -12,12 +12,14 @@ interface PasswordModalProps {
   setShowPasswordModal: any;
   setShowNotice: any;
   setNoticeText: any;
+  showPasswordModal: boolean;
 }
 
 function PasswordModal({
   setShowPasswordModal,
   setShowNotice,
   setNoticeText,
+  showPasswordModal,
 }: PasswordModalProps) {
   const [oldPassword, setOldPassword] = useState<string>();
   const [newPassword, setNewPassword] = useState<string>();
@@ -82,7 +84,13 @@ function PasswordModal({
   };
 
   return (
-    <div className={styles.modal}>
+    <div
+      className={
+        showPasswordModal
+          ? `${styles.modal}`
+          : `${styles.modal} ${styles.modal_out}`
+      }
+    >
       <div className={styles.top}>
         <h2 className={styles.header}>Изменить пароль</h2>
         {!isMobile ? (

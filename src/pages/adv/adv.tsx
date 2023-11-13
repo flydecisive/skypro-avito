@@ -117,6 +117,7 @@ function AdvPage() {
           setShowModal={() => setShowModal(false)}
           targetButton={targetButton}
           currentAds={currentAds}
+          showModal={showModal}
         />
       ) : (
         ""
@@ -128,6 +129,7 @@ function AdvPage() {
           }}
           feedback={feedback}
           adsId={id}
+          showFeedbackModal={showFeedbackModal}
         />
       ) : (
         ""

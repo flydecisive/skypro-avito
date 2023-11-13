@@ -1,6 +1,5 @@
 .modal {
   width: 600px;
-  /* height: 800px; */
   padding: 20px 50px 42px 50px;
   box-sizing: border-box;
   border-radius: 12px;
@@ -12,6 +11,13 @@
   top: 85px;
   margin: auto;
   z-index: 2;
+  animation: fadeIn 0.3s linear forwards;
+  opacity: 0;
+}
+
+.modal_out {
+  animation: fadeOut 0.3s linear forwards;
+  opacity: 1;
 }
 
 .header {
@@ -223,5 +229,23 @@
 
   .top {
     margin-bottom: 30px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
