@@ -29,9 +29,9 @@ skypro-avito - это платформа для продажи и покупки
 1. Скачать файл backend'a по [ссылке](https://drive.google.com/file/d/1pFE-NRANTsWmQwTyURjHXuECMmoKCFjO/view) и развернуть его в Docker.
    - Скачайте архив и разархивируйте его.
    - Через терминал перейдите в разархивированную папку.
-   - Запустите в терминале команду: __docker-compose -f docker-compose-backend.yaml up -d__
-3. Установить зависимости командой __npm install__
-4. Запустить проект командой __npm run start__
-5. Можно собрать проект командой __npm run build__
+   - Запустите в терминале команду: ##### `docker-compose -f docker-compose-backend.yaml up -d`
+3. Установить зависимости командой ##### `npm install`
+4. Запустить проект командой ##### `npm run start`
+5. Можно собрать проект командой ##### `npm run build`
 
 __src/__ — директория, содержащая исходный код проекта.
