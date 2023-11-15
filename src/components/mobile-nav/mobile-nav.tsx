@@ -3,7 +3,7 @@ import styles from "./mobile-nav.module.css";
 import { ReactComponent as User } from "../../assets/img/mobile-user.svg";
 import { ReactComponent as Home } from "../../assets/img/mobile-home.svg";
 import { ReactComponent as AddAds } from "../../assets/img/add_ads.svg";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAllowedContext } from "../../contexts/allowed";
 import { ReactComponent as Exit } from "../../assets/img/exit-mobile.svg";
 
