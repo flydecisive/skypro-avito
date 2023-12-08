@@ -14,6 +14,11 @@
 - Смена пароля пользователя
 - Возможность просмотра профиля продавца
 - Есть мобильная версия
+
+<img src="./src/assets/img/preview1.png" alt="preview">&nbsp;
+<img src="./src/assets/img/preview2.png" alt="preview">&nbsp;
+<img src="./src/assets/img/preview3.png" alt="preview">&nbsp;
+<img src="./src/assets/img/preview4.png" alt="preview">&nbsp;
   
 ## Используемые технологии
 <div>
